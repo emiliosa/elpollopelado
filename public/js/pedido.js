@@ -1,7 +1,7 @@
 // update and delete events
 window.actionEvents = {
     'click .select': function (e, value, row) {
-        $('[data-id=' + row.id + ']').parents('tr').remove();
+        //$('[data-id=' + row.id + ']').parents('tr').remove();
     },
     'click .remove': function (e, value, row) {
         if (confirm('Are you sure to delete this item?')) {
