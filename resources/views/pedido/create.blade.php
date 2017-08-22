@@ -3,7 +3,6 @@
 @section('title', 'Agregar pedido')
 
 @section('content')
-    <script type="text/javascript" src="{{ URL::asset('js/typeahead.bundle.min.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/pedido.js') }}"></script>
     <div class="container">
         <div class="row">
@@ -34,6 +33,8 @@
                     @include ('pedido.form', ['submitButtonText' => 'Agregar'])
 
                     {!! Form::close() !!}
+
+                    @include ('pedido.cart')
 
                 </div>
             </div>

@@ -39,7 +39,14 @@ Route::get('/get_localidades_por_partido', 'LocalidadController@getLocalidadesPo
 Route::get('/get_descuentos', 'DescuentoController@getDescuentos');
 Route::get('/get_descuento_por_cliente', 'DescuentoPorClienteController@getDescuentoPorCliente');
 Route::get('/get_clientes_info', 'ClienteController@getClientesInfo');
-//Route::get('/get_clientes_suggest_search', 'ClienteController@getClientesSuggestSearch');
 
 Route::get('get_productos', 'ProductoController@getProductos');
-//Route::post('/cart', 'Front@cart');
+
+// Carrito de compra
+Route::resource('shop', 'ProductoController', ['only' => ['index', 'show']]);
+Route::resource('cart', 'CartController');
+Route::delete('emptyCart', 'CartController@emptyCart');
+Route::post('switchToWishlist/{id}', 'CartController@switchToWishlist');
+Route::resource('wishlist', 'WishlistController');
+Route::delete('emptyWishlist', 'WishlistController@emptyWishlist');
+Route::post('switchToCart/{id}', 'WishlistController@switchToCart');

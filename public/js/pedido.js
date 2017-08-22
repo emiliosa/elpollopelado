@@ -110,37 +110,18 @@ $(document).ready(function () {
         }
     });
 
-    // Set the Options for "Bloodhound" suggestion engine
-    var engine = new Bloodhound({
-        remote: {
-            url: '/find?q=%QUERY%',
-            wildcard: '%QUERY%'
-        },
-        datumTokenizer: Bloodhound.tokenizers.whitespace('q'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace
+    $('.quantity').on('change', function() {
+        var id = $(this).attr('data-id')
+        var data = {'quantity': this.value};
+        $.ajax({
+            type: "PATCH",
+            url: '/cart/' + id,
+            data: data
+        })
+        .done(function(data) {
+            location.reload();
+        })
     });
 
-    $(".search-input").typeahead({
-        hint: true,
-        highlight: true,
-        minLength: 1
-    }, {
-        source: engine.ttAdapter(),
 
-        // This will be appended to "tt-dataset-" to form the class name of the suggestion menu.
-        name: 'clientesList',
-
-        // the key from the array we want to display (name,id,email,etc...)
-        templates: {
-            empty: [
-                '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
-            ],
-            header: [
-                '<div class="list-group search-results-dropdown">'
-            ],
-            suggestion: function (data) {
-                return '<a href="' + data.identificacion + '" class="list-group-item">' + data.razon_social + ' - ' + data.identificacion + '</a>'
-            }
-        }
-    });
 });
