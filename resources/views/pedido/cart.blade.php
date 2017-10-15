@@ -51,14 +51,6 @@
             <td></td>
             <td></td>
         </tr>
-        <tr>
-            <td class="table-image"></td>
-            <td></td>
-            <td class="small-caps table-bg" style="text-align: right">Impuestos</td>
-            <td>${{ Cart::instance('default')->tax() }}</td>
-            <td></td>
-            <td></td>
-        </tr>
 
         <tr class="border-bottom">
             <td class="table-image"></td>
@@ -90,19 +82,3 @@
 
 @endif
 
-@section('extra-js')
-    <script>
-        (function(){
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-
-
-        })();
-
-    </script>
-@endsection

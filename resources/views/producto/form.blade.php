@@ -1,6 +1,7 @@
 <div class="form-group {{ $errors->has('codigo') ? 'has-error' : ''}}">
     {!! Form::label('codigo', 'Código', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
+        {!! Form::hidden('id', isset($producto) ? ($producto->id) : null, ['id' => 'id']) !!}
         {!! Form::text('codigo', isset($producto) ? $producto->codigo : null, ['class' => 'form-control']) !!}
         {!! $errors->first('codigo', '<p class="help-block">:message</p>') !!}
     </div>
@@ -46,19 +47,13 @@
     </div>
 </div>
 
-<div class="form-group">
-    {!! Form::label('imagen', 'Imágen', ['class' => 'col-md-4 control-label']) !!}
+<div class="form-group {{ $errors->has('imagen') ? 'has-error' : ''}}">
+    {!! Form::label('imagen', 'Imagen', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        @if (@$producto->imagen)
-            <img src="{{ Storage::url($producto->imagen) }}"/>
-        @else
-            {!! Form::file('imagen', isset($producto) ? $producto->imagen : null, ['class' => 'form-control', 'name' => 'imagen']) !!}
-        @endif
-        {!! $errors->first('imagen', '<p class="help-block">:message</p>') !!}
-        <div class="btn btn-link" id="quitarImagen">Quitar imágen</div>
+        <img id="imagen-preview" src="{!! Storage::url(str_replace('.jpeg', '_small.jpeg', $producto->imagen)) !!}" alt="Imágen no disponible"  class="img-thumbnail" height="150px" width="150px"/>
+        <input id="imagen" name="imagen" type="file">
     </div>
 </div>
-
 
 <div class="form-group">
     <div class="col-md-offset-4 col-md-4">

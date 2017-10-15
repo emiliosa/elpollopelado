@@ -41,6 +41,7 @@ Route::get('/get_descuento_por_cliente', 'DescuentoPorClienteController@getDescu
 Route::get('/get_clientes_info', 'ClienteController@getClientesInfo');
 
 Route::get('get_productos', 'ProductoController@getProductos');
+Route::get('get_distancia', 'PedidoController@getDistance');
 
 // Carrito de compra
 Route::resource('shop', 'ProductoController', ['only' => ['index', 'show']]);

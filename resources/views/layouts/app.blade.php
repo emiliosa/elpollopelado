@@ -43,14 +43,10 @@
         ]) !!};
     </script>
 
-    <!-- Bootstrap
-    <script type="text/javascript" src="{{asset('js/tether.min.js')}}"></script>-->
+    <!-- Bootstrap -->
     <script type="text/javascript" src="{{asset('js/bootstrap.min.js')}}"></script>
 
-    <!-- DataTables
-    <link rel="stylesheet" href="{{asset('/css/jquery.dataTables.min.css')}}">
-    <script type="text/javascript" src="{{asset('js/datatables/jquery.dataTables.js')}}"></script>
-    -->
+
 
 </head>
 <body>

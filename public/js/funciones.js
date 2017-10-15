@@ -17,3 +17,17 @@ function loadSelectOptions(select, newOpts, selectedValue, keepFirst) {
         options[options.length] = new Option(text, value, selected, selected);
     }
 }
+
+/**
+ *
+ * @param (HTMLInput) input
+ */
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#imagen-preview').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}

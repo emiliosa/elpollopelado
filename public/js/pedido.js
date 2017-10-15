@@ -42,7 +42,6 @@ $(document).ready(function () {
     });
     
     $('#direccionesModal').on('show.bs.modal', function () {
-        console.log('direccionesModal');
         $(this).find('.modal-body').css({
             width:'auto', //probably not needed
             height:'auto', //probably not needed 
@@ -94,9 +93,22 @@ $(document).ready(function () {
         var table = $('#tableDirecciones');
         var row = table.bootstrapTable('getSelections')[0];
         if (row){
+            var direccion = row.provincia.nombre + ' - ' + row.partido.nombre + ' - ' + row.localidad.nombre + ' - ' + row.calle + ' - ' + row.altura;
             $('#direccion_envio_id').val(row.id);
-            $('#direccion_envio').val(row.provincia.nombre + ' - ' + row.partido.nombre + ' - ' + row.localidad.nombre + ' - ' + row.calle + ' - ' + row.altura);
+            $('#direccion_envio').val(direccion);
             $('#direccionesModal').modal('toggle');
+            $.ajax({
+                type: "GET",
+                url: '/get_distancia',
+                data: {direccion: direccion},
+                cache: false
+            })
+            .done(function (response){
+                console.log(response);
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                console.log('error: ' + textStatus);
+            });
         }
     });
     

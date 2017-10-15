@@ -88,7 +88,7 @@ class CartController extends Controller
     public function emptyCart()
     {
         Cart::destroy();
-        return redirect('cart')->withSuccessMessage('Your cart has been cleared!');
+        return redirect('pedido/create')->withSuccessMessage('Your cart has been cleared!');
     }
 
     /**

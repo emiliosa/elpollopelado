@@ -10,6 +10,8 @@ use App\Repositories\PedidoDetalleRepository;
 use App\Repositories\ProductoRepository;
 use App\Repositories\CategoriaRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Response;
 
 use App\Http\Requests;
 use App\Pedido;
@@ -27,9 +29,9 @@ class PedidoController extends Controller
     protected $categoria;
     protected $pedido_detalle;
 
-    public function __construct(PedidoRepository $pedido, 
-                                ClienteRepository $cliente, 
-                                DireccionRepository $direccion_envio, 
+    public function __construct(PedidoRepository $pedido,
+                                ClienteRepository $cliente,
+                                DireccionRepository $direccion_envio,
                                 DescuentoRepository $descuento,
                                 ProductoRepository $producto,
                                 CategoriaRepository $categoria,
@@ -162,6 +164,44 @@ class PedidoController extends Controller
         Pedido::destroy($id);
 
         return redirect('pedido');
+    }
+
+    public function getDistance()
+    {
+        $unit = "K";
+        $addressFrom = "La Rioja 1884, C1244ABN CABA";
+        $addressTo = Input::get('direccion');
+        //Change address format
+        $formattedAddrFrom = str_replace(' ', '+', $addressFrom);
+        $formattedAddrTo = str_replace(' ', '+', $addressTo);
+
+        //Send request and receive json data
+        $geocodeFrom = file_get_contents('https://maps.google.com/maps/api/geocode/json?address=' . $formattedAddrFrom . '&sensor=false&key=AIzaSyCDQ3q314fDhgUTuHOcHyXro2_5cjmgEBM');
+        $outputFrom = json_decode($geocodeFrom);
+        $geocodeTo = file_get_contents('https://maps.google.com/maps/api/geocode/json?address=' . $formattedAddrTo . '&sensor=false&key=AIzaSyCDQ3q314fDhgUTuHOcHyXro2_5cjmgEBM');
+        $outputTo = json_decode($geocodeTo);
+
+        //Get latitude and longitude from geo data
+        $latitudeFrom = $outputFrom->results[0]->geometry->location->lat;
+        $longitudeFrom = $outputFrom->results[0]->geometry->location->lng;
+        $latitudeTo = $outputTo->results[0]->geometry->location->lat;
+        $longitudeTo = $outputTo->results[0]->geometry->location->lng;
+
+        //Calculate distance from latitude and longitude
+        $theta = $longitudeFrom - $longitudeTo;
+        $dist = sin(deg2rad($latitudeFrom)) * sin(deg2rad($latitudeTo)) + cos(deg2rad($latitudeFrom)) * cos(deg2rad($latitudeTo)) * cos(deg2rad($theta));
+        $dist = acos($dist);
+        $dist = rad2deg($dist);
+        $miles = $dist * 60 * 1.1515;
+        $unit = strtoupper($unit);
+        if ($unit == "K") {
+            $distance = ($miles * 1.609344) . ' km';
+        } else if ($unit == "N") {
+            $distance = ($miles * 0.8684) . ' nm';
+        } else {
+            $distance = $miles . ' mi';
+        }
+        return Response::json(['distancia' => $distance]);
     }
 
 }

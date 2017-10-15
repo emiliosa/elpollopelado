@@ -153,11 +153,6 @@ class ProductoController extends Controller
             $filename_imagen_reducida = str_replace(' ', '_', $categoria_descripcion . '_' . $requestData['descripcion'] . '_small.jpeg');
             $imagen_file = $request->file('imagen');
 
-            /*$imagen_original = $request->file('imagen');
-            $imagen_original->storeAs('public', $filename_imagen_original);
-            $requestData['imagen'] = $filename_imagen_original;
-            $imagen_reducida = Image::make($imagen_original->getrealPath());*/
-
             $imagen_original = Image::make($imagen_file->getrealPath());
             $imagen_original->resize(500, 400, function ($constraint) {
                 $constraint->aspectRatio();
