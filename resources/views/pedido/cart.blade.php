@@ -68,17 +68,17 @@
         <form action="{{ url('/emptyCart') }}" method="POST">
             {!! csrf_field() !!}
             <input type="hidden" name="_method" value="DELETE">
-            <input type="submit" class="btn btn-danger btn-lg" value="Vaciar pedido">
+            <input type="submit" class="btn btn-danger" value="Vaciar pedido">
         </form>
     </div>
 
-    <a href="{{ url('/producto') }}" class="btn btn-primary btn-lg">Agregar más productos</a> &nbsp;
-    <a href="#" class="btn btn-success btn-lg">Finalizar pedido</a>
+    <a href="{{ url('/producto') }}" class="btn btn-primary">Agregar más productos</a> &nbsp;
+    <a href="#" class="btn btn-success">Finalizar pedido</a>
 
 @else
 
     <h3>No hay productos seleccionados</h3>
-    <a href="{{ url('/producto') }}" class="btn btn-primary btn-lg">Agregar productos</a>
+    <a href="{{ url('/producto') }}" class="btn btn-primary">Agregar productos</a>
 
 @endif
 

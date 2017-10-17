@@ -66,6 +66,7 @@ $(document).ready(function () {
         var row = table.bootstrapTable('getSelections')[0];
         if (row){
             var data = {cliente_id: row.id, _token: token};
+            $('#direccion_envio').val("");
             $.ajax({
                 type: "GET",
                 url: '/get_clientes_info',
@@ -93,9 +94,6 @@ $(document).ready(function () {
         var table = $('#tableDirecciones');
         var row = table.bootstrapTable('getSelections')[0];
         if (row){
-            var direccion = row.provincia.nombre + ' - ' + row.partido.nombre + ' - ' + row.localidad.nombre + ' - ' + row.calle + ' - ' + row.altura;
-            $('#direccion_envio_id').val(row.id);
-            $('#direccion_envio').val(direccion);
             $('#direccionesModal').modal('toggle');
             $.ajax({
                 type: "GET",
@@ -105,6 +103,8 @@ $(document).ready(function () {
             })
             .done(function (response){
                 console.log(response);
+                $('#direccion_envio_id').val(row.id);
+                $('#direccion_envio').val(direccion);
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
                 console.log('error: ' + textStatus);

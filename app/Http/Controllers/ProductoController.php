@@ -42,7 +42,7 @@ class ProductoController extends Controller
         $estados = $this->producto->getEstados();
         return view('producto.index', compact('productos', 'estados'));*/
         $productos = $this->producto->getProductos();
-        return view('shop', compact('productos'));
+        return view('producto.index', compact('productos'));
     }
 
     /**
@@ -68,20 +68,31 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
 
-        $this->validate($request, [
-            'categoria_id' => 'required',
-            'descripcion' => 'required',
-            'moneda_id' => 'required',
-            'precio_unitario' => 'required',
-            'imagen' => 'image|mimes:jpeg,bmp,png|max:2000'
-        ]);
-
         $requestData = $request->all();
-        $filename = $request->imagen->store();
-        $requestData->imagen = $filename;
+        $categoria_id = $requestData['categoria_id'];
+        $categoria = $this->categoria->findOrFail($categoria_id);
+        $categoria_descripcion = $categoria['attributes']['descripcion'];
+        if ($request->hasFile('imagen')) {
+            $filename_imagen_original = str_replace(' ', '_', $categoria_descripcion . '_' . $requestData['descripcion'] . '.jpeg');
+            $filename_imagen_reducida = str_replace(' ', '_', $categoria_descripcion . '_' . $requestData['descripcion'] . '_small.jpeg');
+            $imagen_file = $request->file('imagen');
 
+            $imagen_original = Image::make($imagen_file->getrealPath());
+            $imagen_original->resize(500, 400, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $imagen_original->stream();
+            Storage::disk('local')->put('public/' . $filename_imagen_original, (string)$imagen_original->encode());
+            $requestData['imagen'] = $filename_imagen_original;
+
+            $imagen_reducida = Image::make($imagen_file->getrealPath());
+            $imagen_reducida->resize(120, 120, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $imagen_reducida->stream();
+            Storage::disk('local')->put('public/' . $filename_imagen_reducida, (string)$imagen_reducida->encode());
+        }
         $this->producto->create($requestData);
-
         return redirect('producto');
     }
 

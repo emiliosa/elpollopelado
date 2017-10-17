@@ -22,11 +22,11 @@ function loadSelectOptions(select, newOpts, selectedValue, keepFirst) {
  *
  * @param (HTMLInput) input
  */
-function readURL(input) {
+function readURL(input, output) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
-            $('#imagen-preview').attr('src', e.target.result);
+            $('#' + output.id).attr('src', e.target.result);
         }
         reader.readAsDataURL(input.files[0]);
     }

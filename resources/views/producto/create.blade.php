@@ -3,6 +3,7 @@
 @section('title', 'Agregar producto')
 
 @section('content')
+    <script type="text/javascript" src="{{ URL::asset('js/funciones.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/producto.js') }}"></script>
     <div class="container">
         <div class="row">

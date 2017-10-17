@@ -25,6 +25,6 @@ $(document).ready(function () {
     });
 
     $("#imagen").change(function () {
-        readURL(this);
+        readURL(this, {id: 'imagen-preview'});
     });
 });
