@@ -3,7 +3,19 @@
 @section('title', 'Pedidos')
 
 @section('content')
-    <div class="container col-md-12">
+    <div class="container">
+
+        @if (session()->has('success_message'))
+            <div class="alert alert-success">
+                {{ session()->get('success_message') }}
+            </div>
+        @endif
+
+        @if (session()->has('error_message'))
+            <div class="alert alert-danger">
+                {{ session()->get('error_message') }}
+            </div>
+        @endif
         <div class="row">
             <div>
                 <div class="panel panel-default">

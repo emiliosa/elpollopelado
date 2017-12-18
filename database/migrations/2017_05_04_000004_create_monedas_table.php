@@ -28,6 +28,6 @@ class CreateMonedasTable extends Migration
      */
     public function down()
     {
-        Schema::drop('monedas');
+        Schema::dropIfExists('monedas');
     }
 }

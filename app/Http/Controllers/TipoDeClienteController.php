@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\TipoDeCliente;
+use App\Models\TipoDeCliente;
 use App\Http\Requests;
 
 class TipoDeClienteController extends Controller

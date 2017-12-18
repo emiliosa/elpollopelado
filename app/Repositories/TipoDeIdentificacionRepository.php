@@ -8,7 +8,7 @@
 
 namespace App\Repositories;
 
-use App\TipoDeIdentificacion;
+use App\Models\TipoDeIdentificacion;
 
 class TipoDeIdentificacionRepository
 {

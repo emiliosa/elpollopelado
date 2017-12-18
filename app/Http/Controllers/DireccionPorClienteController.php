@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\DireccionPorCliente;
+use App\Models\DireccionPorCliente;
 use App\Repositories\DireccionRepository;
 use App\Repositories\ClienteRepository;
 

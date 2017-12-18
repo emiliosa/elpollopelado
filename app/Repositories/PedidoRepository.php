@@ -7,7 +7,7 @@
  */
 
 namespace App\Repositories;
-use App\Pedido;
+use App\Models\Pedido;
 
 class PedidoRepository
 {

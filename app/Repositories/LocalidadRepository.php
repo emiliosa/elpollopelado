@@ -7,7 +7,7 @@
  */
 
 namespace App\Repositories;
-use App\Localidad;
+use App\Models\Localidad;
 
 class LocalidadRepository
 {

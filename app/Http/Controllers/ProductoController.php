@@ -14,7 +14,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 use App\Http\Requests;
-use App\Producto;
+use App\Models\Producto;
 
 
 class ProductoController extends Controller

@@ -34,10 +34,10 @@ class CartController extends Controller
         });
 
         if (!$duplicates->isEmpty()) {
-            $message = 'Item is already in your cart!';
+            $message = 'El producto ya existe!';
         }else{
-            $message = 'Item was added to your cart!';
-            Cart::add($request->id, $request->descripcion, 1, $request->precio_unitario)->associate('App\Producto');
+            $message = 'Producto agregado!';
+            Cart::add($request->id, $request->descripcion, 1, $request->precio_unitario)->associate('App\Models\Producto');
         }
         return redirect('pedido/create')->withSuccessMessage($message);
     }
@@ -57,12 +57,12 @@ class CartController extends Controller
         ]);
 
          if ($validator->fails()) {
-            session()->flash('error_message', 'Quantity must be between 1 and 5.');
+            session()->flash('error_message', 'Cantidad entre 1 y 5.');
             return response()->json(['success' => false]);
          }
 
         Cart::update($id, $request->quantity);
-        session()->flash('success_message', 'Quantity was updated successfully!');
+        session()->flash('success_message', '');
 
         return response()->json(['success' => true]);
 
@@ -77,7 +77,7 @@ class CartController extends Controller
     public function destroy($id)
     {
         Cart::remove($id);
-        return redirect('pedido/create')->withSuccessMessage('Item has been removed!');
+        return redirect('pedido/create')->withSuccessMessage('El producto fue quitado!');
     }
 
     /**
@@ -88,7 +88,7 @@ class CartController extends Controller
     public function emptyCart()
     {
         Cart::destroy();
-        return redirect('pedido/create')->withSuccessMessage('Your cart has been cleared!');
+        return redirect('pedido/create')->withSuccessMessage('No hay productos seleccionados!');
     }
 
     /**

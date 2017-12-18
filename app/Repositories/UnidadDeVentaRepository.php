@@ -7,7 +7,7 @@
  */
 
 namespace App\Repositories;
-use App\UnidadDeVenta;
+use App\Models\UnidadDeVenta;
 
 class UnidadDeVentaRepository
 {

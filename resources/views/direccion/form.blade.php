@@ -25,7 +25,7 @@
 <div class="form-group {{ $errors->has('calle') ? 'has-error' : ''}}">
     {!! Form::label('calle', 'Calle', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        {!! Form::text('calle', isset($direccion) ? $direccion->calle : null, ['class' => 'form-control']) !!}
+        {!! Form::text('calle', isset($direccion) ? $direccion->calle : null, ['class' => 'form-control', 'required' => 'required']) !!}
         {!! $errors->first('calle', '<p class="help-block">:message</p>') !!}
     </div>
 </div>

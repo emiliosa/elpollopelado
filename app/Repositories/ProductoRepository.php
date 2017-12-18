@@ -7,7 +7,7 @@
  */
 
 namespace App\Repositories;
-use App\Producto;
+use App\Models\Producto;
 
 class ProductoRepository
 {

@@ -25,6 +25,6 @@ class CreateTiposDeClienteTable extends Migration
      */
     public function down()
     {
-        Schema::drop('tipos_de_cliente');
+        Schema::dropIfExists('tipos_de_cliente');
     }
 }

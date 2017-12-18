@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\TipoDeCliente;
-use App\TipoDeIdentificacion;
+use App\Models\TipoDeCliente;
+use App\Models\TipoDeIdentificacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
-use App\Cliente;
+use App\Models\Cliente;
 use App\Repositories\ClienteRepository;
 use App\Repositories\TipoDeClienteRepository;
 use App\Repositories\TipoDeIdentificacionRepository;

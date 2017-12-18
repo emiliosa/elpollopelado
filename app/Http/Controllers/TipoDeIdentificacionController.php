@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\TipoDeIdentificacion;
+use App\Models\TipoDeIdentificacion;
 use App\Http\Requests;
 
 class TipoDeIdentificacionController extends Controller

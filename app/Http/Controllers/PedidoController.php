@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 
 use App\Http\Requests;
-use App\Pedido;
-use App\Cliente;
-use App\DescuentoPorCliente;
-use App\DireccionPorCliente;
+use App\Models\Pedido;
+use App\Models\Cliente;
+use App\Models\DescuentoPorCliente;
+use App\Models\DireccionPorCliente;
 
 class PedidoController extends Controller
 {

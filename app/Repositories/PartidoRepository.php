@@ -7,7 +7,7 @@
  */
 
 namespace App\Repositories;
-use App\Partido;
+use App\Models\Partido;
 
 class PartidoRepository
 {

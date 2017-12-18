@@ -29,6 +29,6 @@ class CreateLocalidadesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('localidades');
+        Schema::dropIfExists('localidades');
     }
 }

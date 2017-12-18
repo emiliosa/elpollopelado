@@ -7,7 +7,7 @@
  */
 
 namespace App\Repositories;
-use App\Categoria;
+use App\Models\Categoria;
 
 class CategoriaRepository
 {

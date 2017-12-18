@@ -28,6 +28,6 @@ class CreatePedidoDetallesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('pedido_detalles');
+        Schema::dropIfExists('pedido_detalles');
     }
 }

@@ -46,8 +46,7 @@
             <div class="col-xs-12 col-sm-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Descuentos
-                        <button class="btn btn-success btn-sm" id="btn_agregar_descuento" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i>Agregar</button>
+                        <button class="btn btn-success btn-sm" id="btn_agregar_descuento" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i>Agregar descuento</button>
                     </div>
                     <div class="panel-body">
 
@@ -61,13 +60,13 @@
             <div class="col-xs-12 col-sm-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Direcciones
-                        <button class="btn btn-success btn-sm" id="btn_agregar_direccion" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i>Agregar</button>
+                        <button class="btn btn-success btn-sm" id="btn_agregar_direccion" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i>Agregar dirección</button>
                     </div>
                     <div class="panel-body">
 
                         @include ('cliente.direccion_modal')
                         @include ('cliente.direccion_list')
+                        @include ('cliente.confirmacion_modal')
 
                     </div>
                 </div>

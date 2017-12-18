@@ -28,6 +28,6 @@ class CreatePartidosTable extends Migration
      */
     public function down()
     {
-        Schema::drop('partidos');
+        Schema::dropIfExists('partidos');
     }
 }

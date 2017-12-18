@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,17 +11,30 @@
     <title>@yield('title')</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{asset('css/font-awesome.min.css')}}">
-    <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ URL::asset('css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('css/app2.css') }}">
+
+    <!-- App -->
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/app2.js') }}"></script>
 
     <!-- Jquery -->
-    <script type="text/javascript" src="{{asset('js/jquery-3.2.1.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/jquery-ui.min.js')}}"></script>
+    {{-- <script type="text/javascript" src="{{ URL::asset('js/jquery-3.2.1.js') }}"></script> --}}
+    <script type="text/javascript" src="{{ URL::asset('js/jquery-ui.min.js') }}"></script>
+
+    <!-- Bootstrap -->
+    {{-- <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script> --}}
 
     <!-- Datepicker -->
-    <script type="text/javascript" src="{{asset('js/datepicker/bootstrap-datepicker.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/datepicker/bootstrap-datepicker.es.min.js')}}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/datepicker/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/datepicker/bootstrap-datepicker.es.min.js') }}"></script>
+
     <script>
+        window.Laravel = {!! json_encode([
+            'csrfToken' => csrf_token(),
+        ]) !!};
+
         $(document).ready(function () {
             $.ajaxSetup({
                 headers: {
@@ -36,90 +49,139 @@
         });
     </script>
 
-    <!-- Scripts -->
-    <script>
-        window.Laravel = {!! json_encode([
-            'csrfToken' => csrf_token(),
-        ]) !!};
-    </script>
-
-    <!-- Bootstrap -->
-    <script type="text/javascript" src="{{asset('js/bootstrap.min.js')}}"></script>
-
-
+    
 
 </head>
 <body>
+
+
+
+
 <div id="app">
-    <nav class="navbar navbar-default navbar-static-top">
-        <div class="container">
-            <div class="navbar-header">
 
-                <!-- Collapsed Hamburger -->
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#app-navbar-collapse">
-                    <span class="sr-only">Toggle Navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+  <!--  
+  <nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+    <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".js-navbar-collapse">
+            <span class="sr-only"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+    
+    <div class="collapse navbar-collapse js-navbar-collapse">
+        <ul class="nav navbar-nav">
 
-            </div>
+            <li class="dropdown mega-dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Clientes <span class="caret"></span></a>              
+                <ul class="dropdown-menu mega-dropdown-menu">
+                    <li class="col-sm-3">
+                        <ul>
+                            <li class="dropdown-header">Clientes</li>
+                            <li><a href="{{ url('/cliente') }}">Ver</a></li>
+                        </ul>
+                    </li>
+                    <li class="col-sm-3">
+                        <ul>
+                            <li class="dropdown-header">Direcciones</li>
+                            <li><a href="{{ url('/direccion') }}">Ver</a></li>
+                        </ul>
+                    </li>
+                    <li class="col-sm-3">
+                        <ul>
+                            <li class="dropdown-header">Descuentos</li>
+                            <li><a href="{{ url('/descuento') }}">Ver</a></li>
+                        </ul>
+                    </li>
+                </ul>               
+            </li>
 
-            <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/categoria') }}">Categorias</a></li>
-                    <li><a href="{{ url('/descuento') }}">Descuentos</a></li>
-                    <li><a href="{{ url('/localidad') }}">Localidades</a></li>
-                    <li><a href="{{ url('/moneda') }}">Monedas</a></li>
-                    <li><a href="{{ url('/provincia') }}">Provincias</a></li>
-                    <li><a href="{{ url('/partido') }}">Partidos</a></li>
-                    <li><a href="{{ url('/tipo_de_identificacion') }}">Tipos de identificación</a></li>
-                    <li><a href="{{ url('/tipo_de_cliente') }}">Tipos de cliente</a></li>
-                    <li><a href="{{ url('/producto') }}">Productos</a></li>
-                    <li><a href="{{ url('/unidad_de_venta') }}">Unidades de Venta</a></li>
-                    <li><a href="{{ url('/cliente') }}">Clientes</a></li>
-                    <li><a href="{{ url('/direccion') }}">Direcciones</a></li>
-                    <li><a href="{{ url('/descuento_por_cliente') }}">Descuentos por cliente</a></li>
-                    <li><a href="{{ url('/pedido') }}">Pedidos</a></li>
-                </ul>
+            <li class="dropdown mega-dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Productos <span class="caret"></span></a>                
+                <ul class="dropdown-menu mega-dropdown-menu">
+                    <li class="col-sm-3">
+                        <ul>
+                            <li class="dropdown-header">Listado</li>
+                            <li><a href="#">Auto Carousel</a></li>
+                            <li><a href="#">Carousel Control</a></li>
+                            <li><a href="#">Left & Right Navigation</a></li>
+                            <li><a href="#">Four Columns Grid</a></li>
+                            <li class="divider"></li>
+                            <li class="dropdown-header">Fonts</li>
+                            <li><a href="#">Glyphicon</a></li>
+                            <li><a href="#">Google Fonts</a></li>
+                        </ul>
+                    </li>
+                    <li class="col-sm-3">
+                        <ul>
+                            <li class="dropdown-header">Plus</li>
+                            <li><a href="#">Navbar Inverse</a></li>
+                            <li><a href="#">Pull Right Elements</a></li>
+                            <li><a href="#">Coloured Headers</a></li>                            
+                            <li><a href="#">Primary Buttons & Default</a></li>                          
+                        </ul>
+                    </li>
+                    <li class="col-sm-3">
+                        <ul>
+                            <li class="dropdown-header">Much more</li>
+                            <li><a href="#">Easy to Customize</a></li>
+                            <li><a href="#">Calls to action</a></li>
+                            <li><a href="#">Custom Fonts</a></li>
+                            <li><a href="#">Slide down on Hover</a></li>                         
+                        </ul>
+                    </li>
+                </ul>               
+            </li>
 
-                <!-- Right Side Of Navbar 
-                <ul class="nav navbar-nav navbar-right">
-                     Authentication Links 
-                    @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
-                    @else
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-expanded="false">
-                                {{ Auth::user()->name }} <span class="caret"></span>
-                            </a>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">My account <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
+        </li>
+        <li><a href="#">My cart (0) items</a></li>
+      </ul>
+    </div>
+  </nav>
+    -->
 
-                            <ul class="dropdown-menu" role="menu">
-                                <li>
-                                    <a href="{{ url('/logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        Logout
-                                    </a>
-
-                                    <form id="logout-form" action="{{ url('/logout') }}" method="POST"
-                                          style="display: none;">
-                                        {{ csrf_field() }}
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
-                </ul>-->
-            </div>
-        </div>
-    </nav>
+    @include('partials.nav')
+    
+    <div class="container">
+        @include('partials.form-status')
+    </div>
 
     @yield('content')
+
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>

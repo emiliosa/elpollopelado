@@ -8,7 +8,7 @@
 
 namespace App\Repositories;
 
-use App\Moneda;
+use App\Models\Moneda;
 
 class MonedaRepository
 {

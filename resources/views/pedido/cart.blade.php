@@ -14,14 +14,14 @@
 
         <tbody>
         @foreach (Cart::content() as $item)
+
             <tr>
                 <td class="table-image">
                     <a href="{{ url('producto', [$item->model->id]) }}">
                         <img src="{!! Storage::url(str_replace('.jpeg', '_small.jpeg', $item->model->imagen)) !!}" alt="Imágen no disponible" class="img-responsive cart-image">
                     </a>
                 </td>
-                <td>
-                    <a href="{{ url('producto', [$item->model->id]) }}">{{ $item->model->descripcion }}</a></td>
+                <td><a href="{{ url('producto', [$item->model->id]) }}">{{ $item->model->descripcion }}</a></td>
                 <td>
                     <select class="quantity" data-id="{{ $item->rowId }}">
                         <option {{ $item->qty == 1 ? 'selected' : '' }}>1</option>
@@ -41,7 +41,7 @@
                     </form>
                 </td>
             </tr>
-
+            
         @endforeach
         <tr>
             <td class="table-image"></td>

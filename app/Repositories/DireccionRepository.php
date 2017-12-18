@@ -7,7 +7,7 @@
  */
 
 namespace App\Repositories;
-use App\Direccion;
+use App\Models\Direccion;
 
 class DireccionRepository
 {

@@ -25,6 +25,6 @@ class CreateDescuentosTable extends Migration
      */
     public function down()
     {
-        Schema::drop('descuentos');
+        Schema::dropIfExists('descuentos');
     }
 }

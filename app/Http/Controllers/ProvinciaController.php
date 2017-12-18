@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Provincia;
+use App\Models\Provincia;
 use App\Repositories\ProvinciaRepository;
 use App\Http\Requests;
 use Yajra\Datatables\Facades\Datatables;

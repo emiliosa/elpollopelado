@@ -8,7 +8,7 @@
 
 namespace App\Repositories;
 
-use App\DescuentoPorCliente;
+use App\Models\DescuentoPorCliente;
 
 class DescuentoPorClienteRepository
 {

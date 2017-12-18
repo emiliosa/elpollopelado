@@ -7,7 +7,7 @@
  */
 
 namespace App\Repositories;
-use App\Provincia;
+use App\Models\Provincia;
 
 class ProvinciaRepository
 {

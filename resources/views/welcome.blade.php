@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ config('app.locale') }}">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -49,6 +49,10 @@
                 font-size: 84px;
             }
 
+            .title small {
+                font-size: 60px;
+            }
+
             .links > a {
                 color: #636b6f;
                 padding: 0 25px;
@@ -79,7 +83,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Laravel<br /><small>Auth 3.0</small>
                 </div>
 
                 <div class="links">

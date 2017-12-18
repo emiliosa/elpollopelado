@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Moneda;
+use App\Models\Moneda;
 use App\Repositories\MonedaRepository;
 use Illuminate\Http\Request;
 

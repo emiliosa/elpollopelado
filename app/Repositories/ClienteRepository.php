@@ -7,7 +7,7 @@
  */
 
 namespace App\Repositories;
-use App\Cliente;
+use App\Models\Cliente;
 
 class ClienteRepository
 {

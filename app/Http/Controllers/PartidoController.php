@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Partido;
+use App\Models\Partido;
 use App\Repositories\PartidoRepository;
 use App\Repositories\ProvinciaRepository;
 use Illuminate\Http\Request;

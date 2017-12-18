@@ -30,6 +30,6 @@ class CreateDescuentosPorClienteTable extends Migration
      */
     public function down()
     {
-        Schema::drop('descuentos_por_cliente');
+        Schema::dropIfExists('descuentos_por_cliente');
     }
 }

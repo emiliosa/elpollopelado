@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\UnidadDeVenta;
+use App\Models\UnidadDeVenta;
 use App\Repositories\ProductoRepository;
 use App\Repositories\UnidadDeVentaRepository;
 use Illuminate\Http\Request;

@@ -30,6 +30,6 @@ class CreateUnidadesDeVentaTable extends Migration
      */
     public function down()
     {
-        Schema::drop('unidades_de_venta');
+        Schema::dropIfExists('unidades_de_venta');
     }
 }

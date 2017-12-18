@@ -8,7 +8,7 @@
 
 namespace App\Repositories;
 
-use App\TipoDeCliente;
+use App\Models\TipoDeCliente;
 
 class TipoDeClienteRepository
 {

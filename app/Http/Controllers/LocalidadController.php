@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Partido;
+use App\Models\Partido;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Repositories\PartidoRepository;
 use App\Repositories\LocalidadRepository;
-use App\Localidad;
+use App\Models\Localidad;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 

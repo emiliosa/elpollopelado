@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
-use App\Direccion;
+use App\Models\Direccion;
 use App\Repositories\ProvinciaRepository;
 use App\Repositories\PartidoRepository;
 use App\Repositories\LocalidadRepository;
