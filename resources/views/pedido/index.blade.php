@@ -16,6 +16,7 @@
                 {{ session()->get('error_message') }}
             </div>
         @endif
+        
         <div class="row">
             <div>
                 <div class="panel panel-default">

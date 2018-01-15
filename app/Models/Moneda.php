@@ -17,7 +17,7 @@ class Moneda extends Model
      *
      * @var string
      */
-    protected $table = 'monedas';
+    protected $table = 'moneda';
 
     /**
      * The database primary key value.

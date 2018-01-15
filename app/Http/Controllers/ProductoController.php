@@ -69,28 +69,27 @@ class ProductoController extends Controller
     {
 
         $requestData = $request->all();
-        $categoria_id = $requestData['categoria_id'];
-        $categoria = $this->categoria->findOrFail($categoria_id);
-        $categoria_descripcion = $categoria['attributes']['descripcion'];
+        $idCategoria = $requestData['categoria_id'];
+        $categoria = $this->categoria->findOrFail($idCategoria);
         if ($request->hasFile('imagen')) {
-            $filename_imagen_original = str_replace(' ', '_', $categoria_descripcion . '_' . $requestData['descripcion'] . '.jpeg');
-            $filename_imagen_reducida = str_replace(' ', '_', $categoria_descripcion . '_' . $requestData['descripcion'] . '_small.jpeg');
-            $imagen_file = $request->file('imagen');
+            $filenameImagenOriginal = str_replace(' ', '_', $categoria->descripcion . '_' . $requestData['descripcion'] . '.jpeg');
+            $filenameImagenReducida = str_replace(' ', '_', $categoria->descripcion . '_' . $requestData['descripcion'] . '_small.jpeg');
+            $imagenFile = $request->file('imagen');
 
-            $imagen_original = Image::make($imagen_file->getrealPath());
-            $imagen_original->resize(500, 400, function ($constraint) {
+            $imagenOriginal = Image::make($imagenFile->getrealPath());
+            $imagenOriginal->resize(500, 400, function ($constraint) {
                 $constraint->aspectRatio();
             });
-            $imagen_original->stream();
-            Storage::disk('local')->put('public/' . $filename_imagen_original, (string)$imagen_original->encode());
-            $requestData['imagen'] = $filename_imagen_original;
+            $imagenOriginal->stream();
+            Storage::disk('local')->put('public/' . $filenameImagenOriginal, (string)$imagenOriginal->encode());
+            $requestData['imagen'] = $filenameImagenOriginal;
 
-            $imagen_reducida = Image::make($imagen_file->getrealPath());
-            $imagen_reducida->resize(120, 120, function ($constraint) {
+            $imagenReducida = Image::make($imagenFile->getrealPath());
+            $imagenReducida->resize(120, 120, function ($constraint) {
                 $constraint->aspectRatio();
             });
-            $imagen_reducida->stream();
-            Storage::disk('local')->put('public/' . $filename_imagen_reducida, (string)$imagen_reducida->encode());
+            $imagenReducida->stream();
+            Storage::disk('local')->put('public/' . $filenameImagenReducida, (string)$imagenReducida->encode());
         }
         $this->producto->create($requestData);
         return redirect('producto');
@@ -156,30 +155,31 @@ class ProductoController extends Controller
         ]);
 
         $requestData = $request->all();
-        $categoria_id = $requestData['categoria_id'];
-        $categoria = $this->categoria->findOrFail($categoria_id);
-        $categoria_descripcion = $categoria['attributes']['descripcion'];
+        $idCategoria = $requestData['categoria_id'];
+        $categoria = $this->categoria->findOrFail($idCategoria);
         if ($request->hasFile('imagen')) {
-            $filename_imagen_original = str_replace(' ', '_', $categoria_descripcion . '_' . $requestData['descripcion'] . '.jpeg');
-            $filename_imagen_reducida = str_replace(' ', '_', $categoria_descripcion . '_' . $requestData['descripcion'] . '_small.jpeg');
-            $imagen_file = $request->file('imagen');
+            $filenameImagenOriginal = str_replace(' ', '_', $categoria->descripcion . '_' . $requestData['descripcion'] . '.jpeg');
+            $filenameImagenReducida = str_replace(' ', '_', $categoria->descripcion . '_' . $requestData['descripcion'] . '_small.jpeg');
+            $imagenFile = $request->file('imagen');
 
-            $imagen_original = Image::make($imagen_file->getrealPath());
-            $imagen_original->resize(500, 400, function ($constraint) {
+            $imagenOriginal = Image::make($imagenFile->getrealPath());
+            $imagenOriginal->resize(500, 400, function ($constraint) {
                 $constraint->aspectRatio();
             });
-            $imagen_original->stream();
-            Storage::disk('local')->put('public/' . $filename_imagen_original, (string)$imagen_original->encode());
-            $requestData['imagen'] = $filename_imagen_original;
+            $imagenOriginal->stream();
+            Storage::disk('public')->put($filenameImagenOriginal, (string)$imagenOriginal->encode());
+            $requestData['imagen'] = $filenameImagenOriginal;
 
-            $imagen_reducida = Image::make($imagen_file->getrealPath());
-            $imagen_reducida->resize(120, 120, function ($constraint) {
+            $imagenReducida = Image::make($imagenFile->getrealPath());
+            $imagenReducida->resize(120, 120, function ($constraint) {
                 $constraint->aspectRatio();
             });
-            $imagen_reducida->stream();
-            Storage::disk('local')->put('public/' . $filename_imagen_reducida, (string)$imagen_reducida->encode());
+            $imagenReducida->stream();
+            Storage::disk('public')->put($filenameImagenReducida, (string)$imagenReducida->encode());
         }
+        
         $this->producto->findOrFail($id)->update($requestData);
+
         return redirect('producto');
     }
 

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDescuentosPorClienteTable extends Migration
+class CreateDireccionPorClienteTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,15 @@ class CreateDescuentosPorClienteTable extends Migration
      */
     public function up()
     {
-        Schema::create('descuentos_por_cliente', function (Blueprint $table) {
+        /*Schema::create('direccion_por_cliente', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('cliente_id');
-            $table->unsignedInteger('descuento_id');
+            $table->unsignedInteger('direccion_id');
             $table->timestamps();
 
-            $table->foreign('cliente_id')->references('id')->on('clientes');
-            $table->foreign('descuento_id')->references('id')->on('descuentos');
-        });
+            $table->foreign('cliente_id')->references('id')->on('cliente');
+            $table->foreign('direccion_id')->references('id')->on('direccion');
+        });*/
     }
 
     /**
@@ -30,6 +30,6 @@ class CreateDescuentosPorClienteTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('descuentos_por_cliente');
+        //Schema::drop('direccion_por_cliente');
     }
 }

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateClientesTable extends Migration
+class CreateClienteTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateClientesTable extends Migration
      */
     public function up()
     {
-        Schema::create('clientes', function (Blueprint $table) {
+        Schema::create('cliente', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('tipo_identificacion_id');
             $table->integer('identificacion');
@@ -25,8 +25,8 @@ class CreateClientesTable extends Migration
             $table->string('telefono_fijo')->nullable();
             $table->timestamps();
 
-            $table->foreign('tipo_identificacion_id')->references('id')->on('tipos_de_identificacion'); //DNI - CUIL - CUIT
-            $table->foreign('tipo_cliente_id')->references('id')->on('tipos_de_cliente'); //Persona - Empresa
+            $table->foreign('tipo_identificacion_id')->references('id')->on('tipo_de_identificacion'); //DNI - CUIL - CUIT
+            $table->foreign('tipo_cliente_id')->references('id')->on('tipo_de_cliente'); //Persona - Empresa
         });
     }
 
@@ -37,6 +37,6 @@ class CreateClientesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('clientes');
+        Schema::dropIfExists('cliente');
     }
 }

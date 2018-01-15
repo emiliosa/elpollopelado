@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMonedasTable extends Migration
+class CreateMonedaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateMonedasTable extends Migration
      */
     public function up()
     {
-        Schema::create('monedas', function (Blueprint $table) {
+        Schema::create('moneda', function (Blueprint $table) {
             $table->increments('id');
             $table->string('denominacion');
             $table->string('codigo');
@@ -28,6 +28,6 @@ class CreateMonedasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('monedas');
+        Schema::dropIfExists('moneda');
     }
 }

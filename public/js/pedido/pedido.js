@@ -93,6 +93,7 @@ $(document).ready(function () {
     $('#btnDirecciones').on('click', function(){
         var table = $('#tableDirecciones');
         var row = table.bootstrapTable('getSelections')[0];
+        var direccion = row.calle + ' ' + row.altura + ', ' + row.localidad.nombre + ' ' + row.provincia.nombre;
         if (row){
             $('#direccionesModal').modal('toggle');
             $.ajax({

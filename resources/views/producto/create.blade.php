@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Agregar producto')
+@push('javascript')
+    <script type="text/javascript" src="{{ URL::asset('js/app/funciones.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/producto/producto.js') }}"></script>
+@endpush
 
+@section('title', 'Agregar producto')
 @section('content')
     <script type="text/javascript" src="{{ URL::asset('js/funciones.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/producto.js') }}"></script>

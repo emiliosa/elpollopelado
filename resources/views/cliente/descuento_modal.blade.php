@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="descuentoModalLabel">Agregar nuevo descuento</h4>
+                <h4 class="modal-title" id="descuentoModalLabel">Agregar</h4>
             </div>
 
             {!! Form::open(['route' => 'descuento_por_cliente.store', 'id' => 'descuento_form_modal'] ) !!}

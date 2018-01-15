@@ -17,7 +17,7 @@ class TipoDeIdentificacion extends Model
      *
      * @var string
      */
-    protected $table = 'tipos_de_identificacion';
+    protected $table = 'tipo_de_identificacion';
 
     /**
      * The database primary key value.

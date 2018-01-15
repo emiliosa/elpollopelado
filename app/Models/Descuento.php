@@ -18,7 +18,7 @@ class Descuento extends Model
      *
      * @var string
      */
-    protected $table = 'descuentos';
+    protected $table = 'descuento';
 
     /**
      * The database primary key value.

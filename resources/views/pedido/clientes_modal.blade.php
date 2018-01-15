@@ -1,6 +1,3 @@
-<link rel="stylesheet" href="{{asset('css/bootstrap-table.min.css')}}">
-<script type="text/javascript" src="{{ URL::asset('js/bootstrap-table.min.js') }}"></script>
-
 <div class="modal fade" id="clientesModal" tabindex="-1" role="dialog" aria-labelledby="clientesModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

@@ -17,7 +17,7 @@ class TipoDeCliente extends Model
      *
      * @var string
      */
-    protected $table = 'tipos_de_cliente';
+    protected $table = 'tipo_de_cliente';
 
     /**
      * The database primary key value.

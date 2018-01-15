@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDescuentosTable extends Migration
+class CreateDescuentoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateDescuentosTable extends Migration
      */
     public function up()
     {
-        Schema::create('descuentos', function (Blueprint $table) {
+        Schema::create('descuento', function (Blueprint $table) {
             $table->increments('id');
             $table->float('porcentaje', 8,2);
         });
@@ -25,6 +25,6 @@ class CreateDescuentosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('descuentos');
+        Schema::dropIfExists('descuento');
     }
 }

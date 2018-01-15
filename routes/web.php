@@ -9,10 +9,15 @@
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 // Homepage Route
 Route::get('/', 'WelcomeController@welcome')->name('welcome');
+
+// phpinfo
+Route::get('/phpinfo', function () {
+    phpinfo();
+});
 
 // Authentication Routes
 Auth::routes();
@@ -43,23 +48,23 @@ Route::group(['middleware' => ['auth', 'activated']], function () {
     Route::get('/logout', ['uses' => 'Auth\LoginController@logout'])->name('logout');
 
     //  Homepage Route - Redirect based on user role is in controller.
-    Route::get('/home', ['as' => 'public.home',   'uses' => 'PedidoController@index']);
+    Route::get('/home', ['as' => 'public.home', 'uses' => 'PedidoController@index']);
 
     // Show users profile - viewable by other users.
     Route::get('profile/{username}', [
-        'as'        => '{username}',
-        'uses'      => 'ProfilesController@show',
+        'as'   => '{username}',
+        'uses' => 'ProfilesController@show',
     ]);
 });
 
 // Registered, activated, and is current user routes.
-Route::group(['middleware'=> ['auth', 'activated', 'currentUser']], function () {
+Route::group(['middleware' => ['auth', 'activated', 'currentUser']], function () {
 
     // User Profile and Account Routes
     Route::resource(
         'profile',
         'ProfilesController', [
-            'only'  => [
+            'only' => [
                 'show',
                 'edit',
                 'update',
@@ -68,21 +73,21 @@ Route::group(['middleware'=> ['auth', 'activated', 'currentUser']], function () 
         ]
     );
     Route::put('profile/{username}/updateUserAccount', [
-        'as'        => '{username}',
-        'uses'      => 'ProfilesController@updateUserAccount',
+        'as'   => '{username}',
+        'uses' => 'ProfilesController@updateUserAccount',
     ]);
     Route::put('profile/{username}/updateUserPassword', [
-        'as'        => '{username}',
-        'uses'      => 'ProfilesController@updateUserPassword',
+        'as'   => '{username}',
+        'uses' => 'ProfilesController@updateUserPassword',
     ]);
     Route::delete('profile/{username}/deleteUserAccount', [
-        'as'        => '{username}',
-        'uses'      => 'ProfilesController@deleteUserAccount',
+        'as'   => '{username}',
+        'uses' => 'ProfilesController@deleteUserAccount',
     ]);
 
     // Route to show user avatar
     Route::get('images/profile/{id}/avatar/{image}', [
-        'uses'      => 'ProfilesController@userProfileAvatar',
+        'uses' => 'ProfilesController@userProfileAvatar',
     ]);
 
     // Route to upload user avatar.
@@ -90,7 +95,7 @@ Route::group(['middleware'=> ['auth', 'activated', 'currentUser']], function () 
 });
 
 // Registered, activated, and is admin routes.
-Route::group(['middleware'=> ['auth', 'activated', 'role:admin']], function () {
+Route::group(['middleware' => ['auth', 'activated', 'role:admin']], function () {
     Route::resource('/users/deleted', 'SoftDeletesController', [
         'only' => [
             'index', 'show', 'update', 'destroy',
@@ -98,7 +103,7 @@ Route::group(['middleware'=> ['auth', 'activated', 'role:admin']], function () {
     ]);
 
     Route::resource('users', 'UsersManagementController', [
-        'names' => [
+        'names'  => [
             'index'   => 'users',
             'destroy' => 'user.destroy',
         ],
@@ -145,7 +150,7 @@ Route::get('/get_descuento_por_cliente', 'DescuentoPorClienteController@getDescu
 Route::get('/get_clientes_info', 'ClienteController@getClientesInfo');
 
 Route::get('get_productos', 'ProductoController@getProductos');
-Route::get('get_distancia', 'PedidoController@getDistance');
+Route::get('get_distancia', 'PedidoController@getDistancia');
 
 // Carrito de compra
 Route::resource('shop', 'ProductoController', ['only' => ['index', 'show']]);
@@ -155,6 +160,3 @@ Route::post('switchToWishlist/{id}', 'CartController@switchToWishlist');
 Route::resource('wishlist', 'WishlistController');
 Route::delete('emptyWishlist', 'WishlistController@emptyWishlist');
 Route::post('switchToCart/{id}', 'WishlistController@switchToCart');
-//Auth::routes();
-
-//Route::get('/home', 'HomeController@index')->name('home');

@@ -166,11 +166,20 @@ class PedidoController extends Controller
         return redirect('pedido');
     }
 
-    public function getDistance()
+    /** Update the specified resource in storage.
+     *
+     * @param  int $id
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return Illuminate\Support\Facades\Response
+     */
+    public function getDistancia(Request $request)
     {
         $unit = "K";
         $addressFrom = "La Rioja 1884, C1244ABN CABA";
-        $addressTo = Input::get('direccion');
+        //$addressTo = Input::get('direccion');
+        $addressTo = $request->get('direccion');
+        //dd($request);
         //Change address format
         $formattedAddrFrom = str_replace(' ', '+', $addressFrom);
         $formattedAddrTo = str_replace(' ', '+', $addressTo);

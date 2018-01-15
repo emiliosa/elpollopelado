@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Agregar Direccion')
+@push('javascript')
+    <script src="{{ asset('/js/app/funciones.js') }}"></script>
+@endpush
 
+@section('title', 'Agregar Direccion')
 @section('content')
-    <script src="{{ asset('/js/funciones.js') }}"></script>
     <div class="container">
         <div class="row">
             <div class="col-md-9">

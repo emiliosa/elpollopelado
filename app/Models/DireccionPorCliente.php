@@ -11,7 +11,7 @@ class DireccionPorCliente extends Model
      *
      * @var string
      */
-    protected $table = 'direcciones_por_cliente';
+    protected $table = 'direccion_por_cliente';
 
     /**
      * The database primary key value.

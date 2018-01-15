@@ -17,7 +17,7 @@ class Partido extends Model
      *
      * @var string
      */
-    protected $table = 'partidos';
+    protected $table = 'partido';
 
     /**
      * The database primary key value.

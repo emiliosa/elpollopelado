@@ -19,7 +19,7 @@ class CreateUnidadesDeVentaTable extends Migration
             $table->string('estado'); //Disponible - Vendido
             $table->timestamps();
 
-            $table->foreign('producto_id')->references('id')->on('productos');
+            $table->foreign('producto_id')->references('id')->on('producto');
         });
     }
 

@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Agregar pedido')
+@push('javascript')
+    <script type="text/javascript" src="{{ URL::asset('js/pedido/pedido.js') }}"></script>
+@endpush
 
+@section('title', 'Agregar pedido')
 @section('content')
-    <script type="text/javascript" src="{{ URL::asset('js/pedido.js') }}"></script>
     <div class="container">
         <div class="row">
             <div class="panel-heading">

@@ -17,7 +17,7 @@ class Localidad extends Model
      *
      * @var string
      */
-    protected $table = 'localidades';
+    protected $table = 'localidad';
 
     /**
      * The database primary key value.

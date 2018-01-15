@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePedidoDetallesTable extends Migration
+class CreatePedidoDetalleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,12 @@ class CreatePedidoDetallesTable extends Migration
      */
     public function up()
     {
-        Schema::create('pedido_detalles', function (Blueprint $table) {
+        Schema::create('pedido_detalle', function (Blueprint $table) {
             $table->unsignedInteger('pedido_id');
             $table->unsignedInteger('producto_id');
 
-            $table->foreign('pedido_id')->references('id')->on('pedidos');
-            $table->foreign('producto_id')->references('id')->on('productos');
+            $table->foreign('pedido_id')->references('id')->on('pedido');
+            $table->foreign('producto_id')->references('id')->on('producto');
         });
     }
 
@@ -28,6 +28,6 @@ class CreatePedidoDetallesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pedido_detalles');
+        Schema::dropIfExists('pedido_detalle');
     }
 }

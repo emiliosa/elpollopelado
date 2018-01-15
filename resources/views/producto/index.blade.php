@@ -4,8 +4,6 @@
 
 @section('content')
 
-
-
     <div class="container">
 
         @if (session()->has('success_message'))
@@ -39,7 +37,8 @@
                                     <div class="thumbnail">
                                         <div class="caption text-center">
                                             <a href="{{ url('producto', [$producto->id]) }}">
-                                                <img src="{!! Storage::url(str_replace('.jpeg', '_small.jpeg', $producto->imagen)) !!}" alt="producto" class="img-responsive">
+                                                <img src="{{ Storage::disk('public')->url(str_replace('.jpeg', '_small.jpeg', $producto->imagen)) }}" alt="producto" class="img-responsive">
+                                                {{-- <img src="{{ asset('storage'/ . str_replace('.jpeg', '_small.jpeg', $producto->imagen)) }}" alt="producto" class="img-responsive">--}}
                                             </a>
                                             <a href="{{ url('producto', [$producto->id]) }}">
                                                 <h3>{{ $producto->categoria->descripcion . ' ' . $producto->descripcion }}</h3>

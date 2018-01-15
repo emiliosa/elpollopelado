@@ -1,10 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Actualizar Cliente')
+@push('javascript')
+    <script type="text/javascript" src="{{ URL::asset('js/direccion/direccion.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/descuento/descuento.js') }}"></script>
+@endpush
 
+@section('title', 'Actualizar Cliente')
 @section('content')
-    <script type="text/javascript" src="{{ URL::asset('js/direccion.js') }}"></script>
-    <script type="text/javascript" src="{{ URL::asset('js/descuento.js') }}"></script>
+    
     <div class="container">
         <div class="row">
             <div class="panel-heading">
@@ -46,7 +49,7 @@
             <div class="col-xs-12 col-sm-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <button class="btn btn-success btn-sm" id="btn_agregar_descuento" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i>Agregar descuento</button>
+                        <button class="btn btn-success btn-sm" id="btn_agregar_descuento" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i>Agregar</button>
                     </div>
                     <div class="panel-body">
 
@@ -60,7 +63,7 @@
             <div class="col-xs-12 col-sm-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <button class="btn btn-success btn-sm" id="btn_agregar_direccion" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i>Agregar dirección</button>
+                        <button class="btn btn-success btn-sm" id="btn_agregar_direccion" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i>Agregar</button>
                     </div>
                     <div class="panel-body">
 

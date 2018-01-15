@@ -3,7 +3,9 @@
 @section('title', 'Clientes')
 
 @section('content')
-    <div class="container col-md-12">
+
+    <div class="container">
+    
         <div class="row">
             <div>
                 <div class="panel panel-default">

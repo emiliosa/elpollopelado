@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDireccionesTable extends Migration
+class CreateDireccionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateDireccionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('direcciones', function (Blueprint $table) {
+        Schema::create('direccion', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('cliente_id');
             $table->unsignedInteger('provincia_id');
@@ -25,10 +25,10 @@ class CreateDireccionesTable extends Migration
             $table->string('entrecalles')->nullable();
             $table->timestamps();
 
-            $table->foreign('cliente_id')->references('id')->on('clientes');
-            $table->foreign('provincia_id')->references('id')->on('provincias');
-            $table->foreign('partido_id')->references('id')->on('partidos');
-            $table->foreign('localidad_id')->references('id')->on('localidades');
+            $table->foreign('cliente_id')->references('id')->on('cliente');
+            $table->foreign('provincia_id')->references('id')->on('provincia');
+            $table->foreign('partido_id')->references('id')->on('partido');
+            $table->foreign('localidad_id')->references('id')->on('localidad');
         });
     }
 
@@ -39,6 +39,6 @@ class CreateDireccionesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('direcciones');
+        Schema::dropIfExists('direccion');
     }
 }

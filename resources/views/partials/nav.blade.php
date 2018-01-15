@@ -19,24 +19,35 @@
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             {{-- Left Side Of Navbar --}}
             <ul class="nav navbar-nav">
+                {{--  @role('admin')
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            Admin <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li {{ Request::is('users', 'users/' . Auth::user()->id, 'users/' . Auth::user()->id . '/edit') ? 'class=active' : null }}>{!! HTML::link(url('/users'), Lang::get('titles.adminUserList')) !!}</li>
+                            <li {{ Request::is('users/create') ? 'class=active' : null }}>{!! HTML::link(url('/users/create'), Lang::get('titles.adminNewUser')) !!}</li>
+                            <li {{ Request::is('themes','themes/create') ? 'class=active' : null }}>{!! HTML::link(url('/themes'), Lang::get('titles.adminThemesList')) !!}</li>
+                            <li {{ Request::is('logs') ? 'class=active' : null }}>{!! HTML::link(url('/logs'), Lang::get('titles.adminLogs')) !!}</li>
+                            <li {{ Request::is('php') ? 'class=active' : null }}>{!! HTML::link(url('/php'), Lang::get('titles.adminPHP')) !!}</li>
+                            <li {{ Request::is('routes') ? 'class=active' : null }}>{!! HTML::link(url('/routes'), Lang::get('titles.adminRoutes')) !!}</li>
+                        </ul>
+                    </li>
+                @endrole --}}
+                <li><a href="{{ url('/producto') }}">Productos</a></li>
+                <li><a href="{{ url('/cliente') }}">Clientes</a></li>
+                <li><a href="{{ url('/pedido') }}">Pedidos</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                        El pollo pelado <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-                        <li {{ Request::is('clientes') ? 'class=active' : null }}>{!! HTML::link(url('/cliente'), Lang::get('titles.clientes')) !!}</li>
-                        <li {{ Request::is('pedidos') ? 'class=active' : null }}>{!! HTML::link(url('/pedido'), Lang::get('titles.pedidos')) !!}</li>
-                        <li {{ Request::is('productos') ? 'class=active' : null }}>{!! HTML::link(url('/producto'), Lang::get('titles.productos')) !!}</li>
-                        <li class="divider"></li>
-                        <li class="dropdown-submenu">
-                            <a tabindex="-1" href="#">{!! Lang::get('titles.referencias') !!}</a>
-                            <ul class="dropdown-submenu">
-                                <li {{ Request::is('categorias') ? 'class=active' : null }}>{!! HTML::link(url('/categoria'), Lang::get('titles.categorias')) !!}</li>
-                                <li {{ Request::is('descuentos') ? 'class=active' : null }}>{!! HTML::link(url('/descuento'), Lang::get('titles.descuentos')) !!}</li>
-                                <li {{ Request::is('localidades') ? 'class=active' : null }}>{!! HTML::link(url('/localidad'), Lang::get('titles.localidades')) !!}</li>
-                                <li {{ Request::is('monedas') ? 'class=active' : null }}>{!! HTML::link(url('/moneda'), Lang::get('titles.monedas')) !!}</li>
-                            </ul>
-                        </li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Referencias<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{{ url('/categoria') }}">Categorias</a></li>
+                        <li><a href="{{ url('/descuento') }}">Descuentos</a></li>
+                        <li><a href="{{ url('/localidad') }}">Localidades</a></li>
+                        <li><a href="{{ url('/moneda') }}">Monedas</a></li>
+                        <li><a href="{{ url('/provincia') }}">Provincias</a></li>
+                        <li><a href="{{ url('/partido') }}">Partidos</a></li>
+                        <li><a href="{{ url('/tipo_de_identificacion') }}">Tipos de identificación</a></li>
+                        <li><a href="{{ url('/tipo_de_cliente') }}">Tipos de cliente</a></li>
                     </ul>
                 </li>
             </ul>

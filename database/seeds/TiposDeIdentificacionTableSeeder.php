@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class TiposDeIdentificacionTableSeeder extends Seeder
+class TipoDeIdentificacionTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,8 +11,8 @@ class TiposDeIdentificacionTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('tipos_de_identificacion')->insert(['id' => '1', 'descripcion' => 'CUIL']);
-        DB::table('tipos_de_identificacion')->insert(['id' => '2', 'descripcion' => 'CUIT']);
-        DB::table('tipos_de_identificacion')->insert(['id' => '3', 'descripcion' => 'DNI']);
+        DB::table('tipo_de_identificacion')->insert(['id' => '1', 'descripcion' => 'CUIL']);
+        DB::table('tipo_de_identificacion')->insert(['id' => '2', 'descripcion' => 'CUIT']);
+        DB::table('tipo_de_identificacion')->insert(['id' => '3', 'descripcion' => 'DNI']);
     }
 }

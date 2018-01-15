@@ -13,22 +13,24 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ URL::asset('css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('css/bootstrap-table.min.css')}}">
     <link rel="stylesheet" href="{{ URL::asset('css/app2.css') }}">
 
     <!-- App -->
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/app2.js') }}"></script>
+    <script src="{{ asset('js/app/app.js') }}"></script>
+    <script src="{{ asset('js/app/app2.js') }}"></script>
 
     <!-- Jquery -->
     {{-- <script type="text/javascript" src="{{ URL::asset('js/jquery-3.2.1.js') }}"></script> --}}
-    <script type="text/javascript" src="{{ URL::asset('js/jquery-ui.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/jquery/jquery-ui.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/jquery/bootstrap/bootstrap-table.min.js') }}"></script>
 
     <!-- Bootstrap -->
     {{-- <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script> --}}
 
     <!-- Datepicker -->
-    <script type="text/javascript" src="{{ URL::asset('js/datepicker/bootstrap-datepicker.min.js') }}"></script>
-    <script type="text/javascript" src="{{ URL::asset('js/datepicker/bootstrap-datepicker.es.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/jquery/datepicker/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/jquery/datepicker/bootstrap-datepicker.es.min.js') }}"></script>
 
     <script>
         window.Laravel = {!! json_encode([
@@ -41,15 +43,12 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            $('.datepicker').datepicker({
-                format: "dd-mm-yyyy",
-                language: "es",
-                autoclose: true
-            });
+            
         });
     </script>
 
-    
+    @stack('styles')
+    @stack('javascript')
 
 </head>
 <body>

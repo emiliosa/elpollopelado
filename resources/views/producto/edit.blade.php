@@ -1,28 +1,12 @@
 @extends('layouts.app')
 
+@push('javascript')
+    <script type="text/javascript" src="{{ URL::asset('js/app/funciones.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/producto/producto.js') }}"></script>
+@endpush
+
 @section('title', 'Actualizar producto')
-
 @section('content')
-
-
-
-    <br/>
-    <br/>
-    @if ($errors->any())
-        <ul class="alert alert-danger">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    @endif
-
-
-
-    {!! Form::close() !!}
-
-
-    <script type="text/javascript" src="{{ URL::asset('js/funciones.js') }}"></script>
-    <script type="text/javascript" src="{{ URL::asset('js/producto.js') }}"></script>
 
     <div class="container">
         <div class="row">
@@ -63,6 +47,5 @@
             </div>
         </div>
     </div>
-
 
 @endsection

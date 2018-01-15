@@ -17,7 +17,7 @@ class Provincia extends Model
      *
      * @var string
      */
-    protected $table = 'provincias';
+    protected $table = 'provincia';
 
     /**
      * The database primary key value.

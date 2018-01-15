@@ -11,7 +11,7 @@ class Direccion extends Model
      *
      * @var string
      */
-    protected $table = 'direcciones';
+    protected $table = 'direccion';
 
     /**
      * The database primary key value.

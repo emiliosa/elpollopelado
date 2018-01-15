@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePedidosTable extends Migration
+class CreatePedidoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreatePedidosTable extends Migration
      */
     public function up()
     {
-        Schema::create('pedidos', function (Blueprint $table) {
+        Schema::create('pedido', function (Blueprint $table) {
             $table->increments('id');
             $table->dateTime('fecha_envio');
             $table->unsignedInteger('cliente_id');
@@ -20,9 +20,9 @@ class CreatePedidosTable extends Migration
             $table->unsignedInteger('direccion_envio_id');
             $table->timestamps();
 
-            $table->foreign('cliente_id')->references('id')->on('clientes');
-            $table->foreign('descuento_id')->references('id')->on('descuentos');
-            $table->foreign('direccion_envio_id')->references('id')->on('direcciones');
+            $table->foreign('cliente_id')->references('id')->on('cliente');
+            $table->foreign('descuento_id')->references('id')->on('descuento');
+            $table->foreign('direccion_envio_id')->references('id')->on('direccion');
         });
     }
 
@@ -33,6 +33,6 @@ class CreatePedidosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pedidos');
+        Schema::dropIfExists('pedido');
     }
 }

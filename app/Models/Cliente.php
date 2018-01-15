@@ -14,7 +14,7 @@ class Cliente extends Model
      *
      * @var string
      */
-    protected $table = 'clientes';
+    protected $table = 'cliente';
 
     /**
      * The database primary key value.

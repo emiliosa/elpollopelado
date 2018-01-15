@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="modal_label_direccion">Agregar nueva dirección</h4>
+                <h4 class="modal-title" id="modal_label_direccion">Agregar</h4>
             </div>
 
             {!! Form::open(['route' => 'direccion.store', 'id' => 'form_modal_direccion'] ) !!}
