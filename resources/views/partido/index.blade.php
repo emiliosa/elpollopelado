@@ -4,27 +4,6 @@
 
 @section('content')
 
-    <script type="text/javascript">
-        /*$(document).ready(function() {
-            $('#tablePartidos').DataTable({
-                "language": {
-                    "lengthMenu": "Mostrar _MENU_ registros por página",
-                    "zeroRecords": "Nada para mostrar - perdon",
-                    "info": "Página _PAGE_ de _PAGES_",
-                    "infoEmpty": "No hay registros",
-                    "infoFiltered": "(filtrados de _MAX_ total registros)"
-                },
-                "processing": true,
-                "serverSide": true,
-                "ajax": "dataTables/partidosPorProvincia",
-                "columns": [
-                    {data: 'provincia.nombre'},
-                    {data: 'partido.nombre'}
-                ],
-            });
-        });*/
-    </script>
-
     <div class="container">
         <div class="row">
             <div>
@@ -34,23 +13,33 @@
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             Agregar
                         </a>
+                        {!! Form::open(['method' => 'GET', 'url' => '/partido', 'class' => 'navbar-form navbar-right', 'role' => 'search'])  !!}
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="search" placeholder="Buscar...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        {!! Form::close() !!}
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered" id="tablePartidos">
+                            <table class="table table-hover" id="tablePartidos">
                                 <thead>
                                 <tr>
-                                    <th class="text-center" data-field="provincia" data-sortable="true">Provincia</th>
-                                    <th class="text-center" data-field="prartido" data-sortable="true">Partido</th>
-                                    <th class="text-center" data-field="" data-sortable="false">Acción</th>
+                                    <th class="text-left" data-field="provincia" data-sortable="true">Provincia</th>
+                                    <th class="text-left" data-field="prartido" data-sortable="true">Partido</th>
+                                    <th class="text-right" data-field="" data-sortable="false">Acción</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($partidos as $partido)
                                     <tr>
-                                        <td class="text-center">{{ $partido->provincia->nombre }}</td>
-                                        <td class="text-center">{{ $partido->nombre }}</td>
-                                        <td class="text-center">
+                                        <td class="text-left">{{ $partido->provincia_nombre }}</td>
+                                        <td class="text-left">{{ $partido->partido_nombre }}</td>
+                                        <td class="text-right">
                                             <a href="{{ route('partido.show', $partido->id) }}" title="Ver partido">
                                                 <button class="btn btn-info btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                     Ver

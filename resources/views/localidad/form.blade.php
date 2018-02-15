@@ -1,7 +1,7 @@
 <div class="form-group {{ $errors->has('partido') ? 'has-error' : ''}}">
     {!! Form::label('partido', 'Partido', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        {!! Form::select('partido_id', @$partido , isset($localidad) ? $localidad->partido_id : null, ['class' => 'form-control' , 'placeholder' => 'Seleccione partido']) !!}
+        {!! Form::text('partido_id', isset($localidad) ? $localidad->partido->nombre : null, ['class' => 'form-control' , 'disabled' => true]) !!}
         {!! $errors->first('partido_id', '<p class="help-block">:message</p>') !!}
     </div>
 </div>

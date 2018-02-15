@@ -7,7 +7,9 @@
  */
 
 namespace App\Repositories;
+
 use App\Models\Provincia;
+use Illuminate\Support\Facades\Response;
 
 class ProvinciaRepository
 {
@@ -23,19 +25,28 @@ class ProvinciaRepository
         return $this->provincia->findOrFail($id);
     }
 
-    public function getProvinciasPaginate()
+    public function getProvincias()
     {
         return $this->provincia->paginate(15);
     }
 
     public function getProvinciasCombo()
     {
-        return $this->provincia->orderBy('nombre', 'asc')->pluck('nombre','id');
+        return $this->provincia->orderBy('nombre', 'asc')->pluck('nombre', 'id');
     }
 
-    public function getProvincias()
+    public function getProvinciasJson()
     {
-        return $this->provincia->orderBy('nombre', 'asc')->get();;
+        $provincias = $this->provincia->orderBy('nombre', 'asc')->get();
+        return Response::json($provincias);
+    }
+
+    public function getProvinciasSearch($value)
+    {
+        return $this->provincia
+            ->where('nombre', 'like', '%' . $value . '%')
+            ->orderBy('nombre', 'asc')
+            ->paginate(15);
     }
 
 }

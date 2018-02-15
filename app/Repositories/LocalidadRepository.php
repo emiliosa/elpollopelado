@@ -7,6 +7,7 @@
  */
 
 namespace App\Repositories;
+
 use App\Models\Localidad;
 
 class LocalidadRepository
@@ -25,7 +26,14 @@ class LocalidadRepository
 
     public function getLocalidades()
     {
-        return Localidad::orderBy('nombre','asc')->paginate(15);
+        return \DB::table('localidad')
+            ->select('localidad.id', 'localidad.partido_id', 'localidad.nombre AS localidad_nombre', 'localidad.codigo_postal', 'partido.nombre AS partido_nombre', 'partido.provincia_id', 'provincia.nombre AS provincia_nombre')
+            ->join('partido', 'localidad.partido_id', '=', 'partido.id')
+            ->join('provincia', 'partido.provincia_id', '=', 'provincia.id')
+            ->orderBy('provincia.nombre', 'ASC')
+            ->orderBy('partido.nombre', 'ASC')
+            ->orderBy('localidad.nombre', 'ASC')
+            ->paginate(15);
     }
 
     public function getLocalidadesPorPartido($partido_id)
@@ -35,7 +43,21 @@ class LocalidadRepository
 
     public function getLocalidadesCombo()
     {
-        return Localidad::with('partido')->pluck('nombre','id');
+        return Localidad::with('partido')->pluck('nombre', 'id');
     }
 
+    public function getLocalidadesSearch($value)
+    {
+        return \DB::table('localidad')
+            ->select('localidad.id', 'localidad.partido_id', 'localidad.nombre AS localidad_nombre', 'localidad.codigo_postal', 'partido.nombre AS partido_nombre', 'partido.provincia_id', 'provincia.nombre AS provincia_nombre')
+            ->join('partido', 'localidad.partido_id', '=', 'partido.id')
+            ->join('provincia', 'partido.provincia_id', '=', 'provincia.id')
+            ->where('localidad.nombre', 'like', '%' . $value . '%')
+            ->orWhere('partido.nombre', 'like', '%' . $value . '%')
+            ->orWhere('provincia.nombre', 'like', '%' . $value . '%')
+            ->orderBy('provincia.nombre', 'ASC')
+            ->orderBy('partido.nombre', 'ASC')
+            ->orderBy('localidad.nombre', 'ASC')
+            ->paginate(15);
+    }
 }

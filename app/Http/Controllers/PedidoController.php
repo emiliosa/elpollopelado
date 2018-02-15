@@ -53,7 +53,12 @@ class PedidoController extends Controller
      */
     public function index(Request $request)
     {
-        $pedidos = $this->pedido->getPedidos();
+        if ($request->get('search')) {
+            $pedidos = $this->pedido->getPedidosSearch($request->get('search'));
+        } else {
+            $pedidos = $this->pedido->getPedidos();
+        }
+        
         return view('pedido.index', compact('pedidos'));
     }
 

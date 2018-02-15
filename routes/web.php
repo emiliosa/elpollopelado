@@ -12,7 +12,7 @@
  */
 
 // Homepage Route
-Route::get('/', 'WelcomeController@welcome')->name('welcome');
+Route::get('/', 'Auth\LoginController@showLoginForm');
 
 // phpinfo
 Route::get('/phpinfo', function () {
@@ -122,41 +122,44 @@ Route::group(['middleware' => ['auth', 'activated', 'role:admin']], function () 
     Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
     Route::get('php', 'AdminDetailsController@listPHPInfo');
     Route::get('routes', 'AdminDetailsController@listRoutes');
+
+    Route::resource('categoria', 'CategoriaController');
+    Route::resource('cliente', 'ClienteController');
+    Route::resource('descuento', 'DescuentoController');
+    Route::resource('descuento_por_cliente', 'DescuentoPorClienteController');
+    Route::resource('direccion', 'DireccionController');
+    Route::resource('direccion_por_cliente', 'DireccionPorClienteController');
+    Route::resource('localidad', 'LocalidadController');
+    Route::resource('moneda', 'MonedaController');
+    Route::resource('partido', 'PartidoController');
+    Route::resource('pedido', 'PedidoController');
+    Route::resource('pedido_detalle', 'PedidoDetalleController');
+    Route::resource('producto', 'ProductoController');
+    Route::resource('provincia', 'ProvinciaController');
+    Route::resource('tipo_de_cliente', 'TipoDeClienteController');
+    Route::resource('tipo_de_identificacion', 'TipoDeIdentificacionController');
+    Route::resource('unidad_de_venta', 'UnidadDeVentaController');
+
+    Route::get('/get_direccion', 'DireccionController@getDireccion');
+    Route::get('/get_provincias', 'ProvinciaController@getProvincias');
+    Route::get('/get_partidos_por_provincia', 'PartidoController@getPartidosPorProvincia');
+    Route::get('/get_localidades_por_partido', 'LocalidadController@getLocalidadesPorPartido');
+    Route::get('/get_descuentos', 'DescuentoController@getDescuentos');
+    Route::get('/get_descuento_por_cliente', 'DescuentoPorClienteController@getDescuentoPorCliente');
+    Route::get('/get_clientes_info', 'ClienteController@getClientesInfo');
+    Route::get('/localidad/{search}', 'LocalidadController@search');
+    Route::get('/partido/{search}', 'PartidoController@search');
+    Route::get('/provincia/{search}', 'ProvinciaController@search');
+
+    Route::get('get_productos', 'ProductoController@getProductos');
+    Route::get('get_distancia', 'PedidoController@getDistancia');
+
+    // Carrito de compra
+    Route::resource('shop', 'ProductoController', ['only' => ['index', 'show']]);
+    Route::resource('cart', 'CartController');
+    Route::delete('emptyCart', 'CartController@emptyCart');
+    Route::post('switchToWishlist/{id}', 'CartController@switchToWishlist');
+    Route::resource('wishlist', 'WishlistController');
+    Route::delete('emptyWishlist', 'WishlistController@emptyWishlist');
+    Route::post('switchToCart/{id}', 'WishlistController@switchToCart');
 });
-
-Route::resource('categoria', 'CategoriaController');
-Route::resource('cliente', 'ClienteController');
-Route::resource('descuento', 'DescuentoController');
-Route::resource('descuento_por_cliente', 'DescuentoPorClienteController');
-Route::resource('direccion', 'DireccionController');
-Route::resource('direccion_por_cliente', 'DireccionPorClienteController');
-Route::resource('localidad', 'LocalidadController');
-Route::resource('moneda', 'MonedaController');
-Route::resource('partido', 'PartidoController');
-Route::resource('pedido', 'PedidoController');
-Route::resource('pedido_detalle', 'PedidoDetalleController');
-Route::resource('producto', 'ProductoController');
-Route::resource('provincia', 'ProvinciaController');
-Route::resource('tipo_de_cliente', 'TipoDeClienteController');
-Route::resource('tipo_de_identificacion', 'TipoDeIdentificacionController');
-Route::resource('unidad_de_venta', 'UnidadDeVentaController');
-
-Route::get('/get_direccion', 'DireccionController@getDireccion');
-Route::get('/get_provincias', 'ProvinciaController@getProvincias');
-Route::get('/get_partidos_por_provincia', 'PartidoController@getPartidosPorProvincia');
-Route::get('/get_localidades_por_partido', 'LocalidadController@getLocalidadesPorPartido');
-Route::get('/get_descuentos', 'DescuentoController@getDescuentos');
-Route::get('/get_descuento_por_cliente', 'DescuentoPorClienteController@getDescuentoPorCliente');
-Route::get('/get_clientes_info', 'ClienteController@getClientesInfo');
-
-Route::get('get_productos', 'ProductoController@getProductos');
-Route::get('get_distancia', 'PedidoController@getDistancia');
-
-// Carrito de compra
-Route::resource('shop', 'ProductoController', ['only' => ['index', 'show']]);
-Route::resource('cart', 'CartController');
-Route::delete('emptyCart', 'CartController@emptyCart');
-Route::post('switchToWishlist/{id}', 'CartController@switchToWishlist');
-Route::resource('wishlist', 'WishlistController');
-Route::delete('emptyWishlist', 'WishlistController@emptyWishlist');
-Route::post('switchToCart/{id}', 'WishlistController@switchToCart');

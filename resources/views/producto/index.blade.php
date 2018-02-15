@@ -28,7 +28,7 @@
             </div>
 
             <div class="panel-body">
-                <div class="table-responsive">
+                <div class="table-responsive" style="overflow-x: hidden;">
 
                     @foreach ($productos->chunk(4) as $items)
                         <div class="row">
@@ -51,7 +51,9 @@
                         </div>
                     @endforeach
 
-                    <div class="pagination">{{ $productos->links() }}</div>
+                    <div class="text-center">
+                        <div class="pagination">{{ $productos->links() }}</div>
+                    </div>
 
                 </div>
             </div>

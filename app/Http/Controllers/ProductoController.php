@@ -77,17 +77,13 @@ class ProductoController extends Controller
             $imagenFile = $request->file('imagen');
 
             $imagenOriginal = Image::make($imagenFile->getrealPath());
-            $imagenOriginal->resize(500, 400, function ($constraint) {
-                $constraint->aspectRatio();
-            });
+            $imagenOriginal->resize(500, 400);
             $imagenOriginal->stream();
             Storage::disk('local')->put('public/' . $filenameImagenOriginal, (string)$imagenOriginal->encode());
             $requestData['imagen'] = $filenameImagenOriginal;
 
             $imagenReducida = Image::make($imagenFile->getrealPath());
-            $imagenReducida->resize(120, 120, function ($constraint) {
-                $constraint->aspectRatio();
-            });
+            $imagenReducida->resize(120, 120);
             $imagenReducida->stream();
             Storage::disk('local')->put('public/' . $filenameImagenReducida, (string)$imagenReducida->encode());
         }
@@ -163,17 +159,13 @@ class ProductoController extends Controller
             $imagenFile = $request->file('imagen');
 
             $imagenOriginal = Image::make($imagenFile->getrealPath());
-            $imagenOriginal->resize(500, 400, function ($constraint) {
-                $constraint->aspectRatio();
-            });
+            $imagenOriginal->resize(500, 400);
             $imagenOriginal->stream();
             Storage::disk('public')->put($filenameImagenOriginal, (string)$imagenOriginal->encode());
             $requestData['imagen'] = $filenameImagenOriginal;
 
             $imagenReducida = Image::make($imagenFile->getrealPath());
-            $imagenReducida->resize(120, 120, function ($constraint) {
-                $constraint->aspectRatio();
-            });
+            $imagenReducida->resize(120, 120);
             $imagenReducida->stream();
             Storage::disk('public')->put($filenameImagenReducida, (string)$imagenReducida->encode());
         }

@@ -7,6 +7,7 @@
  */
 
 namespace App\Repositories;
+
 use App\Models\Partido;
 
 class PartidoRepository
@@ -25,22 +26,39 @@ class PartidoRepository
 
     public function getPartidos()
     {
-        return Partido::with('provincia')->get();
+        return \DB::table('partido')
+            ->select('partido.id', 'partido.provincia_id', 'partido.nombre AS partido_nombre', 'partido.provincia_id', 'provincia.nombre AS provincia_nombre')
+            ->join('provincia', 'partido.provincia_id', '=', 'provincia.id')
+            ->orderBy('provincia.nombre', 'ASC')
+            ->orderBy('partido.nombre', 'ASC')
+            ->paginate(15);
     }
 
     public function getPartidosCombo()
     {
-        return Partido::with('provincia')->pluck('nombre','id');
+        return Partido::with('provincia')->pluck('nombre', 'id');
     }
 
-    public function getPartidosPorProvincia($provincia_id='')
+    public function getPartidosPorProvincia($provincia_id = '')
     {
-        if ($provincia_id){
+        if ($provincia_id) {
             $partidos = Partido::where('provincia_id', '=', $provincia_id)->orderBy('nombre', 'asc')->get();
-        }else{
+        } else {
             $partidos = Partido::paginate(15);
         }
         return $partidos;
+    }
+
+    public function getPartidosPorProvinciaSearch($value)
+    {
+        return \DB::table('partido')
+            ->select('partido.id', 'partido.provincia_id', 'partido.nombre AS partido_nombre', 'partido.provincia_id', 'provincia.nombre AS provincia_nombre')
+            ->join('provincia', 'partido.provincia_id', '=', 'provincia.id')
+            ->where('partido.nombre', 'like', '%' . $value . '%')
+            ->orWhere('provincia.nombre', 'like', '%' . $value . '%')
+            ->orderBy('provincia.nombre', 'ASC')
+            ->orderBy('partido.nombre', 'ASC')
+            ->paginate(15);
     }
 
 }

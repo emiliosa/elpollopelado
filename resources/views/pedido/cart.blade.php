@@ -1,14 +1,21 @@
+@push('styles')
+    <style>
+        .table>tbody>tr>td, .table>tfoot>tr>td{
+            vertical-align: middle;
+        }
+    </style>
+@endpush
+
 @if (sizeof(Cart::content()) > 0)
 
     <div class="table-responsive">
 
-        <table class="table">
+        <table class="table table-hover" id="cart-table">
             <thead>
             <tr>
                 <th class="table-image">Producto</th>
                 <th>Cantidad</th>
                 <th>Precio</th>
-                <th class="column-spacer"></th>
                 <th></th>
             </tr>
             </thead>
@@ -19,8 +26,13 @@
                 <tr>
                     <td class="table-image">
                         <a href="{{ url('producto', [$item->model->id]) }}">
-                            <img src="{!! Storage::url(str_replace('.jpeg', '_small.jpeg', $item->model->imagen)) !!}" alt="Imágen no disponible" class="img-responsive cart-image">
-                            {{ $item->model->descripcion }}
+                            <div class="col-sm-2 hidden-xs">
+                                <img src="{!! Storage::url(str_replace('.jpeg', '_small.jpeg', $item->model->imagen)) !!}" alt="Imágen no disponible" class="img-responsive cart-image">
+                            </div>
+                            <div>
+                                <h4 class="nomargin">{{ $item->model->descripcion }}</h4>
+                                <p>{{ $item->model->observaciones }}</p>
+                            </div>
                         </a>
                     </td>
                     <td>
@@ -32,8 +44,9 @@
                             <option {{ $item->qty == 5 ? 'selected' : '' }}>5</option>
                         </select>
                     </td>
-                    <td>${{ $item->subtotal }}</td>
-                    <td class=""></td>
+                    <td>
+                        ${{ $item->subtotal }}
+                    </td>
                     <td>
                         <form action="{{ url('/cart', [$item->rowId]) }}" method="POST" class="side-by-side">
                             {!! csrf_field() !!}
@@ -44,46 +57,29 @@
                 </tr>
                 
             @endforeach
-            
-            <tr>
-                <td></td>
-                <td class="small-caps table-bg" style="text-align: right">Subtotal</td>
-                <td>${{ Cart::instance('default')->subtotal() }}</td>
-                <td></td>
-                <td></td>
-            </tr>
-
-            <tr>
-                <td></td>
-                <td class="small-caps table-bg" style="text-align: right">Distancia</td>
-                <td>{{ Cart::instance('default')->subtotal() }}</td>
-                <td></td>
-                <td></td>
-            </tr>
-
-            <tr class="border-bottom">
-                <td class="table-image"></td>
-                <td class="small-caps table-bg" style="text-align: right">Total</td>
-                <td class="table-bg">${{ Cart::total() }}</td>
-                <td class="column-spacer"></td>
-                <td></td>
-            </tr>
 
             </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td class="small-caps table-bg" style="text-align: left">Subtotal</td>
+                    <td id="subtotal">${{ Cart::instance('default')->subtotal() }}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="small-caps table-bg" style="text-align: left">Distancia</td>
+                    <td id="distancia"> </td>
+                    <td></td>
+                </tr>
+                <tr class="border-bottom">
+                    <td><a href="{{ url('/producto') }}" class="btn btn-primary">Agregar más productos</a></td>
+                    <td class="small-caps table-bg" style="text-align: left">Total</td>
+                    <td class="table-bg" id="total">${{ Cart::total() }}</td>
+                    <td><a href="#" class="btn btn-success">Finalizar pedido</a></td>
+                </tr>
+            </tfoot>
         </table>
-
-    </div>
-
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    
-        <form action="{{ url('/emptyCart') }}" method="POST">
-            {!! csrf_field() !!}
-            <input type="hidden" name="_method" value="DELETE">
-            <a href="{{ url('/producto') }}" class="btn btn-primary">Agregar más productos</a>
-            <a href="#" class="btn btn-success">Finalizar pedido</a>
-            <input type="submit" class="btn btn-danger" value="Vaciar pedido">
-        </form>
-
     </div>
 
 @else

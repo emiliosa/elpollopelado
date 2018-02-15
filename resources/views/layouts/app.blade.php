@@ -15,7 +15,9 @@
     <link rel="stylesheet" href="{{ URL::asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('css/bootstrap-table.min.css')}}">
     <link rel="stylesheet" href="{{ URL::asset('css/app2.css') }}">
-
+    <link rel="stylesheet" href="{{ URL::asset('js/jquery/datepicker/css/bootstrap-datepicker3.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('js/jquery/datepicker/css/bootstrap-datepicker3.css.map') }}">
+    
     <!-- App -->
     <script src="{{ asset('js/app/app.js') }}"></script>
     <script src="{{ asset('js/app/app2.js') }}"></script>
@@ -29,8 +31,8 @@
     {{-- <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script> --}}
 
     <!-- Datepicker -->
-    <script type="text/javascript" src="{{ URL::asset('js/jquery/datepicker/bootstrap-datepicker.min.js') }}"></script>
-    <script type="text/javascript" src="{{ URL::asset('js/jquery/datepicker/bootstrap-datepicker.es.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/jquery/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/jquery/datepicker/locales/bootstrap-datepicker.es.min.js') }}"></script>
 
     <script>
         window.Laravel = {!! json_encode([
@@ -42,6 +44,17 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
+            });
+            $('.datepicker').datepicker({
+                format: "dd/mm/yyyy",
+                weekStart: 01,
+                startDate: "now",
+                todayBtn: "linked",
+                language: "es",
+                orientation: "bottom left",
+                daysOfWeekHighlighted: "0,6",
+                autoclose: true,
+                todayHighlight: true
             });
             
         });

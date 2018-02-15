@@ -17,6 +17,7 @@ class CreateProductoTable extends Migration
             $table->unsignedInteger('codigo')->nullable();
             $table->unsignedInteger('categoria_id');
             $table->string('descripcion');
+            $table->string('observaciones')->nullable();
             $table->unsignedInteger('moneda_id');
             $table->unsignedInteger('precio_unitario');
             $table->unsignedInteger('stock');

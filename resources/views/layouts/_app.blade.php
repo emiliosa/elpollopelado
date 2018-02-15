@@ -29,9 +29,15 @@
                 }
             });
             $('.datepicker').datepicker({
-                format: "dd-mm-yyyy",
+                format: "dd/mm/yyyy",
+                weekStart: 01,
+                startDate: "now",
+                todayBtn: "linked",
                 language: "es",
-                autoclose: true
+                orientation: "bottom left",
+                daysOfWeekHighlighted: "0,6",
+                autoclose: true,
+                todayHighlight: true
             });
         });
     </script>

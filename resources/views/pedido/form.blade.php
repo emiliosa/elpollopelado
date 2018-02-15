@@ -3,7 +3,7 @@
         <div class="form-group {{ $errors->has('fecha_envio') ? 'has-error' : ''}}">
             <div class="cols-sm-10">
                 {!! Form::label('fecha_envio', 'Fecha envío', ['class' => 'col-md-4 control-label']) !!}
-                {!! Form::date('fecha_envio', isset($pedido) ? $pedido->fecha_envio : \Carbon\Carbon::now()->format('d/m/Y'), ['class' => 'form-control datepicker']) !!}
+                {!! Form::date('fecha_envio', isset($pedido) ? $pedido->fecha_envio : '', ['class' => 'form-control datepicker']) !!}
                 {!! $errors->first('fecha_envio', '<p class="help-block">:message</p>') !!}
             </div>
         </div>

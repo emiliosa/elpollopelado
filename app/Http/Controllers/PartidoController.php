@@ -27,9 +27,12 @@ class PartidoController extends Controller
      * @return \Illuminate\View\View
      */
     public function index(Request $request) {
-        //$limit = Config::has($request->get('page')) ? $request->get('page') : 10;
-        //$partido = Partido::with('provincia')->orderBy('nombre','asc')->paginate($limit);
-        $partidos = $this->partido->getPartidosPorProvincia();
+        if ($request->get('search')) {
+            $partidos = $this->partido->getPartidosPorProvinciaSearch($request->get('search'));
+        } else {
+            $partidos = $this->partido->getPartidos();
+        }
+        
         return view('partido.index', compact('partidos'));
     }
 
@@ -125,11 +128,6 @@ class PartidoController extends Controller
         Partido::destroy($id);
 
         return redirect('partido');
-    }
-
-    public function dataTables()
-    {
-        return Datatables::eloquent($this->partido->getPartidosPorProvincia())->make(true);
     }
 
     public function getPartidosPorProvincia()

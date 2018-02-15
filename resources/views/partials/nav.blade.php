@@ -34,30 +34,34 @@
                         </ul>
                     </li>
                 @endrole --}}
-                <li><a href="{{ url('/producto') }}">Productos</a></li>
-                <li><a href="{{ url('/cliente') }}">Clientes</a></li>
-                <li><a href="{{ url('/pedido') }}">Pedidos</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Referencias<span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="{{ url('/categoria') }}">Categorias</a></li>
-                        <li><a href="{{ url('/descuento') }}">Descuentos</a></li>
-                        <li><a href="{{ url('/localidad') }}">Localidades</a></li>
-                        <li><a href="{{ url('/moneda') }}">Monedas</a></li>
-                        <li><a href="{{ url('/provincia') }}">Provincias</a></li>
-                        <li><a href="{{ url('/partido') }}">Partidos</a></li>
-                        <li><a href="{{ url('/tipo_de_identificacion') }}">Tipos de identificación</a></li>
-                        <li><a href="{{ url('/tipo_de_cliente') }}">Tipos de cliente</a></li>
-                    </ul>
-                </li>
+                @role('admin')
+                    <li><a href="{{ url('/producto') }}">Productos</a></li>
+                    <li><a href="{{ url('/cliente') }}">Clientes</a></li>
+                    <li><a href="{{ url('/pedido') }}">Pedidos</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Referencias<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{ url('/categoria') }}">Categorias</a></li>
+                            <li><a href="{{ url('/descuento') }}">Descuentos</a></li>
+                            <li><a href="{{ url('/localidad') }}">Localidades</a></li>
+                            <li><a href="{{ url('/moneda') }}">Monedas</a></li>
+                            <li><a href="{{ url('/provincia') }}">Provincias</a></li>
+                            <li><a href="{{ url('/partido') }}">Partidos</a></li>
+                            <li><a href="{{ url('/tipo_de_identificacion') }}">Tipos de identificación</a></li>
+                            <li><a href="{{ url('/tipo_de_cliente') }}">Tipos de cliente</a></li>
+                        </ul>
+                    </li>
+                @endrole
             </ul>
 
             {{-- Right Side Of Navbar --}}
             <ul class="nav navbar-nav navbar-right">
                 {{-- Authentication Links --}}
                 @if (Auth::guest())
+                    {{-- 
                     <li><a href="{{ route('login') }}">{!! trans('titles.login') !!}</a></li>
                     <li><a href="{{ route('register') }}">{!! trans('titles.register') !!}</a></li>
+                     --}}
                 @else
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

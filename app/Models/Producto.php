@@ -25,7 +25,7 @@ class Producto extends Model
      *
      * @var array
      */
-    protected $fillable = ['codigo','categoria_id','descripcion','moneda_id','precio_unitario','stock', 'imagen'];
+    protected $fillable = ['codigo','categoria_id','descripcion', 'observaciones', 'moneda_id','precio_unitario','stock', 'imagen'];
 
     public function categoria(){
         return $this->belongsTo('\App\Models\Categoria');

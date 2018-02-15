@@ -8,7 +8,7 @@
             <div class="col-md-9">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="{{ route('localidad.index') }}" title="Volver">
+                        <a href="{{ URL::previous() }}" title="Volver">
                             <button class="btn btn-warning btn-xs">
                                 <i class="fa fa-arrow-left" aria-hidden="true"></i>
                                 Volver

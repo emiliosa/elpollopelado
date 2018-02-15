@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Partido;
-use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Repositories\PartidoRepository;
-use App\Repositories\LocalidadRepository;
 use App\Models\Localidad;
+use App\Models\Partido;
+use App\Repositories\LocalidadRepository;
+use App\Repositories\PartidoRepository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 
@@ -18,7 +17,7 @@ class LocalidadController extends Controller
 
     public function __construct(PartidoRepository $partido, LocalidadRepository $localidad)
     {
-        $this->partido = $partido;
+        $this->partido   = $partido;
         $this->localidad = $localidad;
     }
 
@@ -27,9 +26,15 @@ class LocalidadController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index(Request $request) {
-        //$localidad = Localidad::orderBy('nombre','asc')->get();
-        $localidades = $this->localidad->getLocalidades();
+    public function index(Request $request)
+    {
+        if ($request->get('search')) {
+            $localidades = $this->localidad->getLocalidadesSearch($request->get('search'));
+        } else {
+            $localidades = $this->localidad->getLocalidades();
+        }
+        
+        //dd($localidades);
         return view('localidad.index', compact('localidades'));
     }
 
@@ -38,7 +43,8 @@ class LocalidadController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create() {
+    public function create()
+    {
         return view('localidad.create');
     }
 
@@ -49,11 +55,12 @@ class LocalidadController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $this->validate($request, [
-            'partido_id' => 'required',
+            'partido_id'    => 'required',
             'codigo_postal' => 'required',
-            'nombre' => 'required'
+            'nombre'        => 'required',
         ]);
 
         $requestData = $request->all();
@@ -70,7 +77,8 @@ class LocalidadController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function show($id) {
+    public function show($id)
+    {
         //$localidad = Localidad::findOrFail($id);
         $localidad = $this->localidad->findOrFail($id);
         return view('localidad.show', compact('localidad'));
@@ -83,11 +91,11 @@ class LocalidadController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         //$localidad = Localidad::findOrFail($id);
         $localidad = $this->localidad->findOrFail($id);
-        $partido = $this->partido->getPartidos();
-        return view('localidad.edit', compact('localidad','partido'));
+        return view('localidad.edit', compact('localidad'));
     }
 
     /**
@@ -98,11 +106,12 @@ class LocalidadController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update($id, Request $request) {
+    public function update($id, Request $request)
+    {
         $this->validate($request, [
-            'partido_id' => 'required',
+            'partido_id'    => 'required',
             'codigo_postal' => 'required',
-            'nombre' => 'required'
+            'nombre'        => 'required',
         ]);
         $requestData = $request->all();
 
@@ -119,7 +128,8 @@ class LocalidadController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         Localidad::destroy($id);
 
         return redirect('localidad');
@@ -127,8 +137,14 @@ class LocalidadController extends Controller
 
     public function getLocalidadesPorPartido()
     {
-        $partido_id = Input::get('partido_id');
+        $partido_id  = Input::get('partido_id');
         $localidades = $this->localidad->getLocalidadesPorPartido($partido_id);
         return Response::json($localidades);
+    }
+
+    public function search(Request $request)
+    {
+
+        return view('localidad.index', compact('localidades'));
     }
 }

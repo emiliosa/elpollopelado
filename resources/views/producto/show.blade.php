@@ -22,7 +22,7 @@
                 @if ($producto->imagen)
                     <img src="{{ Storage::url($producto->imagen) }}" alt="Imágen no disponible" class="img-responsive">
                 @endif
-                <h>Stock disponible: {{ $producto->stock }}</h>
+                <p><h3>{{ $producto->observaciones }}</h3></p>
             </div>
 
             <div class="col-md-8">
@@ -31,13 +31,12 @@
                     {!! csrf_field() !!}
                     <input type="hidden" name="id" value="{{ $producto->id }}">
                     <input type="hidden" name="descripcion" value="{{ $producto->descripcion }}">
+                    <input type="hidden" name="observaciones" value="{{ $producto->observaciones }}">
                     <input type="hidden" name="precio_unitario" value="{{ $producto->precio_unitario }}">
+                    <p>Stock disponible: {{ $producto->stock }}</p>
                     <input type="submit" class="btn btn-success btn-lg" value="Agregar al pedido">
                 </form>
-
-                <br><br>
-
-                {{ $producto->descripcion }}
+                
             </div> <!-- end col-md-8 -->
         </div> <!-- end row -->
 

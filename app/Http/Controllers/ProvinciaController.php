@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Provincia;
 use App\Repositories\ProvinciaRepository;
 use App\Http\Requests;
-use Yajra\Datatables\Facades\Datatables;
 use Illuminate\Support\Facades\Response;
 
 class ProvinciaController extends Controller
@@ -24,7 +23,12 @@ class ProvinciaController extends Controller
      * @return \Illuminate\View\View
      */
     public function index(Request $request) {
-        $provincias = $this->provincia->getProvinciasPaginate();
+        if ($request->get('search')) {
+            $provincias = $this->provincia->getProvinciasSearch($request->get('search'));
+        } else {
+            $provincias = $this->provincia->getProvincias();
+        }
+        
         return view('provincia.index', compact('provincias'));
     }
     /**
@@ -109,7 +113,6 @@ class ProvinciaController extends Controller
 
     public function getProvincias()
     {
-        $provincias = $this->provincia->getProvincias();
-        return Response::json($provincias);
+        return $this->provincia->getProvinciasJson();
     }
 }

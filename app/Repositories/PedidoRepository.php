@@ -43,4 +43,20 @@ class PedidoRepository
         return $this->pedido->orderBy('fecha', 'desc')->pluck('fecha','id');
     }
 
+    public function getPedidosSearch($value)
+    {
+        return \DB::table('pedido')
+            ->select('pedido.id', 'pedido.cliente_id', 'pedido.fecha_envio', 'pedido.descuento_id', 'pedido.direccion_envio_id', 'cliente.nombre', 'cliente.apellido')
+            ->join('cliente', 'pedido.cliente_id', '=', 'cliente.id')
+            ->where('cliente.nombre', 'like', '%' . $value . '%')
+            ->orWhere('cliente.apellido', 'like', '%' . $value . '%')
+            ->orWhere('pedido.fecha_envio', '=', $value)
+            ->orWhere('cliente.apellido', 'like', '%' . $value . '%')
+            ->orWhere('cliente.apellido', 'like', '%' . $value . '%')
+            ->orderBy('pedido.fecha_envio', 'ASC')
+            ->orderBy('cliente.nombre', 'ASC')
+            ->orderBy('cliente.apellido', 'ASC')
+            ->paginate(15);
+    }
+
 }

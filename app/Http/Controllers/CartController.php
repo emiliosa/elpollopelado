@@ -58,13 +58,15 @@ class CartController extends Controller
 
          if ($validator->fails()) {
             session()->flash('error_message', 'Cantidad entre 1 y 5.');
-            return response()->json(['success' => false]);
+            return response()->json(['success' => false, 'cart' => NULL]);
          }
 
         Cart::update($id, $request->quantity);
         session()->flash('success_message', '');
 
-        return response()->json(['success' => true]);
+        $cart = ['subtotal' => Cart::instance('default')->subtotal(), 'total' => Cart::instance('default')->total()];
+
+        return response()->json(['success' => true, 'cart' => $cart]);
 
     }
 
