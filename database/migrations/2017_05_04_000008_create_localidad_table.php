@@ -17,6 +17,7 @@ class CreateLocalidadTable extends Migration
             $table->unsignedInteger('partido_id');
             $table->string('codigo_postal')->nullable();
             $table->string('nombre');
+            $table->softDeletes();
 
             $table->foreign('partido_id')->references('id')->on('partido');
         });

@@ -27,9 +27,9 @@
                                     <tr>
                                         <td class="text-center">{{ $categoria->descripcion }}</td>
                                         <td class="text-center">
-                                            <a href="{{ route('categoria.show', $categoria->id) }}" title="Ver categoría">
-                                                <button class="btn btn-info btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                    Ver
+                                            <a href="{{ route('cliente.show', $cliente->id) }}" title="Ver cliente">
+                                                <button class="btn btn-info btn-xs">
+                                                    <i class="fa fa-eye" aria-hidden="true"></i>
                                                 </button>
                                             </a>
                                             <a href="{{ route('categoria.edit', $categoria->id) }}" title="Editar categoría">

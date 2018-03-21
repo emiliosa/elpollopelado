@@ -1,12 +1,12 @@
-<div class="modal fade" id="modal_direccion" tabindex="-1" role="dialog" aria-labelledby="modal_label_direccion">
+<div class="modal fade" id="direccion_modal" tabindex="-1" role="dialog" aria-labelledby="direccion_modal_label" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="modal_label_direccion">Agregar</h4>
+                <h4 class="modal-title" id="direccion_modal_label">Agregar</h4>
             </div>
 
-            {!! Form::open(['route' => 'direccion.store', 'id' => 'form_modal_direccion'] ) !!}
+            {!! Form::open(['route' => 'direccion.store', 'name' => 'direccion_modal_form'] ) !!}
 
                 <div class="modal-body">
 
@@ -18,7 +18,7 @@
                     <div class="form-group">
                         <div class="cols-sm-10">
                             <label for="provincia_id" class="cols-sm-2 control-label">Provincia</label>
-                            <select id="provincia_id" name="provincia_id" class="form-control" required>
+                            <select id="provincia_id" name="provincia_id" class="form-control required">
                                 <option value="" selected="selected">Seleccione provincia</option>
                             </select>
                         </div>
@@ -27,7 +27,7 @@
                     <div class="form-group">
                         <div class="cols-sm-10">
                             <label for="partido_id" class="cols-sm-2 control-label">Partido</label>
-                            <select id="partido_id" name="partido_id" class="form-control" required>
+                            <select id="partido_id" name="partido_id" class="form-control required">
                                 <option value="" selected="selected">Seleccione partido</option>
                             </select>
                         </div>
@@ -36,7 +36,7 @@
                     <div class="form-group">
                         <div class="cols-sm-10">
                             <label for="localidad_id" class="cols-sm-2 control-label">Localidad</label>
-                            <select id="localidad_id" name="localidad_id" class="form-control" required>
+                            <select id="localidad_id" name="localidad_id" class="form-control required">
                                 <option value="" selected="selected">Seleccione localidad</option>
                             </select>
                         </div>
@@ -47,7 +47,7 @@
                             <div class="form-group">
                                 <div class="cols-sm-10">
                                     <label for="calle" class="cols-sm-2 control-label">Calle</label>
-                                    <input class="form-control" name="calle" id="calle" type="text" required>
+                                    <input class="form-control required" name="calle" id="calle" type="text">
                                 </div>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                             <div class="form-group">
                                 <div class="cols-sm-10">
                                     <label for="altura" class="cols-sm-2 control-label">Altura</label>
-                                    <input class="form-control" name="altura" id="altura" type="text" required>
+                                    <input class="form-control required" name="altura" id="altura" type="text">
                                 </div>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                     <div class="form-group">
                         <div class="cols-sm-10">
                             <label for="entrecalles" class="cols-sm-2 control-label">Entrecalles</label>
-                            <input class="form-control" name="entrecalles" id="entrecalles" type="text" required>
+                            <input class="form-control required" name="entrecalles" id="entrecalles" type="text">
                         </div>
                     </div>
 
@@ -91,7 +91,7 @@
 
                 <div class="modal-footer">
                     <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cerrar">
-                    <input type="submit" class="btn btn-primary" id="btn_submit_direccion" data-op="" value="">
+                    <input type="button" class="btn btn-primary" id="btn_agregar_direccion" value="Guardar">
                 </div>
 
             {!! Form::close() !!}

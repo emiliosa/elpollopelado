@@ -16,6 +16,7 @@ class CreatePartidoTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('provincia_id');
             $table->string('nombre');
+            $table->softDeletes();
 
             $table->foreign('provincia_id')->references('id')->on('provincia');
         });

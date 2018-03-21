@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     var token = $("input[name='_token']").val();
-    fillProvincias();
+    fill_provincias();
 
     /**
      * @param {Link} url
@@ -12,23 +12,27 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             url: url,
-            data: data
-        })
-        .done(function (response) {
+            data: data,
+            beforeSend: function (){
+                $('.loading').show();
+            }
+        }).done(function (response) {
             $.each(response, function (i, val) {
                 $("select[name='" + id + "']").append("<option value='" + val.id + "'>" + val.nombre + "</option>");
             });
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
+            $('.loading').hide();
+        }).fail(function (jqXHR, textStatus, errorThrown) {
             console.log('error: ' + textStatus);
+        }).always(function(jqXHR, textStatus, errorThrown) {
+            $('.loading').hide();
         });
     }
 
-    function fillProvincias() {
+    function fill_provincias() {
         ajax("/get_provincias", "provincia_id", null);
     }
 
-    function fillPartidos(provincia_id) {
+    function fill_partidos(provincia_id) {
         $("#partido_id").find('option').not(':first').remove();
         $("#localidad_id").find('option').not(':first').remove();
         if (provincia_id) {
@@ -37,7 +41,7 @@ $(document).ready(function () {
         }
     }
 
-    function fillLocalidades(partido_id) {
+    function fill_localidades(partido_id) {
         $("#localidad_id").find('option').not(':first').remove();
         if (partido_id) {
             var data = {partido_id: partido_id, _token: token};
@@ -46,153 +50,39 @@ $(document).ready(function () {
     }
 
     $("select[name='provincia_id']").on('change', function () {
-        fillPartidos($(this).val());
+        fill_partidos($(this).val());
     });
 
     $("select[name='partido_id']").on('change', function () {
-        fillLocalidades($(this).val());
+        fill_localidades($(this).val());
     });
 
-    $('#btn_agregar_direccion').on('click', function () {
-        $('#btn_submit_direccion').data('op', 'add');
-        $('#btn_submit_direccion').val('Agregar');
+    $('#btn_abrir_direccion').on('click', function (e) {
+        e.preventDefault();
         $("#calle").val("");
         $("#altura").val("");
         $("#piso").val("");
         $("#dpto").val("");
         $("#entrecalles").val("");
-        $('#modal_direccion').modal('show');
+        $('#direccion_modal').modal('show');
     });
-    /*
-    $("#dialog-confirm").dialog({
-        resizable: false,
-        height: "auto",
-        width: 400,
-        modal: true,
-        buttons: {
-            Cancel: function() {
-                $(this).dialog("close");
-            },
-            "Desea eliminar la dirección seleccionada?": function() {
-                var id = $('#btn_borrar_direccion').data('id');
-                var data = {id: id, _token: token};
-                $.ajax({
-                    type: "DELETE",
-                    url: '/direccion/' + id,
-                    data: data,
-                    cache: false
-                })
-                .done(function (response) {
-                    location.reload();
-                })
-                .fail(function (jqXHR, textStatus, errorThrown) {
-                    console.log('error: ' + textStatus);
-                });
-                $(this).dialog("close");
-            }
-        }
-    });
-    */
-
-    $('#btn_borrar_direccion').on('click', function (e) {
+    
+    //evento delegado por agregar row dinámico
+    $(document).on('click', '.btn-borrar-direccion', function (e) {
+        e.preventDefault();
+        var direccion_id = $(this).closest('tr').attr('data-id');
+        $('#direccion_id_borrar').val(direccion_id);
         $('#modal_direccion_confirmacion').modal('show');
     });
 
     $('#btn_modal_borrar_direccion').on('click', function (e) {
-        var id = $('#btn_borrar_direccion').data('id');
-        var data = {id: id, _token: token};
-        $.ajax({
-            type: "DELETE",
-            url: '/direccion/' + id,
-            data: data,
-            cache: false
-        })
-        .done(function (response) {
-            location.reload();
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            console.log('error: ' + textStatus);
-        });
+        var direccion_id = $('#direccion_id_borrar').val();
+        $('#table_direcciones tbody tr[data-id="' + direccion_id + '"]').remove();
+        $("#modal_direccion_confirmacion").modal('hide');
     });
 
-    //$('#btn_submit_direccion').on('click', function (e) {
-    $('#btn_submit_direccion').on('submit', function (e) {
-        //e.preventDefault();
-        //if ($('#form_modal_direccion')[0].checkValidity()) {
-        if (!this.checkValidity()) {
-            return false;
-        } else {
-            var op = $('#btn_submit_direccion').data('op');
-            switch (op) {
-                case 'add':
-                    return true;
-                    break;
-                case 'update':
-                    var id = $('#direccion_id').val();
-                    var url = '/direccion/' + id;
-                    var data = $('#form_modal_direccion').serializeArray();
-                    data.push({name: 'method', value: "PATCH"});
-                    $.ajax({
-                        type: "PUT",
-                        url: url,
-                        data: $.param(data)
-                    })
-                    .done(function (response) {
-                        location.reload();
-                    })
-                    .fail(function (jqXHR, textStatus, errorThrown) {
-                        console.log('error: ' + textStatus);
-                    });
-                    break;
-            }
-        }
-    });
-
-    //$('#btn_modificar_direccion').on('click', function (e) {
-    $(document).on('click', '#btn_modificar_direccion', function (e) {
-        e.preventDefault();
-        var id = $(this).data('id');
-        var data = {id: id, _token: token};
-        $('#btn_submit_direccion').data('op', 'update');
-        $('#btn_submit_direccion').val('Actualizar');
-        $('#direccion_id').val(id);
-        $.ajax({
-            type: "GET",
-            url: '/get_direccion',
-            data: data,
-            cache: false
-        })
-        .done(function (response) {
-            $("#partido_id").find('option').not(':first').remove();
-            $("#localidad_id").find('option').not(':first').remove();
-            for (var i=0 ; i < response.partidos.length ; i++) {
-                $("#partido_id").append("<option value='" + response.partidos[i].id + "'>" + response.partidos[i].nombre + "</option>");
-            }
-            for (var i=0 ; i < response.localidades.length ; i++) {
-                $("#localidad_id").append("<option value='" + response.localidades[i].id + "'>" + response.localidades[i].nombre + "</option>");
-            }
-            $("#provincia_id").val(response.direccion.provincia_id);
-            $("#partido_id").val(response.direccion.partido_id);
-            $("#localidad_id").val(response.direccion.localidad_id);
-            $("#calle").val(response.direccion.calle);
-            $("#altura").val(response.direccion.altura);
-            $("#piso").val(response.direccion.piso);
-            $("#dpto").val(response.direccion.dpto);
-            $("#entrecalles").val(response.direccion.entrecalles);
-            $('#modal_direccion').modal('show');
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            console.log('error: ' + textStatus);
-        });
-    });
-
-    //$('#btn_borrar_direccion').on('click', function (e) {
-    $(document).on('click', '#btn_borrar_direccion', function (e) {
-        //e.preventDefault();
-        $("#modal_direccion_confirmacion").modal('show');
-    });
-
-    $('#modal_direccion').on('hidden.bs.modal', function (event) {
+    $('#direccion_modal').on('hidden.bs.modal', function (event) {
+        $("#direccion_id").val("");
         $("#provincia_id").val("");
         $("#partido_id").find('option').not(':first').remove();
         $("#localidad_id").find('option').not(':first').remove();
@@ -201,6 +91,51 @@ $(document).ready(function () {
         $("#piso").val("");
         $("#dpto").val("");
         $("#entrecalles").val("");
+    });
+
+    $('#btn_agregar_direccion').on('click', function (e) {
+        e.preventDefault();
+        var direccion_id = $('#direccion_id').val();
+        var provincia_id = $('#provincia_id option:selected').val();
+        var provincia = $('#provincia_id option:selected').text();
+        var partido_id = $('#partido_id option:selected').val();
+        var partido = $('#partido_id option:selected').text();
+        var localidad_id = $('#localidad_id option:selected').val();
+        var localidad = $('#localidad_id option:selected').text();
+        var calle = $('#calle').val();
+        var altura = $('#altura').val();
+        var piso = $('#piso').val();
+        var dpto = $('#dpto').val();
+        var entrecalles = $('#entrecalles').val();
+        var row = 
+            '<tr data-id="' + direccion_id + '">' +
+                '<td class="text-left" data-id="' + provincia_id + '">' + provincia + '</td>' +
+                '<td class="text-left" data-id="' + partido_id + '">' + partido + '</td>' +
+                '<td class="text-left" data-id="' + localidad_id + '">' + localidad + '</td>' +
+                '<td class="text-left">' + calle + '</td>' +
+                '<td class="text-center">' + altura + '</td>' +
+                '<td class="text-center">' + piso + '</td>' +
+                '<td class="text-center">' + dpto + '</td>' +
+                '<td class="text-left">' + entrecalles + '</td>' +
+                '<td class="text-center">' +
+                    '<button class="btn btn-danger btn-xs btn-borrar-direccion" title="Borrar direccion">' +
+                        '<i class="fa fa-remove" aria-hidden="true"></i>' +
+                    '</button>' +
+                '</td>' +
+            '</tr>';
+        $('#table_direcciones tbody').append(row);
+        $('#direccion_modal').modal('hide');
+    });
+
+    $('.btn-submit-direccion').on('click', function(e){
+        $("form[name='direccion_modal_form']").submit();
+    });
+
+    $("form[name='direccion_modal_form']").validate({
+        submitHandler: function(form) {
+            console.log('submitHandler');
+            return false;
+        }
     });
 
 });

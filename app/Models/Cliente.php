@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Cliente extends Model
 {
+    use SoftDeletes;
     use SearchableTrait;
 
     /**
@@ -24,6 +26,13 @@ class Cliente extends Model
     protected $primaryKey = 'id';
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
+
+    /**
      * Attributes that should be mass-assignable.
      *
      * @var array
@@ -33,10 +42,10 @@ class Cliente extends Model
     protected $searchable = [
         'columns' => [
             'clientes.identificacion' => 10,
-            'clientes.razon_social' => 10,
-            'clientes.nombre' => 5,
-            'clientes.apellido' => 2,
-            'clientes.email' => 2,
+            'clientes.razon_social'   => 10,
+            'clientes.nombre'         => 5,
+            'clientes.apellido'       => 2,
+            'clientes.email'          => 2,
         ],
     ];
 
@@ -45,14 +54,14 @@ class Cliente extends Model
         return $this->hasMany('\App\Models\Pedido');
     }
 
-    public function direccionPorCliente()
+    public function direcciones()
     {
-        return $this->hasMany('\App\Models\DireccionPorCliente');
+        return $this->hasMany('\App\Models\Direccion');
     }
 
-    public function descuentoPorCliente()
+    public function descuentos()
     {
-        return $this->hasMany('\App\Models\DescuentoPorCliente');
+        return $this->belongsToMany('\App\Models\Descuento');
     }
 
     public function tipoCliente()
@@ -64,4 +73,5 @@ class Cliente extends Model
     {
         return $this->belongsTo('\App\Models\TipoDeIdentificacion');
     }
+
 }

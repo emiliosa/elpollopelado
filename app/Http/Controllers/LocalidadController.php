@@ -33,7 +33,7 @@ class LocalidadController extends Controller
         } else {
             $localidades = $this->localidad->getLocalidades();
         }
-        
+
         //dd($localidades);
         return view('localidad.index', compact('localidades'));
     }
@@ -144,7 +144,6 @@ class LocalidadController extends Controller
 
     public function search(Request $request)
     {
-
         return view('localidad.index', compact('localidades'));
     }
 }

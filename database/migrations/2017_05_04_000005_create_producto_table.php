@@ -23,6 +23,7 @@ class CreateProductoTable extends Migration
             $table->unsignedInteger('stock');
             $table->string('imagen')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('categoria_id')->references('id')->on('categoria');
             $table->foreign('moneda_id')->references('id')->on('moneda');

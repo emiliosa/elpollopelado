@@ -29,7 +29,7 @@
                                     <th class="text-left">Email</th>
                                     <th class="text-center">Telefono Celular</th>
                                     <th class="text-center">Telefono Fijo</th>
-                                    <th class="text-right">Acción</th>
+                                    <th class="text-center">Acción</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -44,15 +44,15 @@
                                         <td class="text-left">{{ $cliente->email }}</td>
                                         <td class="text-center">{{ $cliente->telefono_celular }}</td>
                                         <td class="text-center">{{ $cliente->telefono_fijo }}</td>
-                                        <td class="text-right">
+                                        <td class="text-center">
                                             <a href="{{ route('cliente.show', $cliente->id) }}" title="Ver cliente">
-                                                <button class="btn btn-info btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                    Ver
+                                                <button class="btn btn-info btn-xs">
+                                                    <i class="fa fa-eye" aria-hidden="true"></i>
                                                 </button>
                                             </a>
                                             <a href="{{ route('cliente.edit', $cliente->id) }}" title="Editar cliente">
-                                                <button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                    Editar
+                                                <button class="btn btn-primary btn-xs">
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </button>
                                             </a>
                                             {!! Form::open([
@@ -60,7 +60,7 @@
                                                 'route' => ['cliente.destroy', $cliente->id],
                                                 'style' => 'display:inline'
                                                 ]) !!}
-                                            {!! Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i> Borrar', array(
+                                            {!! Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i>', array(
                                                 'type' => 'submit',
                                                 'class' => 'btn btn-danger btn-xs',
                                                 'title' => 'Eliminar cliente',

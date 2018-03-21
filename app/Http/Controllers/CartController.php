@@ -79,7 +79,10 @@ class CartController extends Controller
     public function destroy($id)
     {
         Cart::remove($id);
-        return redirect('pedido/create')->withSuccessMessage('El producto fue quitado!');
+        //return redirect('pedido/create')->withSuccessMessage('El producto fue quitado!');
+        $cart = ['subtotal' => Cart::instance('default')->subtotal(), 'total' => Cart::instance('default')->total()];
+
+        return response()->json(['success' => true, 'msg' => 'El producto fue quitado!', 'cart' => $cart]);
     }
 
     /**

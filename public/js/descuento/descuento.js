@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
     /**
      * @param {Link} url
@@ -9,101 +9,71 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             url: url,
-            data: data
-        })
-        .done(function (response) {
-            $.each(response, function (i, val) {
+            data: data,
+            beforeSend: function() {
+                $('.loading').show();
+            }
+        }).done(function(response) {
+            $.each(response, function(i, val) {
                 $("select[name='" + id + "']").append("<option value='" + val.id + "'>" + val.porcentaje + "</option>");
             });
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
+        }).fail(function(jqXHR, textStatus, errorThrown) {
             console.log('error: ' + textStatus);
+        }).always(function(jqXHR, textStatus, errorThrown) {
+            $('.loading').hide();
         });
     }
 
-    function fillDescuentos() {
+    function fill_descuentos() {
         ajax("/get_descuentos", "descuento_id", null);
     }
-    
+
     var token = $("input[name='_token']").val();
-    fillDescuentos();
+    fill_descuentos();
 
-    $('#btn_agregar_descuento').click(function () {
-        $('#btn_submit_descuento').data('op', 'add');
-        $('#btn_submit_descuento').val('Agregar');
-        $('#descuentoModal').modal('show');
-    });
-
-    $(document).on('click', '#btn_modificar_descuento', function (e) {
+    $('#btn_abrir_descuento').on('click', function(e) {
         e.preventDefault();
-        var id = $(this).data('id');
-        var data = {id: id, _token: token};
-        $('#btn_submit_descuento').data('op', 'update');
-        $('#btn_submit_descuento').val('Actualizar');
-        $('#descuento_por_cliente_id').val(id);
-        $.ajax({
-            type: "GET",
-            url: '/get_descuento_por_cliente',
-            data: data,
-            cache: false
-        })
-        .done(function (response) {
-            $("#descuento_id").val(response.descuento_id);
-            $('#descuentoModal').modal('show');
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            console.log('error: ' + textStatus);
-        });
+        $('#descuento_modal').modal('show');
     });
 
-    $(document).on('click', '#btn_borrar_descuento', function (e) {
+    //evento delegado por agregar row dinámico
+    $(document).on('click', '.btn-borrar-descuento', function(e) {
         e.preventDefault();
-        var id = $(this).data('id');
-        var data = {id: id, _token: token};
-        if (confirm('Desea eliminar el descuento seleccionado?')){
-            $.ajax({
-                type: "DELETE",
-                url: '/descuento_por_cliente/' + id,
-                data: data,
-                cache: false
-            })
-            .done(function (response) {
-                location.reload();
-            })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-                console.log('error: ' + textStatus);
-            });
-        }
+        var descuento_id = $(this).closest('tr').attr('data-id');
+        $('#descuento_id_borrar').val(descuento_id);
+        $("#modal_descuento_confirmacion").modal('show');
     });
 
-    $('#descuentoModal').on('hidden.bs.modal', function (event) {
+    $('#btn_modal_borrar_descuento').on('click', function(e) {
+        var descuento_id = $('#descuento_id_borrar').val();
+        $('#table_descuentos tbody tr[data-id="' + descuento_id + '"]').remove();
+        $("#modal_descuento_confirmacion").modal('hide');
+    });
+
+    $('#descuento_modal').on('hidden.bs.modal', function(event) {
         $("#descuento_id").val("");
     });
 
-    $('#btn_submit_descuento').click(function (e) {
-        e.preventDefault();
-        var op = $('#btn_submit_descuento').data('op');
-        switch (op) {
-            case 'add':
-                $('#descuento_form_modal').submit();
-                break;
-            case 'update':
-                var id = $('#descuento_por_cliente_id').val();
-                var url = '/descuento_por_cliente/' + id;
-                var data = $('#descuento_form_modal').serializeArray();
-                data.push({name: 'method', value: "PATCH"});
-                $.ajax({
-                    type: "PUT",
-                    url: url,
-                    data: $.param(data)
-                })
-                .done(function (response) {
-                    location.reload();
-                })
-                .fail(function (jqXHR, textStatus, errorThrown) {
-                    console.log('error: ' + textStatus);
-                });
-                break;
+    $('.btn-submit-descuento').on('click', function(e) {
+        $("form[name='descuento_modal_form']").submit();
+    });
+
+    $('.btn-submit-descuento').on('click', function(e){
+        $("form[name='descuento_modal_form']").submit();
+    });
+
+    $("form[name='descuento_modal_form']").validate({
+        rules: {
+            name: 
+        },
+        submitHandler: function(form) {
+            var descuento_id = $('#descuento_id option:selected').val();
+            var descuento = $('#descuento_id option:selected').text();
+            var row = '<tr data-id="' + descuento_id + '">' + '<td class="text-center">% ' + descuento + '</td>' + '<td class="text-center">' + '<button class="btn btn-danger btn-xs btn-borrar-descuento" title="Borrar descuento">' + '<i class="fa fa-remove" aria-hidden="true"></i>' + '</button>' + '</td>' + '</tr>';
+            $('#table_descuentos tbody').append(row);
+            $('#descuento_modal').modal('hide');
+            return false;
         }
     });
+
 });

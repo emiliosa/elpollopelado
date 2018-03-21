@@ -18,6 +18,16 @@ class DireccionRepository
         $this->direccion = $direccion;
     }
 
+    public function create($requestData)
+    {
+        return $this->direccion->create($requestData);
+    }
+
+    public function update($requestData)
+    {
+        return $this->direccion->update($requestData);
+    }
+
     public function findOrFail($id)
     {
         return $this->direccion->findOrFail($id);

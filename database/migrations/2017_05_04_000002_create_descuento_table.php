@@ -15,6 +15,7 @@ class CreateDescuentoTable extends Migration
         Schema::create('descuento', function (Blueprint $table) {
             $table->increments('id');
             $table->float('porcentaje', 8,2);
+            $table->softDeletes();
         });
     }
 

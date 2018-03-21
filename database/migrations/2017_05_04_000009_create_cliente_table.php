@@ -24,6 +24,7 @@ class CreateClienteTable extends Migration
             $table->string('telefono_celular');
             $table->string('telefono_fijo')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('tipo_identificacion_id')->references('id')->on('tipo_de_identificacion'); //DNI - CUIL - CUIT
             $table->foreign('tipo_cliente_id')->references('id')->on('tipo_de_cliente'); //Persona - Empresa

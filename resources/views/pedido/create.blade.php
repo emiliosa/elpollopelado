@@ -31,12 +31,9 @@
                     @endif
 
                     {!! Form::open(['route' => 'pedido.store']) !!}
-
-                    @include ('pedido.form', ['submitButtonText' => 'Agregar'])
-
+                        @include ('pedido.form')
+                        @include ('pedido.cart', ['submitButtonText' => 'Finalizar pedido'])
                     {!! Form::close() !!}
-
-                    @include ('pedido.cart')
 
                 </div>
             </div>

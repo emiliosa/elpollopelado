@@ -64,7 +64,7 @@
 <div class="form-group {{ $errors->has('email') ? 'has-error' : ''}}">
     <div class="cols-sm-10">
         {!! Form::label('email', 'Email', ['class' => 'cols-sm-2 control-label']) !!}
-        {!! Form::text('email', isset($cliente) ? $cliente->email : null, ['class' => 'form-control']) !!}
+        {!! Form::email('email', isset($cliente) ? $cliente->email : null, ['class' => 'form-control']) !!}
         {!! $errors->first('email', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -87,11 +87,5 @@
                 {!! $errors->first('telefono_fijo', '<p class="help-block">:message</p>') !!}
             </div>
         </div>
-    </div>
-</div>
-
-<div class="form-group">
-    <div class="col-xs-offset-10">
-        {!! Form::submit($submitButtonText, ['class' => 'btn btn-primary']) !!}
     </div>
 </div>

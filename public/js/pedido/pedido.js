@@ -1,29 +1,13 @@
-// update and delete events
-window.actionEvents = {
-    'click .select': function(e, value, row) {
-        //$('[data-id=' + row.id + ']').parents('tr').remove();
-    },
-    'click .remove': function(e, value, row) {
-        if (confirm('Are you sure to delete this item?')) {
-            $.ajax({
-                url: API_URL + row.id,
-                type: 'delete',
-                success: function() {
-                    $table.bootstrapTable('refresh');
-                    showAlert('Delete item successful!', 'success');
-                },
-                error: function() {
-                    showAlert('Delete item error!', 'danger');
-                }
-            })
-        }
+function fillDescuentos(cliente_id) {
+    $("#descuento_id").find('option').not(':first').remove();
+    if (cliente_id) {
+        var data = {
+            cliente_id: cliente_id,
+            _token: token
+        };
+        ajax("/get_descuentos_por_cliente", "descuento_id", data);
     }
-};
-
-function tableActions(value, row, index) {
-    return ['<a class="select" href="javascript:" data-id="' + row.id + '" data-descripcion="' + row.descripcion + '" data-toggle="modal" data-target="#VisitorDelete" title="Agregar">', '<i class="glyphicon glyphicon-plus"></i>', '</a>'].join('');
 }
-
 $(document).ready(function() {
     var token = $("input[name='_token']").val();
     $('#clientesModal').on('show.bs.modal', function() {
@@ -41,19 +25,8 @@ $(document).ready(function() {
             'max-height': '100%'
         });
     });
-    $('#productosModal').on('show.bs.modal', function() {
-        console.log('productosModal');
-        $(this).find('.modal-body').css({
-            width: 'auto', //probably not needed
-            height: 'auto', //probably not needed 
-            'max-height': '100%'
-        });
-        $('#tableProductos').bootstrapTable('refresh', {
-            url: 'http://localhost:8000/get_productos'
-        });
-    });
     $('#btnClientes').on('click', function() {
-        var table = $('#tableClientes');
+        var table = $('#table-clientes');
         var row = table.bootstrapTable('getSelections')[0];
         if (row) {
             var data = {
@@ -71,18 +44,24 @@ $(document).ready(function() {
                 if (response.descuentos.length > 0) {
                     descuento_id = response.descuentos[0].id;
                 }
-                $('#tableDirecciones').bootstrapTable('load', response.direcciones);
+                $('#table-direcciones').bootstrapTable('load', response.direcciones);
                 $('#cliente_id').val(row.id);
                 $('#razon_social').val(row.identificacion + ' - ' + row.razon_social);
                 $('#descuento_id').val(descuento_id);
+                fillDescuentos(row.id);
+                var obj = $('.span-cliente');
+                obj.addClass('hidden');
+                obj.parent().parent().removeClass('has-error');
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 console.log('error: ' + textStatus);
+            }).always(function(jqXHR, textStatus, errorThrown) {
+                $('#clientesModal').modal('toggle');
+                $('.loading').hide();
             });
-            $('#clientesModal').modal('toggle');
         }
     });
     $('#btnDirecciones').on('click', function() {
-        var table = $('#tableDirecciones');
+        var table = $('#table-direcciones');
         var row = table.bootstrapTable('getSelections')[0];
         var direccion = row.calle + ' ' + row.altura + ', ' + row.localidad.nombre + ' ' + row.provincia.nombre;
         if (row) {
@@ -98,22 +77,18 @@ $(document).ready(function() {
                 console.log(response);
                 $('#direccion_envio_id').val(row.id);
                 $('#direccion_envio').val(direccion);
+                var obj = $('.span-direccion');
+                obj.addClass('hidden');
+                obj.parent().parent().removeClass('has-error');
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 console.log('error: ' + textStatus);
+            }).always(function(jqXHR, textStatus, errorThrown) {
+                $('.loading').hide();
             });
         }
     });
-    $('#btnProductos').on('click', function() {
-        var table = $('#tableProductos');
-        var row = table.bootstrapTable('getSelections')[0];
-        if (row) {
-            $('#direccion_envio_id').val(row.id);
-            $('#direccion_envio').val(row.provincia.nombre + ' - ' + row.partido.nombre + ' - ' + row.localidad.nombre + ' - ' + row.calle + ' - ' + row.altura);
-            $('#productosModal').modal('toggle');
-        }
-    });
     $('.quantity').on('change', function() {
-        var id = $(this).attr('data-id')
+        var id = $(this).attr('data-id');
         var data = {
             'quantity': this.value
         };
@@ -124,6 +99,69 @@ $(document).ready(function() {
         }).done(function(data) {
             $('#subtotal').html('$ ' + data.cart.subtotal);
             $('#total').html('$ ' + data.cart.total);
-        })
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            console.log('error: ' + textStatus);
+        }).always(function(jqXHR, textStatus, errorThrown) {
+            $('.loading').hide();
+        });
+    });
+    $('.btn-quitar-producto').on('click', function() {
+        var id = $(this).attr('data-id');
+        var idTr = '#' + $(this).parent().parent().attr('id');
+        var productosTableLenth = $('#table-cart tbody tr').length;
+        var data = {
+            _method: 'DELETE'
+        };
+        $.ajax({
+            type: "POST",
+            url: '/cart/' + id,
+            data: data
+        }).done(function(data) {
+            if (data.success) {
+                $('#subtotal').html('$ ' + data.cart.subtotal);
+                $('#total').html('$ ' + data.cart.total);
+                $(idTr).remove();
+                if (productosTableLenth == 2) {
+                    $('#tr0').removeClass('hidden');
+                }
+            }
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            console.log('error: ' + textStatus);
+        }).always(function(jqXHR, textStatus, errorThrown) {
+            $('.loading').hide();
+        });
+    });
+    $('form').on('submit', function() {
+        var productosTableLenth = $('#table-cart tbody tr').length;
+        var clienteTableLenth = $('#table-clientes').bootstrapTable('getSelections').length;
+        var direccionTableLenth = $('#table-direcciones').bootstrapTable('getSelections').length;
+        var result, obj;
+        if (clienteTableLenth == 0) {
+            obj = $('.span-cliente');
+            obj.removeClass('hidden');
+            obj.parent().parent().addClass('has-error');
+            result = false;
+        } else if (direccionTableLenth == 0) {
+            obj = $('.span-direccion');
+            obj.removeClass('hidden');
+            obj.parent().parent().addClass('has-error');
+            result = false;
+        } else if (productosTableLenth == 1) {
+            obj = $('.span-producto');
+            obj.removeClass('hidden');
+            obj.parent().addClass('has-error');
+            result = false;
+        } else if (!$(this).valid()) {
+            obj = $('.span-fecha-envio');
+            obj.removeClass('hidden');
+            obj.parent().parent().addClass('has-error');
+            obj = $('.span-descuento');
+            obj.removeClass('hidden');
+            obj.parent().parent().addClass('has-error');
+            result = false;
+        } else {
+            result = true;
+        }
+        return result;
     });
 });

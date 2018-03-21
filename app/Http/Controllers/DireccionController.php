@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Direccion;
+use App\Repositories\ClienteRepository;
+use App\Repositories\DireccionRepository;
+use App\Repositories\LocalidadRepository;
+use App\Repositories\PartidoRepository;
+use App\Repositories\ProvinciaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
-use App\Models\Direccion;
-use App\Repositories\ProvinciaRepository;
-use App\Repositories\PartidoRepository;
-use App\Repositories\LocalidadRepository;
-use App\Repositories\DireccionRepository;
-use App\Repositories\ClienteRepository;
-
-use App\Http\Requests;
 
 class DireccionController extends Controller
 {
@@ -25,10 +23,10 @@ class DireccionController extends Controller
     public function __construct(ProvinciaRepository $provincia, PartidoRepository $partido, LocalidadRepository $localidad, DireccionRepository $direccion, ClienteRepository $cliente)
     {
         $this->provincia = $provincia;
-        $this->partido = $partido;
+        $this->partido   = $partido;
         $this->localidad = $localidad;
         $this->direccion = $direccion;
-        $this->cliente = $cliente;
+        $this->cliente   = $cliente;
     }
 
     /**
@@ -50,7 +48,7 @@ class DireccionController extends Controller
     public function create()
     {
         $provincias = $this->provincia->getProvinciasCombo();
-        $clientes = $this->cliente->getClientesCombo();
+        $clientes   = $this->cliente->getClientesCombo();
         return view('direccion.create', compact('provincias', 'clientes'));
     }
 
@@ -64,11 +62,10 @@ class DireccionController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'provincia_id' => 'required',
-            'partido_id' => 'required',
             'localidad_id' => 'required',
-            'calle' => 'required',
-            'altura' => 'required'
+            'calle'        => 'required',
+            'altura'       => 'required',
+            'entrecalles'  => 'required',
         ]);
 
         $requestData = $request->all();
@@ -103,7 +100,7 @@ class DireccionController extends Controller
     {
         $direccion = $this->direccion->findOrFail($id);
         $provincia = $this->provincia->getProvinciasCombo();
-        $partido = $this->partido->getPartidosCombo();
+        $partido   = $this->partido->getPartidosCombo();
         $localidad = $this->localidad->getLocalidadesCombo();
         return view('direccion.edit', compact('direccion', 'provincia', 'partido', 'localidad'));
     }
@@ -120,9 +117,11 @@ class DireccionController extends Controller
     {
         $this->validate($request, [
             'localidad_id' => 'required',
-            'calle' => 'required',
-            'altura' => 'required'
+            'calle'        => 'required',
+            'altura'       => 'required',
+            'entrecalles'  => 'required',
         ]);
+        
         $requestData = $request->all();
 
         $direccion = Direccion::findOrFail($id);
@@ -147,15 +146,14 @@ class DireccionController extends Controller
 
     public function getDireccion()
     {
-        $id = Input::get('id');
-        $direccion = $this->direccion->findOrFail($id);
-        $partidos = $this->partido->getPartidosPorProvincia($direccion->provincia_id);
+        $id          = Input::get('id');
+        $direccion   = $this->direccion->findOrFail($id);
+        $partidos    = $this->partido->getPartidosPorProvincia($direccion->provincia_id);
         $localidades = $this->localidad->getLocalidadesPorPartido($direccion->partido_id);
         return Response::json([
-            'direccion' => $direccion,
-            'partidos' => $partidos,
+            'direccion'   => $direccion,
+            'partidos'    => $partidos,
             'localidades' => $localidades]);
     }
 
 }
-

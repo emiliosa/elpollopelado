@@ -145,14 +145,14 @@ Route::group(['middleware' => ['auth', 'activated', 'role:admin']], function () 
     Route::get('/get_partidos_por_provincia', 'PartidoController@getPartidosPorProvincia');
     Route::get('/get_localidades_por_partido', 'LocalidadController@getLocalidadesPorPartido');
     Route::get('/get_descuentos', 'DescuentoController@getDescuentos');
-    Route::get('/get_descuento_por_cliente', 'DescuentoPorClienteController@getDescuentoPorCliente');
+    Route::get('/get_descuento_por_cliente{cliente_id}', 'ClienteController@getDescuentos');
     Route::get('/get_clientes_info', 'ClienteController@getClientesInfo');
+    Route::get('/get_productos', 'ProductoController@getProductos');
+    Route::get('/get_distancia', 'PedidoController@getDistancia');
     Route::get('/localidad/{search}', 'LocalidadController@search');
     Route::get('/partido/{search}', 'PartidoController@search');
     Route::get('/provincia/{search}', 'ProvinciaController@search');
-
-    Route::get('get_productos', 'ProductoController@getProductos');
-    Route::get('get_distancia', 'PedidoController@getDistancia');
+    Route::post('/set_descuento', 'ClienteController@setDescuento');
 
     // Carrito de compra
     Route::resource('shop', 'ProductoController', ['only' => ['index', 'show']]);

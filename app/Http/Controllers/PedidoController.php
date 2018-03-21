@@ -69,10 +69,6 @@ class PedidoController extends Controller
      */
     public function create()
     {
-        //$cliente = Cliente::orderBy('razon_social')->lists('razon_social', 'id');
-        //$descuento_por_cliente = DescuentoPorCliente::with('cliente', 'descuento')->get();
-        //$direccion_por_cliente = DireccionPorCliente::with('cliente', 'direccion')->get();
-        //return view('operacion.create', compact('cliente', 'descuento_por_cliente', 'direccion_por_cliente'));
         $clientes = $this->cliente->getClientes();
         $descuentos = $this->descuento->getDescuentosCombo();
         $productos = $this->producto->getProductos();

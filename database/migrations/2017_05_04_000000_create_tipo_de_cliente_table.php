@@ -15,6 +15,7 @@ class CreateTipoDeClienteTable extends Migration
         Schema::create('tipo_de_cliente', function (Blueprint $table) {
             $table->increments('id');
             $table->string('descripcion');
+            $table->softDeletes();
         });
     }
 

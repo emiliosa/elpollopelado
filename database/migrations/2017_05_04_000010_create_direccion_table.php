@@ -15,8 +15,6 @@ class CreateDireccionTable extends Migration
         Schema::create('direccion', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('cliente_id');
-            $table->unsignedInteger('provincia_id');
-            $table->unsignedInteger('partido_id');
             $table->unsignedInteger('localidad_id');
             $table->string('calle');
             $table->string('altura');
@@ -24,10 +22,9 @@ class CreateDireccionTable extends Migration
             $table->string('dpto')->nullable();
             $table->string('entrecalles')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('cliente_id')->references('id')->on('cliente');
-            $table->foreign('provincia_id')->references('id')->on('provincia');
-            $table->foreign('partido_id')->references('id')->on('partido');
             $table->foreign('localidad_id')->references('id')->on('localidad');
         });
     }

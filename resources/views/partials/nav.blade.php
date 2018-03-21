@@ -1,19 +1,15 @@
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container">
+        <a class="navbar-brand" href="{{ url('/') }}">
+            {{ config('app.name') }}
+        </a>
         <div class="navbar-header">
-
-            {{-- Collapsed Hamburger --}}
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
                 <span class="sr-only">{!! trans('titles.toggleNav') !!}</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-
-            {{-- Branding Image --}}
-            {{-- <a class="navbar-brand" href="{{ url('/') }}">
-                {!! config('app.name', Lang::get('titles.app')) !!}
-            </a>--}}
         </div>
 
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
@@ -66,7 +62,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 
-                            @if ((Auth::User()->profile) && Auth::user()->profile->avatar_status == 1)
+                            @if (Auth::User()->profile && Auth::user()->profile->avatar_status == 1)
                                 <img src="{{ Auth::user()->profile->avatar }}" alt="{{ Auth::user()->name }}" class="user-avatar-nav">
                             @else
                                 <div class="user-avatar-nav"></div>

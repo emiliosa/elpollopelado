@@ -28,24 +28,24 @@
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="tablePedidos">
+                            <table class="table table-hover" id="tablePedidos">
                                 <thead>
                                 <tr>
                                     <th class="text-center">Fecha envío</th>
-                                    <th class="text-center">Cliente</th>
-                                    <th class="text-center">Descuento</th>
-                                    <th class="text-center">Dirección envío</th>
-                                    <th class="text-center">Acción</th>
+                                    <th class="text-left">Cliente</th>
+                                    <th class="text-right">Descuento</th>
+                                    <th class="text-left">Dirección envío</th>
+                                    <th class="text-right">Acción</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($pedidos as $pedido)
                                     <tr>
                                         <td class="text-center">{{ $pedido->fecha_envio }}</td>
-                                        <td class="text-center">{{ $pedido->cliente->razon_social }}</td>
-                                        <td class="text-center">{{ $pedido->descuento->porcentaje }}</td>
-                                        <td class="text-center">{{ $pedido->direccionEnvio->id }}</td>
-                                        <td class="text-center">
+                                        <td class="text-left">{{ $pedido->cliente->razon_social }}</td>
+                                        <td class="text-right">{{ $pedido->descuento->porcentaje }}</td>
+                                        <td class="text-left">{{ $pedido->direccionEnvio->id }}</td>
+                                        <td class="text-right">
                                             <a href="{{ route('pedido.show', $pedido->id) }}" title="Ver pedido">
                                                 <button class="btn btn-info btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                     Ver

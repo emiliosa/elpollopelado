@@ -122,16 +122,4 @@ class DescuentoPorClienteController extends Controller
         //return redirect('descuento_por_cliente');
     }
     
-    public function getDescuentoPorCliente()
-    {
-        $id = Input::get('id');
-        $cliente_id = Input::get('cliente_id');
-        if ($id){
-            $descuento_por_cliente = $this->descuento_por_cliente->findOrFail($id);
-        }elseif ($cliente_id){
-            $descuento_por_cliente = $this->descuento_por_cliente->getDescuento($cliente_id);
-        }
-        return Response::json($descuento_por_cliente);
-    }
-    
 }

@@ -15,6 +15,7 @@ class CreateTipoDeIdentificacionTable extends Migration
         Schema::create('tipo_de_identificacion', function (Blueprint $table) {
             $table->increments('id');
             $table->string('descripcion');
+            $table->softDeletes();
         });
     }
 

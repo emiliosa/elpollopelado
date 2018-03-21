@@ -19,6 +19,7 @@ class CreatePedidoTable extends Migration
             $table->unsignedInteger('descuento_id');
             $table->unsignedInteger('direccion_envio_id');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('cliente_id')->references('id')->on('cliente');
             $table->foreign('descuento_id')->references('id')->on('descuento');
