@@ -29,8 +29,7 @@
                         {!! Form::model($descuento, [
                             'method' => 'PATCH',
                             'url' => ['/descuento', $descuento->id],
-                            'class' => 'form-horizontal',
-                            'files' => true
+                            'class' => 'form-horizontal'
                         ]) !!}
 
                         @include ('descuento.form', ['submitButtonText' => 'Actualizar'])

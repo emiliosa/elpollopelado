@@ -14,9 +14,9 @@ class CreatePedidoTable extends Migration
     {
         Schema::create('pedido', function (Blueprint $table) {
             $table->increments('id');
-            $table->dateTime('fecha_envio');
+            $table->date('fecha_envio');
             $table->unsignedInteger('cliente_id');
-            $table->unsignedInteger('descuento_id');
+            $table->unsignedInteger('descuento_id')->nullable();
             $table->unsignedInteger('direccion_envio_id');
             $table->timestamps();
             $table->softDeletes();

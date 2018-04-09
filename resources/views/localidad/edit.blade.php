@@ -29,8 +29,7 @@
                         {!! Form::model($localidad, [
                             'method' => 'PATCH',
                             'url' => ['/localidad', $localidad->id],
-                            'class' => 'form-horizontal',
-                            'files' => true
+                            'class' => 'form-horizontal'
                         ]) !!}
 
                         @include ('localidad.form', ['submitButtonText' => 'Actualizar'])

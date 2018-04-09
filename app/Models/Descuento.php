@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Descuento extends Model
 {
     use SoftDeletes;
-    
+
     /**
      * Indicates if the model should be timestamped.
      *
@@ -43,6 +43,10 @@ class Descuento extends Model
      * @var array
      */
     protected $fillable = ['porcentaje'];
+
+    public function getPorcentajeAttribute() {
+        return $this->attributes['porcentaje'] . ' %';
+    }
 
     public function clientes()
     {

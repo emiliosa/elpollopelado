@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class Pedido extends Model
 {
     use SoftDeletes;
-    
+
     /**
      * The database table used by the model.
      *
@@ -37,19 +38,44 @@ class Pedido extends Model
      */
     protected $fillable = ['fecha_envio','cliente_id','descuento_id','direccion_envio_id'];
 
-    public function pedidoDetalle(){
-        return $this->hasMany('\App\Models\PedidoDetalle');
+    /**
+     * Set fecha_envio
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setFechaEnvioAttribute($value)
+    {
+        $this->attributes['fecha_envio'] = Carbon::parse($value)->format('Y-m-d');
     }
 
-    public function cliente(){
+    /**
+     * Get fecha_envio
+     *
+     * @return date
+     */
+    public function getFechaEnvioAttribute()
+    {
+        return Carbon::parse($this->attributes['fecha_envio'])->format('d/m/Y');
+    }
+
+    public function productos()
+    {
+        return $this->belongsToMany('\App\Models\Producto')->withPivot('cantidad', 'precio_unitario');
+    }
+
+    public function cliente()
+    {
         return $this->belongsTo('\App\Models\Cliente');
     }
 
-    public function descuento(){
+    public function descuento()
+    {
         return $this->belongsTo('\App\Models\Descuento');
     }
 
-    public function direccionEnvio(){
+    public function direccionEnvio()
+    {
         return $this->belongsTo('\App\Models\Direccion');
     }
 }

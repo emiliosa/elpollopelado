@@ -2,50 +2,33 @@
 
 @push('javascript')
     <script type="text/javascript" src="{{ URL::asset('js/app/funciones.js') }}"></script>
-    <script type="text/javascript" src="{{ URL::asset('js/producto/producto.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/producto/create.js') }}"></script>
 @endpush
 
 @section('title', 'Actualizar producto')
 @section('content')
 
     <div class="container">
-        <div class="row">
-            <div class="col-md-9">
+
+        {!! Form::model($producto, ['method' => 'PATCH', 'url' => ['/producto', $producto->id], 'name' => 'producto_form', 'class' => 'form-horizontal']) !!}
+
+            <div class="panel-heading"></div>
+
+            <div class="col-xs-12 col-sm-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="{{ route('producto.index') }}" title="Volver">
-                            <button class="btn btn-warning btn-xs">
-                                <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                                Volver
-                            </button>
-                        </a>
+                        Datos producto
                     </div>
                     <div class="panel-body">
-                        <br />
-                        <br />
-                        @if ($errors->any())
-                            <ul class="alert alert-danger">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        @endif
-
-                        {!! Form::model($producto, [
-                            'method' => 'PATCH',
-                            'url' => ['/producto', $producto->id],
-                            'class' => 'form-horizontal',
-                            'files' => true
-                        ]) !!}
-
-                        @include ('producto.form', ['submitButtonText' => 'Actualizar'])
-
-                        {!! Form::close() !!}
-
+                        @include ('producto.form')
                     </div>
                 </div>
             </div>
-        </div>
+
+            @include ('producto.actions')
+
+        {!! Form::close() !!}
+
     </div>
 
 @endsection

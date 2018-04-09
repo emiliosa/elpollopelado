@@ -29,8 +29,7 @@
                         {!! Form::model($tipo_de_cliente, [
                             'method' => 'PATCH',
                             'url' => ['/tipo_de_cliente', $tipo_de_cliente->id],
-                            'class' => 'form-horizontal',
-                            'files' => true
+                            'class' => 'form-horizontal'
                         ]) !!}
 
                         @include ('tipo_de_cliente.form', ['submitButtonText' => 'Actualizar'])

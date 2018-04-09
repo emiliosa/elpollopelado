@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Producto extends Model
 {
     use SoftDeletes;
-    
+
     /**
      * The database table used by the model.
      *
@@ -37,19 +37,28 @@ class Producto extends Model
      */
     protected $fillable = ['codigo','categoria_id','descripcion', 'observaciones', 'moneda_id','precio_unitario','stock', 'imagen'];
 
-    public function categoria(){
+    public function categoria()
+    {
         return $this->belongsTo('\App\Models\Categoria');
     }
 
-    public function moneda(){
+    public function moneda()
+    {
         return $this->belongsTo('\App\Models\Moneda');
     }
 
-    public function unidadDeVenta(){
+    public function unidadDeVenta()
+    {
         return $this->hasMany('\App\Models\UnidadDeVenta');
     }
 
-    public function estado(){
+    public function pedidos()
+    {
+        return $this->belongsToMany('\App\Models\Pedido');
+    }
+
+    public function estado()
+    {
         return array('Activo','Inactivo');
     }
 }

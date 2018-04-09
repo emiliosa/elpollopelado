@@ -34,12 +34,17 @@ class CartController extends Controller
         });
 
         if (!$duplicates->isEmpty()) {
-            $message = 'El producto ya existe!';
+            $messageType = 'warning';
+            $message = 'El producto ya existe';
         }else{
-            $message = 'Producto agregado!';
-            Cart::add($request->id, $request->descripcion, 1, $request->precio_unitario)->associate('App\Models\Producto');
+            $messageType = 'success';
+            $message = 'Producto agregado';
+            Cart::add($request->id, $request->descripcion, $request->qty ? $request->qty : 1, $request->precio_unitario)->associate('App\Models\Producto');
         }
-        return redirect('pedido/create')->withSuccessMessage($message);
+
+        $request->session()->flash($messageType, $message);
+
+        return redirect('pedido/create');
     }
 
     /**
@@ -53,20 +58,18 @@ class CartController extends Controller
     {
         // Validation on max quantity
         $validator = Validator::make($request->all(), [
-            'quantity' => 'required|numeric|between:1,5'
+            'quantity' => 'required|numeric|between:1,15'
         ]);
 
          if ($validator->fails()) {
-            session()->flash('error_message', 'Cantidad entre 1 y 5.');
+            session()->flash('error_message', 'Cantidad entre 1 y 15.');
             return response()->json(['success' => false, 'cart' => NULL]);
          }
 
         Cart::update($id, $request->quantity);
-        session()->flash('success_message', '');
-
         $cart = ['subtotal' => Cart::instance('default')->subtotal(), 'total' => Cart::instance('default')->total()];
 
-        return response()->json(['success' => true, 'cart' => $cart]);
+        return response()->json(['success' => true, 'msg' => 'La cantidad fue actualizada', 'cart' => $cart]);
 
     }
 
@@ -79,10 +82,9 @@ class CartController extends Controller
     public function destroy($id)
     {
         Cart::remove($id);
-        //return redirect('pedido/create')->withSuccessMessage('El producto fue quitado!');
         $cart = ['subtotal' => Cart::instance('default')->subtotal(), 'total' => Cart::instance('default')->total()];
 
-        return response()->json(['success' => true, 'msg' => 'El producto fue quitado!', 'cart' => $cart]);
+        return response()->json(['success' => true, 'msg' => 'El producto fue quitado', 'cart' => $cart]);
     }
 
     /**
@@ -93,7 +95,7 @@ class CartController extends Controller
     public function emptyCart()
     {
         Cart::destroy();
-        return redirect('pedido/create')->withSuccessMessage('No hay productos seleccionados!');
+        return redirect('pedido/create')->withSuccessMessage('No hay productos seleccionados');
     }
 
     /**

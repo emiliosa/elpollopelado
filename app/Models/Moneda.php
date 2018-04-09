@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Moneda extends Model
 {
     use SoftDeletes;
-    
+
     /**
      * Indicates if the model should be timestamped.
      *
@@ -35,7 +35,7 @@ class Moneda extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
-    
+
      /**
      * Attributes that should be mass-assignable.
      *

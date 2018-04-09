@@ -29,8 +29,7 @@
                         {!! Form::model($provincia, [
                             'method' => 'PATCH',
                             'url' => ['/provincia', $provincia->id],
-                            'class' => 'form-horizontal',
-                            'files' => true
+                            'class' => 'form-horizontal'
                         ]) !!}
 
                         @include ('provincia.form', ['submitButtonText' => 'Actualizar'])

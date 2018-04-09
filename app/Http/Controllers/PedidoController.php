@@ -6,18 +6,24 @@ use App\Repositories\ClienteRepository;
 use App\Repositories\DescuentoRepository;
 use App\Repositories\DireccionRepository;
 use App\Repositories\PedidoRepository;
-use App\Repositories\PedidoDetalleRepository;
 use App\Repositories\ProductoRepository;
 use App\Repositories\CategoriaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
+use Gloudemans\Shoppingcart\Facades\Cart;
+//use \Cart as Cart;
 
 use App\Http\Requests;
 use App\Models\Pedido;
 use App\Models\Cliente;
+use App\Models\Descuento;
+use App\Models\Direccion;
+use App\Models\Producto;
 use App\Models\DescuentoPorCliente;
 use App\Models\DireccionPorCliente;
+
+use App\Http\Requests\PedidoRequest;
 
 class PedidoController extends Controller
 {
@@ -29,21 +35,20 @@ class PedidoController extends Controller
     protected $categoria;
     protected $pedido_detalle;
 
-    public function __construct(PedidoRepository $pedido,
-                                ClienteRepository $cliente,
-                                DireccionRepository $direccion_envio,
-                                DescuentoRepository $descuento,
-                                ProductoRepository $producto,
-                                CategoriaRepository $categoria,
-                                PedidoDetalleRepository $pedido_detalle)
-    {
+    public function __construct(
+        PedidoRepository $pedido,
+        ClienteRepository $cliente,
+        DireccionRepository $direccion_envio,
+        DescuentoRepository $descuento,
+        ProductoRepository $producto,
+        CategoriaRepository $categoria
+    ) {
         $this->pedido = $pedido;
         $this->cliente = $cliente;
         $this->direccion_envio = $direccion_envio;
         $this->descuento = $descuento;
         $this->producto = $producto;
         $this->categoria = $categoria;
-        $this->pedido_detalle = $pedido_detalle;
     }
 
     /**
@@ -56,9 +61,9 @@ class PedidoController extends Controller
         if ($request->get('search')) {
             $pedidos = $this->pedido->getPedidosSearch($request->get('search'));
         } else {
-            $pedidos = $this->pedido->getPedidos();
+            $pedidos = Pedido::orderBy('fecha_envio', 'desc')->paginate(15);
         }
-        
+
         return view('pedido.index', compact('pedidos'));
     }
 
@@ -69,33 +74,28 @@ class PedidoController extends Controller
      */
     public function create()
     {
-        $clientes = $this->cliente->getClientes();
-        $descuentos = $this->descuento->getDescuentosCombo();
-        $productos = $this->producto->getProductos();
-        $categorias = $this->categoria->getCategorias();
-        return view('pedido.create', compact('clientes', 'descuentos', 'productos', 'categorias'));
+        $clientes = Cliente::get();
+
+        return view('pedido.create', compact('clientes', 'productos'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param PedidoRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(PedidoRequest $request)
     {
+        $pedido = Pedido::create($request->all());
 
-        $this->validate($request, [
-            'fecha' => 'required',
-            'cliente_id' => 'required',
-            'descuento_id' => 'required',
-            'direccion_envio_id' => 'required'
-        ]);
+        foreach (Cart::content() as $item) {
+            $producto = Producto::find($item->id);
+            $pedido->productos()->save($producto, ['cantidad' => $item->qty, 'precio_unitario' => $item->price]);
+        }
 
-        $requestData = $request->all();
-
-        Pedido::create($requestData);
+        session()->flash('success', 'Pedido creado');
 
         return redirect('pedido');
     }
@@ -110,6 +110,7 @@ class PedidoController extends Controller
     public function show($id)
     {
         $pedido = Pedido::with('cliente', 'descuento', 'direccionEnvio')->get();
+
         return view('pedido.show', compact('pedido'));
     }
 
@@ -123,32 +124,37 @@ class PedidoController extends Controller
     public function edit($id)
     {
         $pedido = Pedido::findOrFail($id);
-        $descuento_por_cliente = DescuentoPorCliente::with('cliente', 'descuento')->get();
-        $direccion_por_cliente = DireccionPorCliente::with('cliente', 'direccion')->get();
-        return view('operacion.edit', compact('cliente', 'descuento_por_cliente', 'direccion_por_cliente'));
+        $clientes = Cliente::get();
+        $descuentos = $this->cliente->getDescuentosCombo($pedido->cliente_id);
+        $direcciones = $this->cliente->getDireccionesCombo($pedido->cliente_id);
+
+        Cart::destroy();
+        session(['cart_edit' => ['value' => true, 'url' => url('/pedido/' . $id . '/edit')]]);
+
+        foreach ($pedido->productos as $producto) {
+            Cart::add($producto->id, $producto->descripcion, $producto->pivot->cantidad, $producto->precio_unitario)->associate('App\Models\Producto');
+        }
+
+        return view('pedido.edit', compact('pedido', 'clientes', 'descuentos', 'direcciones'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  int $id
-     * @param \Illuminate\Http\Request $request
+     * @param PedidoRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update($id, Request $request)
+    public function update($id, PedidoRequest $request)
     {
-        $this->validate($request, [
-            'fecha' => 'required',
-            'cliente_id' => 'required',
-            'descuento_id' => 'required',
-            'direccion_envio_id' => 'required'
-        ]);
-
-        $requestData = $request->all();
-
         $pedido = Pedido::findOrFail($id);
-        $pedido->update($requestData);
+        $pedido->update($request->all());
+
+        foreach (Cart::content() as $item) {
+            $producto[$item->id] = ['cantidad' => $item->qty, 'precio_unitario' => $item->price];
+            $pedido->productos()->sync($producto);
+        }
 
         return redirect('pedido');
     }
@@ -180,7 +186,6 @@ class PedidoController extends Controller
         $addressFrom = "La Rioja 1884, C1244ABN CABA";
         //$addressTo = Input::get('direccion');
         $addressTo = $request->get('direccion');
-        //dd($request);
         //Change address format
         $formattedAddrFrom = str_replace(' ', '+', $addressFrom);
         $formattedAddrTo = str_replace(' ', '+', $addressTo);
@@ -191,27 +196,32 @@ class PedidoController extends Controller
         $geocodeTo = file_get_contents('https://maps.google.com/maps/api/geocode/json?address=' . $formattedAddrTo . '&sensor=false&key=AIzaSyCDQ3q314fDhgUTuHOcHyXro2_5cjmgEBM');
         $outputTo = json_decode($geocodeTo);
 
-        //Get latitude and longitude from geo data
-        $latitudeFrom = $outputFrom->results[0]->geometry->location->lat;
-        $longitudeFrom = $outputFrom->results[0]->geometry->location->lng;
-        $latitudeTo = $outputTo->results[0]->geometry->location->lat;
-        $longitudeTo = $outputTo->results[0]->geometry->location->lng;
+        if (count($outputTo->results) > 0) {
+            //Get latitude and longitude from geo data
+            $latitudeFrom = $outputFrom->results[0]->geometry->location->lat;
+            $longitudeFrom = $outputFrom->results[0]->geometry->location->lng;
+            $latitudeTo = $outputTo->results[0]->geometry->location->lat;
+            $longitudeTo = $outputTo->results[0]->geometry->location->lng;
 
-        //Calculate distance from latitude and longitude
-        $theta = $longitudeFrom - $longitudeTo;
-        $dist = sin(deg2rad($latitudeFrom)) * sin(deg2rad($latitudeTo)) + cos(deg2rad($latitudeFrom)) * cos(deg2rad($latitudeTo)) * cos(deg2rad($theta));
-        $dist = acos($dist);
-        $dist = rad2deg($dist);
-        $miles = $dist * 60 * 1.1515;
+            //Calculate distance from latitude and longitude
+            $theta = $longitudeFrom - $longitudeTo;
+            $dist = sin(deg2rad($latitudeFrom)) * sin(deg2rad($latitudeTo)) + cos(deg2rad($latitudeFrom)) * cos(deg2rad($latitudeTo)) * cos(deg2rad($theta));
+            $dist = acos($dist);
+            $dist = rad2deg($dist);
+            $miles = $dist * 60 * 1.1515;
+        } else {
+            $miles = 0;
+        }
+
         $unit = strtoupper($unit);
         if ($unit == "K") {
-            $distance = ($miles * 1.609344) . ' km';
-        } else if ($unit == "N") {
-            $distance = ($miles * 0.8684) . ' nm';
+            $distance = round(($miles * 1.609344)) . ' km';
+        } elseif ($unit == "N") {
+            $distance = round(($miles * 0.8684)) . ' nm';
         } else {
-            $distance = $miles . ' mi';
+            $distance = round($miles) . ' mi';
         }
+
         return Response::json(['distancia' => $distance]);
     }
-
 }

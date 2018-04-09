@@ -29,7 +29,7 @@
                             </ul>
                         @endif
 
-                        {!! Form::open(['route' => 'direccion.store', 'class' => 'form-horizontal', 'files' => true]) !!}
+                        {!! Form::open(['route' => 'direccion.store', 'class' => 'form-horizontal']) !!}
 
                         @include ('direccion.form', ['submitButtonText' => 'Agregar'])
 

@@ -29,8 +29,7 @@
                         {!! Form::model($moneda, [
                             'method' => 'PATCH',
                             'url' => ['/moneda', $moneda->id],
-                            'class' => 'form-horizontal',
-                            'files' => true
+                            'class' => 'form-horizontal'
                         ]) !!}
 
                         @include ('moneda.form', ['submitButtonText' => 'Actualizar'])

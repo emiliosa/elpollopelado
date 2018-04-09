@@ -20,7 +20,7 @@ function loadSelectOptions(select, newOpts, selectedValue, keepFirst) {
 
 /**
  *
- * @param (HTMLInput) input
+ * @param {HTMLInput} input
  */
 function readURL(input, output) {
     if (input.files && input.files[0]) {
@@ -29,5 +29,25 @@ function readURL(input, output) {
             $('#' + output.id).attr('src', e.target.result);
         }
         reader.readAsDataURL(input.files[0]);
+    }
+}
+
+/**
+ *
+ * @param {array} rulesObj
+ */
+function addRules(rulesObj) {
+    for (var item in rulesObj) {
+        $('#' + item).rules('add', rulesObj[item]);
+    }
+}
+
+/**
+ *
+ * @param {array} rulesObj
+ */
+function removeRules(rulesObj) {
+    for (var item in rulesObj) {
+        $('#' + item).rules('remove');
     }
 }

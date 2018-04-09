@@ -1,7 +1,8 @@
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container">
-        <a class="navbar-brand" href="{{ url('/') }}">
-            {{ config('app.name') }}
+        <a class="navbar-brand pull-left" href="{{ url('/') }}">
+            <img src="{{ URL::asset('images/elpollopelado-logo.jpg') }}" style="display: inline-block; height: 100%; width: auto">
+            <span style="display: inline-block;">{{ config('app.name') }}</span>
         </a>
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
@@ -54,7 +55,7 @@
             <ul class="nav navbar-nav navbar-right">
                 {{-- Authentication Links --}}
                 @if (Auth::guest())
-                    {{-- 
+                    {{--
                     <li><a href="{{ route('login') }}">{!! trans('titles.login') !!}</a></li>
                     <li><a href="{{ route('register') }}">{!! trans('titles.register') !!}</a></li>
                      --}}

@@ -26,7 +26,7 @@
                             </ul>
                         @endif
 
-                        {!! Form::open(['route' => 'moneda.store', 'class' => 'form-horizontal', 'files' => true]) !!}
+                        {!! Form::open(['route' => 'moneda.store', 'class' => 'form-horizontal']) !!}
 
                         @include ('moneda.form', ['submitButtonText' => 'Agregar'])
 

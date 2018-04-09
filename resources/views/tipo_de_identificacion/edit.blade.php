@@ -29,8 +29,7 @@
                         {!! Form::model($tipo_de_identificacion, [
                             'method' => 'PATCH',
                             'url' => ['/tipo_de_identificacion', $tipo_de_identificacion->id],
-                            'class' => 'form-horizontal',
-                            'files' => true
+                            'class' => 'form-horizontal'
                         ]) !!}
 
                         @include ('tipo_de_identificacion.form', ['submitButtonText' => 'Actualizar'])

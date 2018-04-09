@@ -14,12 +14,12 @@ class CreateProductoTable extends Migration
     {
         Schema::create('producto', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('codigo')->nullable();
+            $table->string('codigo')->nullable();
             $table->unsignedInteger('categoria_id');
             $table->string('descripcion');
             $table->string('observaciones')->nullable();
             $table->unsignedInteger('moneda_id');
-            $table->unsignedInteger('precio_unitario');
+            $table->decimal('precio_unitario', 11, 2);
             $table->unsignedInteger('stock');
             $table->string('imagen')->nullable();
             $table->timestamps();

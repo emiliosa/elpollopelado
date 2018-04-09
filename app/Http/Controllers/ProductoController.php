@@ -15,7 +15,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 use App\Http\Requests;
 use App\Models\Producto;
-
+use App\Models\Moneda;
 
 class ProductoController extends Controller
 {
@@ -38,10 +38,8 @@ class ProductoController extends Controller
      */
     public function index(Request $request)
     {
-        /*$productos = $this->producto->getProductos();
-        $estados = $this->producto->getEstados();
-        return view('producto.index', compact('productos', 'estados'));*/
         $productos = $this->producto->getProductos();
+        
         return view('producto.index', compact('productos'));
     }
 
@@ -52,9 +50,11 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        $monedas = $this->moneda->getMonedasCombo();
+        //$monedas = $this->moneda->getMonedasCombo();
+        $monedas = Moneda::orderBy('denominacion', 'asc')->get();
         $categorias = $this->categoria->getCategoriasCombo();
         $estados = $this->producto->getEstados();
+
         return view('producto.create', compact('monedas', 'categorias', 'estados'));
     }
 
@@ -88,6 +88,7 @@ class ProductoController extends Controller
             Storage::disk('local')->put('public/' . $filenameImagenReducida, (string)$imagenReducida->encode());
         }
         $this->producto->create($requestData);
+
         return redirect('producto');
     }
 
@@ -101,21 +102,9 @@ class ProductoController extends Controller
     public function show($id)
     {
         $producto = $this->producto->findOrFail($id);
+
         return view('producto.show', compact('producto'));
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  string $slug
-     * @return \Illuminate\Http\Response
-     */
-    /*public function show($slug)
-    {
-        $product = Producto::where('slug', $slug)->firstOrFail();
-        $interested = Producto::where('slug', '!=', $slug)->get()->random(4);
-        return view('product')->with(['product' => $product, 'interested' => $interested]);
-    }*/
 
     /**
      * Show the form for editing the specified resource.
@@ -127,8 +116,9 @@ class ProductoController extends Controller
     public function edit($id)
     {
         $producto = $this->producto->findOrFail($id);
-        $monedas = $this->moneda->getMonedasCombo();
+        $monedas = Moneda::orderBy('denominacion', 'asc')->get();
         $categorias = $this->categoria->getCategoriasCombo();
+
         return view('producto.edit', compact('producto', 'monedas', 'categorias'));
     }
 
@@ -169,7 +159,7 @@ class ProductoController extends Controller
             $imagenReducida->stream();
             Storage::disk('public')->put($filenameImagenReducida, (string)$imagenReducida->encode());
         }
-        
+
         $this->producto->findOrFail($id)->update($requestData);
 
         return redirect('producto');
@@ -192,6 +182,7 @@ class ProductoController extends Controller
     public function getProductos()
     {
         $productos = $this->producto->getProductos();
+
         return Response::json($productos);
     }
 }

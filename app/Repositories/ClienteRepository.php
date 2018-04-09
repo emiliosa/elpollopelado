@@ -7,7 +7,9 @@
  */
 
 namespace App\Repositories;
+
 use App\Models\Cliente;
+use Illuminate\Support\Facades\Response;
 
 class ClienteRepository
 {
@@ -41,6 +43,29 @@ class ClienteRepository
     public function getClientesCombo()
     {
         return $this->cliente->orderBy('razon_social', 'asc')->pluck('razon_social','id');
+    }
+
+    public function getDescuentosCombo($cliente_id)
+    {
+        return $this->cliente->find($cliente_id)->descuentos;
+    }
+
+    public function getDireccionesCombo($cliente_id)
+    {
+        $direccionesNew = [];
+        $direcciones = $this->cliente->find($cliente_id)->direcciones;
+        /*foreach ($direcciones as $direccion) {
+            $denominacion =
+                $direccion->localidad->partido->provincia->nombre . ', ' .
+                $direccion->localidad->partido->nombre . ', ' .
+                $direccion->localidad->nombre . ', ' .
+                $direccion->calle . ' ' . $direccion->altura;
+
+            $direccionesNew[] = array('id' => $direccion->id, 'text' =>  $denominacion);
+        }*/
+        return $direcciones;
+        //return $this->cliente->where('id', '=', $cliente_id)->with('direcciones')->get();
+
     }
 
 }

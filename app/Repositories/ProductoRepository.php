@@ -35,7 +35,7 @@ class ProductoRepository
 
     public function getProductos()
     {
-        return $this->producto->orderBy('descripcion', 'asc')->with('categoria','moneda')->paginate(15);
+        return $this->producto->has('categoria')->has('moneda')->orderBy('descripcion', 'asc')->with('categoria','moneda')->has('categoria')->paginate(15);
     }
 
     public function getProductosCombo()

@@ -26,7 +26,7 @@
                             </ul>
                         @endif
 
-                        {!! Form::open(['route' => 'partido.store', 'class' => 'form-horizontal', 'files' => true]) !!}
+                        {!! Form::open(['route' => 'partido.store', 'class' => 'form-horizontal']) !!}
 
                         @include ('partido.form', ['submitButtonText' => 'Agregar'])
 

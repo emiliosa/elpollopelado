@@ -29,8 +29,7 @@
                         {!! Form::model($partido, [
                             'method' => 'PATCH',
                             'url' => ['/partido', $partido->id],
-                            'class' => 'form-horizontal',
-                            'files' => true
+                            'class' => 'form-horizontal'
                         ]) !!}
 
                         @include ('partido.form', ['submitButtonText' => 'Actualizar'])

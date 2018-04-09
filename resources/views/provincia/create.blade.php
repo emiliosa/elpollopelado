@@ -26,7 +26,7 @@
                             </ul>
                         @endif
 
-                        {!! Form::open(['route' => 'provincia.store', 'class' => 'form-horizontal', 'files' => true]) !!}
+                        {!! Form::open(['route' => 'provincia.store', 'class' => 'form-horizontal']) !!}
 
                         @include ('provincia.form', ['submitButtonText' => 'Agregar'])
 

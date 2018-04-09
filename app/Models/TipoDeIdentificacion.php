@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class TipoDeIdentificacion extends Model
 {
     use SoftDeletes;
-    
+
     /**
      * Indicates if the model should be timestamped.
      *
@@ -42,7 +42,11 @@ class TipoDeIdentificacion extends Model
      * @var array
      */
     protected $fillable = ['descripcion'];
-    
+
+    const CUIL = 1;
+    const CUIT = 2;
+    const DNI = 3;
+
     public function cliente(){
         return $this->hasMany('\App\Models\Cliente');
     }

@@ -36,11 +36,16 @@ class DireccionRepository
     public function getDirecciones($cliente_id = '')
     {
         if ($cliente_id){
-            $direcciones = Direccion::where('cliente_id', '=', $cliente_id)->with('provincia','partido','localidad')->get();
+            $direcciones = $this->direcion->has('localidad')->has('partido')->has('provincia')->where('cliente_id', '=', $cliente_id)->with('localidad.partido.provincia')->get();
         }else{
-            $direcciones = Direccion::paginate(15);
+            $direcciones = $this->direcion->paginate(15);
         }
         return $direcciones;
+    }
+
+    public function getDireccionesCombo($cliente_id)
+    {
+        return $this->direccion->where('cliente_id', '=', $cliente_id)->pluck('calle', 'id');
     }
 
 }

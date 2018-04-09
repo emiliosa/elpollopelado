@@ -33,20 +33,21 @@
                     @foreach ($productos->chunk(4) as $items)
                         <div class="row">
                             @foreach ($items as $producto)
-                                <div class="col-md-3">
-                                    <div class="thumbnail">
-                                        <div class="caption text-center">
-                                            <a href="{{ url('producto', [$producto->id]) }}">
-                                                <img src="{{ Storage::disk('public')->url(str_replace('.jpeg', '_small.jpeg', $producto->imagen)) }}" alt="producto" class="img-responsive">
-                                                {{-- <img src="{{ asset('storage'/ . str_replace('.jpeg', '_small.jpeg', $producto->imagen)) }}" alt="producto" class="img-responsive">--}}
-                                            </a>
-                                            <a href="{{ url('producto', [$producto->id]) }}">
-                                                <h3>{{ $producto->categoria->descripcion . ' ' . $producto->descripcion }}</h3>
-                                                <p>{{ $producto->moneda->simbolo . $producto->precio_unitario }}</p>
-                                            </a>
+                                @if ($producto->categoria && $producto->moneda)
+                                    <div class="col-md-3">
+                                        <div class="thumbnail">
+                                            <div class="caption text-center">
+                                                <a href="{{ url('producto', [$producto->id]) }}">
+                                                    <img src="{{ Storage::disk('public')->url(str_replace('.jpeg', '_small.jpeg', $producto->imagen)) }}" alt="producto" class="img-responsive">
+                                                </a>
+                                                <a href="{{ url('producto', [$producto->id]) }}">
+                                                    <h3>{{ $producto->categoria->descripcion . ' ' . $producto->descripcion }}</h3>
+                                                    <p>{{ $producto->moneda->simbolo . $producto->precio_unitario }}</p>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                @endif
                             @endforeach
                         </div>
                     @endforeach

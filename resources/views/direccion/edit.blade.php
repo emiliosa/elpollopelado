@@ -32,8 +32,7 @@
                         {!! Form::model($direccion, [
                             'method' => 'PATCH',
                             'url' => ['/direccion', $direccion->id],
-                            'class' => 'form-horizontal',
-                            'files' => true
+                            'class' => 'form-horizontal'
                         ]) !!}
 
                         @include ('direccion.form', ['submitButtonText' => 'Actualizar'])

@@ -31,7 +31,7 @@ class MonedaRepository
 
     public function getMonedasCombo()
     {
-        return $this->moneda->orderBy('denominacion', 'asc')->pluck('denominacion','id');
+        return $this->moneda->orderBy('denominacion', 'asc')->pluck('simbolo','denominacion','id');
     }
 
 }

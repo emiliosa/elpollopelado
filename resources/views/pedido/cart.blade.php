@@ -1,13 +1,14 @@
 @push('styles')
     <style>
-        /*.table>tbody>tr>td, .table>tfoot>tr>td{
-            vertical-align: middle;
-        }*/
+        .align-middle {
+            vertical-align: middle !important;
+        }
     </style>
 @endpush
+
 <div class="table-responsive">
     <div class="form-group">
-        <table class="table table-hover" id="table-cart">
+        <table class="table table-hover" id="table_cart">
             <thead>
             <tr>
                 <th class="table-image text-left">Producto</th>
@@ -20,10 +21,10 @@
                 @if (sizeof(Cart::content()) > 0)
                     @php $emptyRowClass = 'hidden' @endphp
                     @foreach (Cart::content() as $item)
-                        <tr id="tr{{ $loop->iteration }}">
-                            <td class="table-image text-left">
+                        <tr data-id="{{ $item->model->id }}" data-rowid="{{ $item->rowId }}">
+                            <td class="table-image text-left align-middle">
                                 <a href="{{ url('producto', [$item->model->id]) }}">
-                                    <div class="col-sm-2 hidden-xs">
+                                    <div class="">
                                         <img src="{!! Storage::url(str_replace('.jpeg', '_small.jpeg', $item->model->imagen)) !!}" alt="Imágen no disponible" class="img-responsive cart-image">
                                     </div>
                                     <div>
@@ -32,25 +33,29 @@
                                     </div>
                                 </a>
                             </td>
-                            <td class="text-left">
-                                <select class="quantity" data-id="{{ $item->rowId }}">
-                                    <option {{ $item->qty == 1 ? 'selected' : '' }}>1</option>
-                                    <option {{ $item->qty == 2 ? 'selected' : '' }}>2</option>
-                                    <option {{ $item->qty == 3 ? 'selected' : '' }}>3</option>
-                                    <option {{ $item->qty == 4 ? 'selected' : '' }}>4</option>
-                                    <option {{ $item->qty == 5 ? 'selected' : '' }}>5</option>
+                            <td class="text-left align-middle">
+                                <select class="quantity" data-rowid="{{ $item->rowId }}">
+                                    @for ($i = 1 ; $i <= 15 ; $i++)
+                                        <option value={{ $i }} {{ $i == $item->qty ? "selected='selected'" : '' }}>{{ $i }}</option>
+                                    @endfor
                                 </select>
                             </td>
-                            <td class="text-right">${{ $item->subtotal }}</td>
-                            <td class="text-right">
-                                <input type="button" data-id="{{ $item->rowId }}" class="btn btn-danger btn-sm btn-quitar-producto" value="Quitar">
+                            <td class="text-right align-middle">${{ $item->subtotal }}</td>
+                            <td class="text-right align-middle">
+                                <button class="btn btn-danger btn-xs btn-quitar-producto" title="Quitar">
+                                    <i class="fa fa-remove" aria-hidden="true"></i>
+                                </button>
                             </td>
                         </tr>
                     @endforeach
                 @else
                     @php $emptyRowClass = '' @endphp
                 @endif
-                <tr id="tr0" class="text-center {{ $emptyRowClass }}"><td colspan="4"><h4>-- No hay productos seleccionados --</h4></td></tr>
+                <tr class="text-center {{ $emptyRowClass }}" data-id="-1">
+                    <td colspan="4">
+                        <h4>-- No hay productos seleccionados --</h4>
+                    </td>
+                </tr>
             </tbody>
             <tfoot>
                 <tr>
@@ -60,20 +65,31 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="text-left"></td>
+                    <td></td>
                     <td class="small-caps table-bg text-left">Distancia</td>
                     <td class="text-right" id="distancia"></td>
                     <td></td>
                 </tr>
-                <tr class="border-bottom">
-                    <td><a href="{{ url('/producto') }}" class="btn btn-primary">Agregar más productos</a></td>
+                <tr>
+                    <td></td>
                     <td class="small-caps table-bg text-left">Total</td>
                     <td class="table-bg text-right" id="total">${{ Cart::total() }}</td>
-                    <td class="text-right">{!! Form::submit($submitButtonText, ['class' => 'btn btn-success']) !!}</td>
-                    <div class="form-group">
+                    <td></td>
+                </tr>
+                <tr class="border-bottom">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right">
+                        <div class="text-right">
+                            <a href="{{ url('/producto') }}" class="btn btn-success btn-sm" title="Agregar producto">
+                                <i class="glyphicon glyphicon-plus"></i>
+                            </a>
+                        </div>
+                    </td>
                 </tr>
             </tfoot>
         </table>
-        <span class="help-block span-producto hidden">Seleccione un producto al menos</span>
+        <span class="help-block span-table-producto hidden">Seleccione un producto al menos</span>
     </div>
 </div>
