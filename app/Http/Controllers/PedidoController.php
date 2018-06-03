@@ -19,6 +19,7 @@ use App\Models\Pedido;
 use App\Models\Cliente;
 use App\Models\Descuento;
 use App\Models\Direccion;
+use App\Models\UnidadVenta;
 use App\Models\Producto;
 use App\Models\DescuentoPorCliente;
 use App\Models\DireccionPorCliente;
@@ -91,9 +92,15 @@ class PedidoController extends Controller
         $pedido = Pedido::create($request->all());
 
         foreach (Cart::content() as $item) {
-            $producto = Producto::find($item->id);
-            $pedido->productos()->save($producto, ['cantidad' => $item->qty, 'precio_unitario' => $item->price]);
+            $unidadVenta = UnidadVenta::create([
+                'codigo' => null,
+                'producto_precio_id' => $item->model->id
+            ]);
+            //$producto = Producto::find($item->producto->id);
+            $pedido->unidadesVenta()->save($unidadVenta, ['cantidad' => $item->qty, 'precio_unitario' => $item->price]);
         }
+
+        Cart::destroy();
 
         session()->flash('success', 'Pedido creado');
 
@@ -175,28 +182,63 @@ class PedidoController extends Controller
 
     /** Update the specified resource in storage.
      *
-     * @param  int $id
      * @param \Illuminate\Http\Request $request
      *
      * @return Illuminate\Support\Facades\Response
      */
-    public function getDistancia(Request $request)
+    public function getPrecioTotal(Request $request)
     {
-        $unit = "K";
-        $addressFrom = "La Rioja 1884, C1244ABN CABA";
-        //$addressTo = Input::get('direccion');
-        $addressTo = $request->get('direccion');
-        //Change address format
+        $descuento = Descuento::find($request->get('descuento'));
+        $direccion = Direccion::has('localidad')->with('localidad.partido.provincia')->find($request->get('direccion'));
+
+        $porcentaje = $descuento ? $descuento->porcentaje : '0.00';
+        $distancia = $direccion ?
+            $this->getDistancia(
+                $direccion->localidad->partido->provincia->nombre . ", " .
+                $direccion->localidad->partido->nombre . ", " .
+                $direccion->localidad->nombre . ", " .
+                $direccion->calle . " " .
+                $direccion->altura)
+            : '';
+
+        $costoDistancia = floatval($distancia != '' ? ($distancia < floatval('20.00') ? '50.00' : '200.00') : '0.00');
+        $subTotal       = Cart::subtotal(2, '.', '');
+        $costoDescuento = floatval($porcentaje) * floatval($subTotal / 100);
+        $total          = floatval($subTotal + $costoDistancia - $costoDescuento);
+
+        return Response::json([
+            'descuento'      => $porcentaje,
+            'distancia'      => $distancia . ' km',
+            'costoDescuento' => '$' . number_format($costoDescuento, 2, '.', ' '),
+            'costoDistancia' => '$' . number_format($costoDistancia, 2, '.', ' '),
+            'subtotal'       => '$' . number_format($subTotal, 2, '.', ' '),
+            'total'          => '$' . number_format($total, 2, '.', ' ')
+        ]);
+    }
+
+    /** Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return Illuminate\Support\Facades\Response
+     */
+    private function getDistancia($addressTo)
+    {
+        $addressFrom       = "La Rioja 1884, C1244ABN CABA";
         $formattedAddrFrom = str_replace(' ', '+', $addressFrom);
-        $formattedAddrTo = str_replace(' ', '+', $addressTo);
+        $formattedAddrTo   = str_replace(' ', '+', $addressTo);
 
-        //Send request and receive json data
-        $geocodeFrom = file_get_contents('https://maps.google.com/maps/api/geocode/json?address=' . $formattedAddrFrom . '&sensor=false&key=AIzaSyCDQ3q314fDhgUTuHOcHyXro2_5cjmgEBM');
-        $outputFrom = json_decode($geocodeFrom);
-        $geocodeTo = file_get_contents('https://maps.google.com/maps/api/geocode/json?address=' . $formattedAddrTo . '&sensor=false&key=AIzaSyCDQ3q314fDhgUTuHOcHyXro2_5cjmgEBM');
-        $outputTo = json_decode($geocodeTo);
+        try {
+            $geocodeFrom = file_get_contents('https://maps.google.com/maps/api/geocode/json?address=' . $formattedAddrFrom . '&sensor=false&key=AIzaSyCDQ3q314fDhgUTuHOcHyXro2_5cjmgEBM');
+            $geocodeTo   = file_get_contents('https://maps.google.com/maps/api/geocode/json?address=' . $formattedAddrTo . '&sensor=false&key=AIzaSyCDQ3q314fDhgUTuHOcHyXro2_5cjmgEBM');
+            $outputFrom  = json_decode($geocodeFrom);
+            $outputTo    = json_decode($geocodeTo);
+        } catch (ErrorException $e) {
+            $outputFrom = false;
+            $outputTo   = false;
+        }
 
-        if (count($outputTo->results) > 0) {
+        if ($outputTo && count($outputTo->results) > 0) {
             //Get latitude and longitude from geo data
             $latitudeFrom = $outputFrom->results[0]->geometry->location->lat;
             $longitudeFrom = $outputFrom->results[0]->geometry->location->lng;
@@ -205,23 +247,16 @@ class PedidoController extends Controller
 
             //Calculate distance from latitude and longitude
             $theta = $longitudeFrom - $longitudeTo;
-            $dist = sin(deg2rad($latitudeFrom)) * sin(deg2rad($latitudeTo)) + cos(deg2rad($latitudeFrom)) * cos(deg2rad($latitudeTo)) * cos(deg2rad($theta));
-            $dist = acos($dist);
-            $dist = rad2deg($dist);
+            $dist  = sin(deg2rad($latitudeFrom)) * sin(deg2rad($latitudeTo)) + cos(deg2rad($latitudeFrom)) * cos(deg2rad($latitudeTo)) * cos(deg2rad($theta));
+            $dist  = acos($dist);
+            $dist  = rad2deg($dist);
             $miles = $dist * 60 * 1.1515;
         } else {
             $miles = 0;
         }
 
-        $unit = strtoupper($unit);
-        if ($unit == "K") {
-            $distance = round(($miles * 1.609344)) . ' km';
-        } elseif ($unit == "N") {
-            $distance = round(($miles * 0.8684)) . ' nm';
-        } else {
-            $distance = round($miles) . ' mi';
-        }
+        $distancia = round(($miles * 1.609344));
 
-        return Response::json(['distancia' => $distance]);
+        return $distancia;
     }
 }

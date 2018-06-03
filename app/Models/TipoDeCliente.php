@@ -46,7 +46,8 @@ class TipoDeCliente extends Model
     const PERSONA_FISICA = 1;
     const PERSONA_JURIDICA = 2;
 
-    public function cliente(){
+    public function clientes()
+    {
         return $this->hasMany('\App\Models\Cliente');
     }
 }

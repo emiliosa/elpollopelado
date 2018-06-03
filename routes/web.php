@@ -149,6 +149,7 @@ Route::group(['middleware' => ['auth', 'activated', 'role:admin']], function () 
     Route::get('/get_clientes_info', 'ClienteController@getClientesInfo');
     Route::get('/get_productos', 'ProductoController@getProductos');
     Route::get('/get_distancia', 'PedidoController@getDistancia');
+    Route::get('/get_precio_total', 'PedidoController@getPrecioTotal');
     Route::get('/localidad/{search}', 'LocalidadController@search');
     Route::get('/partido/{search}', 'PartidoController@search');
     Route::get('/provincia/{search}', 'ProvinciaController@search');

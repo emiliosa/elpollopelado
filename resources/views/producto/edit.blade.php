@@ -10,7 +10,7 @@
 
     <div class="container">
 
-        {!! Form::model($producto, ['method' => 'PATCH', 'url' => ['/producto', $producto->id], 'name' => 'producto_form', 'class' => 'form-horizontal']) !!}
+        {!! Form::model($producto, ['method' => 'PATCH', 'url' => ['/producto', $producto->id], 'name' => 'producto_form', 'class' => 'form-horizontal', 'files' => true]) !!}
 
             <div class="panel-heading"></div>
 

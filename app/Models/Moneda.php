@@ -36,14 +36,19 @@ class Moneda extends Model
      */
     protected $dates = ['deleted_at'];
 
-     /**
-     * Attributes that should be mass-assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['denominacion','codigo','simbolo'];
+    /**
+    * Attributes that should be mass-assignable.
+    *
+    * @var array
+    */
+    protected $fillable = [
+        'denominacion',
+        'codigo',
+        'simbolo'
+    ];
 
-    public function producto(){
+    public function productos()
+    {
         return $this->hasMany('\App\Models\Producto');
     }
 }

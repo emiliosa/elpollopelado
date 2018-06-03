@@ -29,14 +29,22 @@ class Pedido extends Model
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'deleted_at',
+        'fecha_envio'
+    ];
 
     /**
      * Attributes that should be mass-assignable.
      *
      * @var array
      */
-    protected $fillable = ['fecha_envio','cliente_id','descuento_id','direccion_envio_id'];
+    protected $fillable = [
+        'fecha_envio',
+        'cliente_id',
+        'descuento_id',
+        'direccion_envio_id'
+    ];
 
     /**
      * Set fecha_envio
@@ -46,7 +54,7 @@ class Pedido extends Model
      */
     public function setFechaEnvioAttribute($value)
     {
-        $this->attributes['fecha_envio'] = Carbon::parse($value)->format('Y-m-d');
+        $this->attributes['fecha_envio'] = Carbon::createFromFormat('d/m/Y H:i:s', $value)->toDateTimeString();
     }
 
     /**
@@ -56,12 +64,12 @@ class Pedido extends Model
      */
     public function getFechaEnvioAttribute()
     {
-        return Carbon::parse($this->attributes['fecha_envio'])->format('d/m/Y');
+        return Carbon::parse($this->attributes['fecha_envio'])->format('d/m/Y H:i');
     }
 
-    public function productos()
+    public function unidadesVenta()
     {
-        return $this->belongsToMany('\App\Models\Producto')->withPivot('cantidad', 'precio_unitario');
+        return $this->belongsToMany('\App\Models\UnidadVenta')->withPivot('cantidad', 'precio_unitario');
     }
 
     public function cliente()

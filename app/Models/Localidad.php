@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Localidad extends Model
 {
     use SoftDeletes;
-    
+
     /**
      * Indicates if the model should be timestamped.
      *
@@ -41,13 +41,19 @@ class Localidad extends Model
      *
      * @var array
      */
-    protected $fillable = ['partido_id','codigo_postal','nombre'];
+    protected $fillable = [
+        'partido_id',
+        'codigo_postal',
+        'nombre'
+    ];
 
-    public function direccion(){
+    public function direccion()
+    {
         return $this->hasMany('\App\Models\Direccion');
     }
 
-    public function partido(){
+    public function partido()
+    {
         return $this->belongsTo('\App\Models\Partido');
     }
 }

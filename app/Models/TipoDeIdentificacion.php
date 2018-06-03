@@ -47,7 +47,8 @@ class TipoDeIdentificacion extends Model
     const CUIT = 2;
     const DNI = 3;
 
-    public function cliente(){
+    public function clientes()
+    {
         return $this->hasMany('\App\Models\Cliente');
     }
 }

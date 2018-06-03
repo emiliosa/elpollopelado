@@ -26,13 +26,10 @@
             </div>
 
             <div class="col-md-8">
-                <h3>{{ $producto->moneda->simbolo . $producto->precio_unitario }}</h3>
+                <h3>{{ $producto->moneda->simbolo . $producto->productoPrecio->first()->getPrecioUnitarioFormatted() }}</h3>
                 <form action="{{ url('/cart') }}" method="POST" class="side-by-side">
                     {!! csrf_field() !!}
-                    <input type="hidden" name="id" value="{{ $producto->id }}">
-                    <input type="hidden" name="descripcion" value="{{ $producto->descripcion }}">
-                    <input type="hidden" name="observaciones" value="{{ $producto->observaciones }}">
-                    <input type="hidden" name="precio_unitario" value="{{ $producto->precio_unitario }}">
+                    <input type="hidden" name="id" value="{{ $producto->productoPrecio->first()->id }}">
                     <p>Stock disponible: {{ $producto->stock }}</p>
                     <input type="submit" class="btn btn-success btn-lg" value="Agregar al pedido">
                 </form>
@@ -43,5 +40,5 @@
         <div class="spacer"></div>
 
     </div> <!-- end container -->
-    
+
 @endsection

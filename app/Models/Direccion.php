@@ -35,7 +35,15 @@ class Direccion extends Model
      *
      * @var array
      */
-    protected $fillable = ['cliente_id', 'localidad_id', 'calle', 'altura', 'piso', 'dpto', 'entrecalles'];
+    protected $fillable = [
+        'cliente_id',
+        'localidad_id',
+        'calle',
+        'altura',
+        'piso',
+        'dpto',
+        'entrecalles'
+    ];
 
     public function clientes()
     {

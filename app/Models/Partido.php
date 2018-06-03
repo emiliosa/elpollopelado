@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Partido extends Model
 {
     use SoftDeletes;
-    
+
     /**
      * Indicates if the model should be timestamped.
      *
@@ -41,14 +41,18 @@ class Partido extends Model
      *
      * @var array
      */
-    protected $fillable = ['provincia_id','nombre'];
+    protected $fillable = [
+        'provincia_id',
+        'nombre'
+    ];
 
-    public function localidad(){
+    public function localidad()
+    {
         return $this->hasMany('\App\Models\Localidad');
     }
 
-    public function provincia(){
+    public function provincia()
+    {
         return $this->belongsTo('\App\Models\Provincia');
     }
-
 }

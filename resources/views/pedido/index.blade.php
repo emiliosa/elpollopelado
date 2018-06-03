@@ -42,8 +42,8 @@
                                     <td class="text-center">{{ $pedido->fecha_envio }}</td>
                                     <td class="text-left">{{ $pedido->cliente->razon_social }}</td>
                                     <td class="text-left">
-                                        @foreach ($pedido->productos as $producto)
-                                                <li>{{ '(' . $producto->pivot->cantidad . ') ' . $producto->categoria->descripcion . ' - ' . $producto->descripcion }}</li>
+                                        @foreach ($pedido->unidadesVenta as $unidadVenta)
+                                            <li>{{ '(' . $unidadVenta->pivot->cantidad . ') ' . $unidadVenta->productoPrecio->producto->categoria->descripcion . ' - ' . $unidadVenta->productoPrecio->producto->descripcion }}</li>
                                         @endforeach
                                     </td>
                                     <td class="text-center">

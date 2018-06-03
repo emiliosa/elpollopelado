@@ -57,7 +57,7 @@
                 </div>
             </div>
 
-            @include ('cliente.actions')
+            @include ('partials.actions', ['routeIndex' => 'cliente.index'])
 
         {!! Form::close() !!}
     </div>

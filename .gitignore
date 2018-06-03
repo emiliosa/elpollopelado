@@ -3,6 +3,6 @@
 /storage/*.key
 /vendor
 /.idea
-/laradock
+#/laradock
 Homestead.json
 Homestead.yaml

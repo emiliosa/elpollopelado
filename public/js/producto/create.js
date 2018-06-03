@@ -24,11 +24,11 @@ function initInputProducto() {
             $('#precio_unitario').attr('disabled', false);
             $("#precio_unitario").maskMoney('destroy').maskMoney({
                 thousands: ' ',
-                decimal: ',',
+                //decimal: ',',
                 allowZero: false,
                 selectAllOnFocus: true,
                 prefix: simbolo + ' '
-            });
+            }, 0.00);
             $('#precio_unitario').trigger('focus');
         } else {
             $('#precio_unitario').attr('disabled', true);
@@ -102,4 +102,7 @@ $(document).ready(function() {
     initFormProducto();
 
     addRules(productoRules);
+
+    $('#precio_unitario').trigger('focus');
+    $('#categoria_id').trigger('focus');
 });

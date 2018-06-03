@@ -36,9 +36,10 @@ class DireccionRepository
     public function getDirecciones($cliente_id = '')
     {
         if ($cliente_id){
-            $direcciones = $this->direcion->has('localidad')->has('partido')->has('provincia')->where('cliente_id', '=', $cliente_id)->with('localidad.partido.provincia')->get();
+            $direcciones = $this->direccion->has('localidad')->where('cliente_id', '=', $cliente_id)->with('localidad.partido.provincia')->get();
+
         }else{
-            $direcciones = $this->direcion->paginate(15);
+            $direcciones = $this->direccion->paginate(15);
         }
         return $direcciones;
     }

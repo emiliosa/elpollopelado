@@ -37,7 +37,17 @@ class Cliente extends Model
      *
      * @var array
      */
-    protected $fillable = ['tipo_identificacion_id', 'identificacion', 'tipo_cliente_id', 'razon_social', 'nombre', 'apellido', 'email', 'telefono_celular', 'telefono_fijo'];
+    protected $fillable = [
+        'tipo_identificacion_id',
+        'identificacion',
+        'tipo_cliente_id',
+        'razon_social',
+        'nombre',
+        'apellido',
+        'email',
+        'telefono_celular',
+        'telefono_fijo'
+    ];
 
     protected $searchable = [
         'columns' => [
@@ -49,7 +59,7 @@ class Cliente extends Model
         ],
     ];
 
-    public function pedido()
+    public function pedidos()
     {
         return $this->hasMany('\App\Models\Pedido');
     }
@@ -73,5 +83,4 @@ class Cliente extends Model
     {
         return $this->belongsTo('\App\Models\TipoDeIdentificacion');
     }
-
 }

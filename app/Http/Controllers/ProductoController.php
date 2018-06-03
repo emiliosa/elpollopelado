@@ -15,7 +15,9 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 use App\Http\Requests;
 use App\Models\Producto;
+use App\Models\ProductoPrecio;
 use App\Models\Moneda;
+use App\Http\Requests\ProductoRequest;
 
 class ProductoController extends Controller
 {
@@ -39,7 +41,7 @@ class ProductoController extends Controller
     public function index(Request $request)
     {
         $productos = $this->producto->getProductos();
-        
+
         return view('producto.index', compact('productos'));
     }
 
@@ -50,7 +52,6 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        //$monedas = $this->moneda->getMonedasCombo();
         $monedas = Moneda::orderBy('denominacion', 'asc')->get();
         $categorias = $this->categoria->getCategoriasCombo();
         $estados = $this->producto->getEstados();
@@ -61,16 +62,17 @@ class ProductoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param App\Http\Requests\ProductoRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(ProductoRequest $request)
     {
 
         $requestData = $request->all();
         $idCategoria = $requestData['categoria_id'];
         $categoria = $this->categoria->findOrFail($idCategoria);
+
         if ($request->hasFile('imagen')) {
             $filenameImagenOriginal = str_replace(' ', '_', $categoria->descripcion . '_' . $requestData['descripcion'] . '.jpeg');
             $filenameImagenReducida = str_replace(' ', '_', $categoria->descripcion . '_' . $requestData['descripcion'] . '_small.jpeg');
@@ -87,7 +89,12 @@ class ProductoController extends Controller
             $imagenReducida->stream();
             Storage::disk('local')->put('public/' . $filenameImagenReducida, (string)$imagenReducida->encode());
         }
-        $this->producto->create($requestData);
+
+        $producto = $this->producto->create($requestData);
+        $productoPrecio = new ProductoPrecio([
+            'producto_id' => $producto->id,
+            'precio_unitario' => $requestData['precio_unitario']]);
+        $producto->productoPrecio()->save($productoPrecio);
 
         return redirect('producto');
     }
@@ -126,23 +133,16 @@ class ProductoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  int $id
-     * @param \Illuminate\Http\Request $request
+     * @param App\Http\Requests\ProductoRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update($id, Request $request)
+    public function update($id, ProductoRequest $request)
     {
-        $this->validate($request, [
-            'categoria_id' => 'required',
-            'descripcion' => 'required',
-            'moneda_id' => 'required',
-            'precio_unitario' => 'required',
-            'imagen' => 'image|mimes:jpeg,bmp,png|max:2000'
-        ]);
-
         $requestData = $request->all();
         $idCategoria = $requestData['categoria_id'];
         $categoria = $this->categoria->findOrFail($idCategoria);
+
         if ($request->hasFile('imagen')) {
             $filenameImagenOriginal = str_replace(' ', '_', $categoria->descripcion . '_' . $requestData['descripcion'] . '.jpeg');
             $filenameImagenReducida = str_replace(' ', '_', $categoria->descripcion . '_' . $requestData['descripcion'] . '_small.jpeg');
@@ -160,7 +160,20 @@ class ProductoController extends Controller
             Storage::disk('public')->put($filenameImagenReducida, (string)$imagenReducida->encode());
         }
 
-        $this->producto->findOrFail($id)->update($requestData);
+        $producto = $this->producto->findOrFail($id);
+        $producto->update($requestData);
+
+        $precioUnitarioNew = number_format(floatval($requestData['precio_unitario']), 2, '.', '');
+        $precioUnitarioOld = $producto->productoPrecio->first()->precio_unitario;
+
+        //si actualiza el precio
+        if ($precioUnitarioNew !== $precioUnitarioOld) {
+            $producto->productoPrecio()->delete();
+            $productoPrecio = new ProductoPrecio([
+                'producto_id' => $producto->id,
+                'precio_unitario' => $requestData['precio_unitario']]);
+            $producto->productoPrecio()->save($productoPrecio);
+        }
 
         return redirect('producto');
     }

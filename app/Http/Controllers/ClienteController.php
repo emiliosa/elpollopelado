@@ -99,6 +99,7 @@ class ClienteController extends Controller
         $tipos_de_cliente        = $this->tipo_de_cliente->getTiposDeClienteCombo();
         $direcciones             = $cliente->direcciones;
         $descuentos              = $cliente->descuentos;
+        //dd($direcciones);
 
         return view('cliente.edit', compact('cliente', 'tipos_de_identificacion', 'tipos_de_cliente', 'direcciones', 'descuentos'));
     }
@@ -218,7 +219,7 @@ class ClienteController extends Controller
     {
         $cliente_id = Input::get('cliente_id');
         $cliente    = $this->cliente->findOrFail($cliente_id);
-        $descuentos = $cliente->descuentos;
+        $descuentos = $cliente->descuentos()->get();
         $direcciones = $this->direccion->getDirecciones($cliente_id);
         return Response::json([
             'descuentos'  => $descuentos,

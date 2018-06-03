@@ -9,6 +9,8 @@ class Producto extends Model
 {
     use SoftDeletes;
 
+    public $timestamps = false;
+
     /**
      * The database table used by the model.
      *
@@ -35,26 +37,29 @@ class Producto extends Model
      *
      * @var array
      */
-    protected $fillable = ['codigo','categoria_id','descripcion', 'observaciones', 'moneda_id','precio_unitario','stock', 'imagen'];
+    protected $fillable = [
+        'codigo',
+        'categoria_id',
+        'descripcion',
+        'observaciones',
+        'moneda_id',
+        'stock',
+        'imagen'
+    ];
 
     public function categoria()
     {
-        return $this->belongsTo('\App\Models\Categoria');
+        return $this->belongsTo('\App\Models\Categoria', 'categoria_id');
     }
 
     public function moneda()
     {
-        return $this->belongsTo('\App\Models\Moneda');
+        return $this->belongsTo('\App\Models\Moneda', 'moneda_id');
     }
 
-    public function unidadDeVenta()
+    public function productoPrecio()
     {
-        return $this->hasMany('\App\Models\UnidadDeVenta');
-    }
-
-    public function pedidos()
-    {
-        return $this->belongsToMany('\App\Models\Pedido');
+        return $this->hasMany('\App\Models\ProductoPrecio');
     }
 
     public function estado()

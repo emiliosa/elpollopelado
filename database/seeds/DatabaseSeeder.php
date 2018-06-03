@@ -21,21 +21,10 @@ class DatabaseSeeder extends Seeder
         DB::table('tipo_de_cliente')->delete();
         DB::table('tipo_de_identificacion')->delete();
         DB::table('categoria')->delete();
+        DB::table('producto_precio')->delete();
         DB::table('producto')->delete();
         DB::table('cliente')->delete();
 
-        /*DB::table('social_logins')->delete();
-        DB::table('permission_role')->delete();
-        DB::table('permission_user')->delete();
-        DB::table('permissions')->delete();
-        DB::table('password_resets')->delete();
-        DB::table('role_user')->delete();
-        DB::table('roles')->delete();
-        DB::table('activations')->delete();
-        DB::table('profiles')->delete();
-        DB::table('themes')->delete();
-        DB::table('users')->delete();*/
-        
         $this->call(ProvinciaTableSeeder::class);
         $this->call(PartidoTableSeeder::class);
         $this->call(LocalidadTableSeeder::class);
@@ -44,6 +33,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TipoDeIdentificacionTableSeeder::class);
         $this->call(CategoriaTableSeeder::class);
         $this->call(ProductoTableSeeder::class);
+        $this->call(ProductoPrecioTableSeeder::class);
         $this->call(ClienteTableSeeder::class);
         $this->call(PermissionsTableSeeder::class);
         $this->call(RolesTableSeeder::class);
@@ -54,4 +44,3 @@ class DatabaseSeeder extends Seeder
         Model::reguard();
     }
 }
-

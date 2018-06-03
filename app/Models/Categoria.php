@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Categoria extends Model
 {
-
     use SoftDeletes;
 
     /**
@@ -45,7 +44,8 @@ class Categoria extends Model
      */
     protected $fillable = ['descripcion'];
 
-    public function producto(){
+    public function productos()
+    {
         return $this->hasMany('\App\Models\Producto');
     }
 }

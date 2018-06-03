@@ -2,7 +2,7 @@ var token = $("input[name='_token']").val();
 var pedidoRules = {
     fecha_envio: {
         required: true,
-        date: true
+        //date: true
     },
     cliente_id: {
         required: true
@@ -23,11 +23,11 @@ function ajaxSelect(url, data) {
         url: url,
         data: data,
         beforeSend: function() {
-            $('.loading').show();
+            $('.loading').removeClass('hidden');
         }
     }).done(function(response) {
         $.each(response.descuentos, function(i, val) {
-            $("select[name='descuento_id']").append("<option value='" + val.id + "'>" + val.porcentaje + " %" + "</option>");
+            $("select[name='descuento_id']").append("<option value='" + val.id + "'>" + val.porcentaje + "</option>");
         });
         $.each(response.direcciones, function(i, val) {
             $("select[name='direccion_envio_id']").append("<option value='" + val.id + "'>" + val.localidad.partido.provincia.nombre + ", " + val.localidad.partido.nombre + ", " + val.localidad.nombre + ", " + val.calle + " " + val.altura + "</option>");
@@ -35,7 +35,7 @@ function ajaxSelect(url, data) {
     }).fail(function(jqXHR, textStatus, errorThrown) {
         console.log('error: ' + textStatus);
     }).always(function(jqXHR, textStatus, errorThrown) {
-        $('.loading').hide();
+        $('.loading').addClass('hidden');
     });
 }
 
@@ -51,7 +51,7 @@ function ajaxSelect(url, data) {
          data: data,
          dataType: 'JSON',
          beforeSend: function() {
-             $('.loading').show();
+             $('.loading').removeClass('hidden');
          }
      }).done(function(response) {
          if (response.success) {
@@ -62,7 +62,7 @@ function ajaxSelect(url, data) {
      }).fail(function(jqXHR, textStatus, errorThrown) {
          console.log('error: ' + errorThrown);
      }).always(function(jqXHR, textStatus, errorThrown) {
-         $('.loading').hide();
+         $('.loading').addClass('hidden');
      });
  }
 
@@ -89,6 +89,38 @@ function fillDirecciones(cliente_id) {
     }
 }
 
+function getPrecioTotal(){
+    //var direccion = $(this).select2('data')[0].text;
+    var direccion = $("select[name='direccion_envio_id']").val();
+    var descuento = $("select[name='descuento_id']").val();
+
+    //if (direccion != '' || descuento != '') {
+        var data = {
+            'direccion': direccion,
+            'descuento': descuento
+        };
+        $.ajax({
+            type: "GET",
+            url: '/get_precio_total',
+            data: data,
+            beforeSend: function() {
+                $('.loading').removeClass('hidden');
+            }
+        }).done(function(response) {
+            $('#costo_descuento').html(response.costoDescuento);
+            $('#costo_distancia').html(response.costoDistancia);
+            $('#descuento').html('(' + response.descuento + ')');
+            $('#distancia').html('(' + response.distancia + ')');
+            $('#subtotal').html(response.subtotal);
+            $('#total').html(response.total);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            console.log('error: ' + textStatus);
+        }).always(function(jqXHR, textStatus, errorThrown) {
+            $('.loading').addClass('hidden');
+        });
+    //}
+}
+
 function initInputPedido() {
     $("select[name='cliente_id']").on('change', function(){
         if ($(this).val() != '') {
@@ -102,40 +134,18 @@ function initInputPedido() {
 
     });
 
-    $("select[name='direccion_envio_id']").on('change', function(){
-        var direccion = $(this).select2('data')[0].text;
-        if ($(this).val() != '') {
-            var data = {
-                'direccion': direccion
-            };
-            $.ajax({
-                type: "GET",
-                url: '/get_distancia',
-                data: data,
-                beforeSend: function() {
-                    $('.loading').show();
-                }
-            }).done(function(data) {
-                $('#distancia').html(data.distancia);
-            }).fail(function(jqXHR, textStatus, errorThrown) {
-                console.log('error: ' + textStatus);
-            }).always(function(jqXHR, textStatus, errorThrown) {
-                $('.loading').hide();
-            });
-        } else {
-            $('#distancia').html('');
-        }
+    $("select[name='descuento_id']").on('change', function(){
+        getPrecioTotal();
+    });
 
+    $("select[name='direccion_envio_id']").on('change', function(){
+        getPrecioTotal();
     });
 
     $("select[name='cliente_id']").select2();
     $("select[name='descuento_id']").select2();
     $("select[name='direccion_envio_id']").select2();
     $("select[name='direccion_envio_id']").trigger('change');
-    //$("select[name='cliente_id']").trigger('change');
-    //$("select[name='descuento_id']").attr('disabled', true);
-    //$("select[name='direccion_envio_id']").attr('disabled', true);
-
 }
 
 function initProducto() {
@@ -160,15 +170,16 @@ function initProducto() {
             url: '/cart/' + rowid,
             data: data,
             beforeSend: function() {
-                $('.loading').show();
+                //$('.loading').removeClass('hidden');
             }
         }).done(function(data) {
-            $('#subtotal').html('$ ' + data.cart.subtotal);
-            $('#total').html('$ ' + data.cart.total);
+            //$('#subtotal').html(data.cart.subtotal);
+            //$('#total').html(data.cart.total);
+            getPrecioTotal();
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.log('error: ' + textStatus);
         }).always(function(jqXHR, textStatus, errorThrown) {
-            $('.loading').hide();
+            //$('.loading').addClass('hidden');
         });
 
     });
@@ -184,7 +195,7 @@ function initProducto() {
             url: '/cart/' + producto_rowid,
             data: data,
             beforeSend: function() {
-                $('.loading').show();
+                $('.loading').removeClass('hidden');
             }
         }).done(function(data) {
             if (data.success) {
@@ -198,7 +209,7 @@ function initProducto() {
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.log('error: ' + textStatus);
         }).always(function(jqXHR, textStatus, errorThrown) {
-            $('.loading').hide();
+            $('.loading').addClass('hidden');
             $("#modal_producto_confirmacion").modal('hide');
         });
 
@@ -214,17 +225,15 @@ function initFormPedido() {
         $("form[name='pedido_form']").submit();
     });
     $("form[name='pedido_form']").on('submit', function(e) {
-        //e.preventDefault();
         var table_cart_length = $('#table_cart tbody tr').length;
         if ($(this).valid()) {
             if (table_cart_length > 0) {
 
-                var url = $(this).attr('action');
+                /*var url = $(this).attr('action');
                 var method = $(this).attr('method');
                 var token = $("input[name='_token']").val();
                 var _method = $("input[name='_method']").val();
                 var data_productos = {};
-                var data = $(this).serialize();
                 var table_productos_rows = $('#table_direcciones tbody tr');
                 var fecha_envio = $('#fecha_envio').val();
                 var cliente_id = $('#cliente_id option:selected').val();
@@ -250,9 +259,8 @@ function initFormPedido() {
                     'descuento_id': descuento_id,
                     'direccion_envio_id': direccion_envio_id,
                     'productos': data_productos
-                };
+                };*/
 
-                //ajaxPedido(url, data_form, method);
                 return true;
 
             } else {

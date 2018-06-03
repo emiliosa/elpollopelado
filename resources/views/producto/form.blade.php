@@ -1,11 +1,4 @@
-<div class="form-group {{ $errors->has('codigo') ? 'has-error' : ''}}">
-    {!! Form::label('codigo', 'Código', ['class' => 'col-md-4 control-label']) !!}
-    <div class="col-md-6">
-        {!! Form::hidden('id', isset($producto) ? ($producto->id) : null, ['id' => 'id']) !!}
-        {!! Form::text('codigo', isset($producto) ? $producto->codigo : null, ['class' => 'form-control']) !!}
-        {!! $errors->first('codigo', '<p class="help-block">:message</p>') !!}
-    </div>
-</div>
+{!! Form::hidden('id', isset($producto) ? ($producto->id) : null, ['id' => 'id']) !!}
 
 <div class="form-group {{ $errors->has('categoria') ? 'has-error' : ''}}">
     {!! Form::label('categoria', 'Categoría', ['class' => 'col-md-4 control-label']) !!}
@@ -52,7 +45,7 @@
 <div class="form-group {{ $errors->has('precio_unitario') ? 'has-error' : ''}}">
     {!! Form::label('precio_unitario', 'Precio unitario', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        {!! Form::text('precio_unitario', isset($producto) ? $producto->precio_unitario : null, ['class' => 'form-control', 'required' => 'required', 'disabled' => 'disabled']) !!}
+        {!! Form::text('precio_unitario', isset($producto) ? $producto->productoPrecio->first()->getPrecioUnitarioFormatted() : null, ['class' => 'form-control', 'required' => 'required', 'disabled' => 'disabled']) !!}
         {!! $errors->first('precio_unitario', '<p class="help-block">:message</p>') !!}
     </div>
 </div>

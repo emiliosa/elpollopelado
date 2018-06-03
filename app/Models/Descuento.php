@@ -44,7 +44,8 @@ class Descuento extends Model
      */
     protected $fillable = ['porcentaje'];
 
-    public function getPorcentajeAttribute() {
+    public function getPorcentajeAttribute()
+    {
         return $this->attributes['porcentaje'] . ' %';
     }
 

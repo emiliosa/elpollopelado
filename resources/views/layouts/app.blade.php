@@ -16,14 +16,15 @@
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ URL::asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('css/bootstrap-theme.min.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('css/bootstrap-table.min.css')}}">
 
     <!-- Datepicker -->
-    <link rel="stylesheet" href="{{ URL::asset('plugins/datepicker/css/bootstrap-datepicker3.min.css') }}">
-    <link rel="stylesheet" href="{{ URL::asset('plugins/datepicker/css/bootstrap-datepicker3.min.css.map') }}">
+    {{--<link rel="stylesheet" href="{{ URL::asset('plugins/datepicker/css/bootstrap-datepicker3.min.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('plugins/datepicker/css/bootstrap-datepicker3.min.css.map') }}">--}}
 
-    <!-- Timeicker -->
-    <link rel="stylesheet" href="{{ URL::asset('plugins/timepicker/jquery-ui-timepicker-addon.min.css') }}">
+    <!-- Datetimepicker -->
+    <link rel="stylesheet" href="{{ URL::asset('plugins/datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
 
     <!-- Selec2 -->
     <link rel="stylesheet" href="{{ URL::asset('plugins/select2/css/select2.min.css') }}">
@@ -37,6 +38,11 @@
     <script type="text/javascript" src="{{ URL::asset('js/jquery/jquery-3.2.1.min.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/jquery/jquery-ui.min.js') }}"></script>
 
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="{{ URL::asset('js/jquery/bootstrap/collapse.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/jquery/bootstrap/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/jquery/bootstrap/bootstrap-table.min.js') }}"></script>
+
     <!-- Jquery validate -->
     <script type="text/javascript" src="{{ URL::asset('js/jquery/validate/jquery.validate.min.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/jquery/validate/messages_es_AR.js') }}"></script>
@@ -44,22 +50,14 @@
     <!-- Inputmask -->
     <script type="text/javascript" src="{{ URL::asset('js/jquery/inputmask/jquery.inputmask.bundle.min.js') }}"></script>
 
-    <!-- Maskmoney -->
-    <script type="text/javascript" src="{{ URL::asset('js/jquery/maskmoney/jquery.maskMoney.min.js') }}"></script>
-
-    <!-- Bootstrap -->
-    <script type="text/javascript" src="{{ URL::asset('js/jquery/bootstrap/bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ URL::asset('js/jquery/bootstrap/bootstrap-table.min.js') }}"></script>
-
     <!-- Datepicker -->
-    <script type="text/javascript" src="{{ URL::asset('plugins/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-    <script type="text/javascript" src="{{ URL::asset('plugins/datepicker/locales/bootstrap-datepicker.es.min.js') }}"></script>
+    {{--<script type="text/javascript" src="{{ URL::asset('plugins/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('plugins/datepicker/locales/bootstrap-datepicker.es.min.js') }}"></script>--}}
 
-    <!-- Timepicker -->
-    <script type="text/javascript" src="{{ URL::asset('plugins/timepicker/jquery-ui-timepicker-addon.min.js') }}"></script>
-    <script type="text/javascript" src="{{ URL::asset('plugins/timepicker/i18n/jquery-ui-timepicker-addon-i18n.min.js') }}"></script>
-    <script type="text/javascript" src="{{ URL::asset('plugins/timepicker/i18n/jquery-ui-timepicker-es.js') }}"></script>
-
+    <!-- Datetimepicker -->
+    <script type="text/javascript" src="{{ URL::asset('plugins/moment/min/moment-with-locales.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('plugins/datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
+    
     <!-- Selec2 -->
     <script type="text/javascript" src="{{ URL::asset('plugins/select2/js/select2.min.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('plugins/select2/js/i18n/es.js') }}"></script>
@@ -72,10 +70,6 @@
         window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
         ]) !!};
-
-        $(document).ready(function () {
-            $('.loading').hide();
-        });
     </script>
 
     @stack('styles')
@@ -103,7 +97,7 @@
 
     </div>
 
-    <div class="loading"></div>
+    <div class="loading hidden"></div>
 
 </body>
 </html>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Models\Producto;
+use App\Models\ProductoPrecio;
 use \Cart as Cart;
 use Validator;
 
@@ -30,7 +32,7 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $duplicates = Cart::search(function ($cartItem, $rowId) use ($request) {
-            return $cartItem->id === $request->id;
+            return $cartItem->id === $request->productoPrecioId;
         });
 
         if (!$duplicates->isEmpty()) {
@@ -39,7 +41,10 @@ class CartController extends Controller
         }else{
             $messageType = 'success';
             $message = 'Producto agregado';
-            Cart::add($request->id, $request->descripcion, $request->qty ? $request->qty : 1, $request->precio_unitario)->associate('App\Models\Producto');
+            $productoPrecio = ProductoPrecio::findOrFail($request->id);
+            //dd($productoPrecio->producto->descripcion);
+            Cart::add($request->id, $productoPrecio->producto->descripcion, $request->qty ? $request->qty : 1, $productoPrecio->precio_unitario)->associate($productoPrecio);
+            //dd(Cart::content()->first()->model);
         }
 
         $request->session()->flash($messageType, $message);
@@ -63,13 +68,23 @@ class CartController extends Controller
 
          if ($validator->fails()) {
             session()->flash('error_message', 'Cantidad entre 1 y 15.');
-            return response()->json(['success' => false, 'cart' => NULL]);
+            return response()->json([
+                'success' => false,
+                'cart' => NULL
+            ]);
          }
 
         Cart::update($id, $request->quantity);
-        $cart = ['subtotal' => Cart::instance('default')->subtotal(), 'total' => Cart::instance('default')->total()];
+        $cart = [
+            'subtotal' => '$' . Cart::instance('default')->subtotal(2, '.', ' '),
+            'total'    => '$' . Cart::instance('default')->total(2, '.', ' ')
+        ];
 
-        return response()->json(['success' => true, 'msg' => 'La cantidad fue actualizada', 'cart' => $cart]);
+        return response()->json([
+            'success' => true,
+            'msg' => 'La cantidad fue actualizada',
+            'cart' => $cart
+        ]);
 
     }
 

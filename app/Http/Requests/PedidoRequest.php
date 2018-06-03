@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+use Carbon\Carbon;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 class PedidoRequest extends FormRequest
@@ -27,9 +28,9 @@ class PedidoRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'fecha_envio'        => ['required', 'date', 'after_or_equal:today'],
-            'cliente_id'         => ['required',
-                function($attribute, $value, $fail) {
+            'fecha_envio' => ['required', 'date_format:"d/m/Y H:i:s"'],
+            'cliente_id'  => ['required',
+                function ($attribute, $value, $fail) {
                     if (count(Cart::content()) == 0) {
                         return $fail('No hay productos en el pedido.');
                     }
